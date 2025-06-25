@@ -242,24 +242,24 @@
       width: 250px;
       height: 300px;
       border-radius: 16px;
-      background: var(--gradient-primary);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 4rem;
-      color: white;
       box-shadow: 0 20px 40px var(--shadow-medium);
       position: relative;
       overflow: hidden;
       margin-bottom: 2rem;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-image: url('src/profile.jpg');
     }
 
     .hero-photo::after {
-      content: 'PHOTO';
-      font-weight: 600;
-      font-size: 1.2rem;
-      letter-spacing: 2px;
-      opacity: 0.8;
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, rgba(0,0,0,0.1), transparent);
     }
 
     .hero-content {
@@ -498,19 +498,16 @@
     }
 
     .project-image {
-      aspect-ratio: 4/3;
-      background: var(--gradient-primary);
+      aspect-ratio: 1/1;
       border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1rem;
-      color: white;
-      font-weight: 600;
       transition: all 0.3s ease;
       cursor: pointer;
       position: relative;
       overflow: hidden;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      box-shadow: 0 4px 15px var(--shadow-light);
     }
 
     .project-image::after {
@@ -520,17 +517,44 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.2);
+      background: rgba(0, 0, 0, 0.1);
       transition: opacity 0.3s ease;
     }
 
     .project-image:hover {
-      transform: scale(1.02);
+      transform: scale(1.05);
+      box-shadow: 0 8px 25px var(--shadow-medium);
     }
 
     .project-image:hover::after {
       opacity: 0;
     }
+
+    .project-image:active {
+      transform: scale(0.98);
+      transition: transform 0.1s ease;
+    }
+
+    /* Project image backgrounds */
+    .project-image[data-img="pr1-1"] { background-image: url('src/pr1-1.jpg'); }
+    .project-image[data-img="pr1-2"] { background-image: url('src/pr1-2.jpg'); }
+    .project-image[data-img="pr1-3"] { background-image: url('src/pr1-3.jpg'); }
+    .project-image[data-img="pr1-4"] { background-image: url('src/pr1-4.jpg'); }
+    
+    .project-image[data-img="pr2-1"] { background-image: url('src/pr2-1.jpg'); }
+    .project-image[data-img="pr2-2"] { background-image: url('src/pr2-2.jpg'); }
+    .project-image[data-img="pr2-3"] { background-image: url('src/pr2-3.jpg'); }
+    .project-image[data-img="pr2-4"] { background-image: url('src/pr2-4.jpg'); }
+    
+    .project-image[data-img="pr3-1"] { background-image: url('src/pr3-1.jpg'); }
+    .project-image[data-img="pr3-2"] { background-image: url('src/pr3-2.jpg'); }
+    .project-image[data-img="pr3-3"] { background-image: url('src/pr3-3.jpg'); }
+    .project-image[data-img="pr3-4"] { background-image: url('src/pr3-4.jpg'); }
+    
+    .project-image[data-img="pr4-1"] { background-image: url('src/pr4-1.jpg'); }
+    .project-image[data-img="pr4-2"] { background-image: url('src/pr4-2.jpg'); }
+    .project-image[data-img="pr4-3"] { background-image: url('src/pr4-3.jpg'); }
+    .project-image[data-img="pr4-4"] { background-image: url('src/pr4-4.jpg'); }
 
     /* Scroll Progress */
     .scroll-progress {
@@ -992,16 +1016,16 @@
         <div class="project-card loading">
           <div class="project-header">
             <div class="project-number">01</div>
-            <h3 class="project-title">Residential Complex Design</h3>
+            <h3 class="project-title">Apollo Cultural Arts Center</h3>
             <p class="project-description">
-              A modern residential complex featuring sustainable design principles, optimized natural lighting, and community-focused spaces. This project explores the integration of green architecture with contemporary living needs.
+              A comprehensive cultural arts center designed for Bagdat Street, serving as a community hub for artistic expression and cultural exchange. The project features modular sustainable architecture with exhibition halls, multipurpose studios, workshops, and performance spaces. Designed to accommodate diverse user groups including art enthusiasts, collectors, creators, and the curious public, while promoting local artists and providing accessible cultural programming for the neighborhood.
             </p>
           </div>
           <div class="project-images">
-            <div class="project-image">Exterior View</div>
-            <div class="project-image">Floor Plan</div>
-            <div class="project-image">Interior</div>
-            <div class="project-image">Landscape</div>
+            <div class="project-image" data-img="pr1-1"></div>
+            <div class="project-image" data-img="pr1-2"></div>
+            <div class="project-image" data-img="pr1-3"></div>
+            <div class="project-image" data-img="pr1-4"></div>
           </div>
         </div>
 
@@ -1015,10 +1039,10 @@
             </p>
           </div>
           <div class="project-images">
-            <div class="project-image">Concept Model</div>
-            <div class="project-image">Section View</div>
-            <div class="project-image">Public Space</div>
-            <div class="project-image">Detail Study</div>
+            <div class="project-image" data-img="pr2-1"></div>
+            <div class="project-image" data-img="pr2-2"></div>
+            <div class="project-image" data-img="pr2-3"></div>
+            <div class="project-image" data-img="pr2-4"></div>
           </div>
         </div>
 
@@ -1032,10 +1056,10 @@
             </p>
           </div>
           <div class="project-images">
-            <div class="project-image">Master Plan</div>
-            <div class="project-image">3D Model</div>
-            <div class="project-image">Analysis</div>
-            <div class="project-image">Visualization</div>
+            <div class="project-image" data-img="pr3-1"></div>
+            <div class="project-image" data-img="pr3-2"></div>
+            <div class="project-image" data-img="pr3-3"></div>
+            <div class="project-image" data-img="pr3-4"></div>
           </div>
         </div>
 
@@ -1049,10 +1073,10 @@
             </p>
           </div>
           <div class="project-images">
-            <div class="project-image">Prototype</div>
-            <div class="project-image">Energy Model</div>
-            <div class="project-image">Materials</div>
-            <div class="project-image">Performance</div>
+            <div class="project-image" data-img="pr4-1"></div>
+            <div class="project-image" data-img="pr4-2"></div>
+            <div class="project-image" data-img="pr4-3"></div>
+            <div class="project-image" data-img="pr4-4"></div>
           </div>
         </div>
 
@@ -1159,18 +1183,37 @@
     const lightboxContent = document.getElementById('lightboxContent');
 
     projectImages.forEach(img => {
-      img.addEventListener('click', () => {
-        const content = img.cloneNode(true);
-        content.style.fontSize = '4rem';
-        content.style.width = '600px';
-        content.style.height = '400px';
-        content.style.borderRadius = '12px';
-        content.style.cursor = 'default';
+      img.addEventListener('click', (e) => {
+        // Quick scale animation on click
+        img.style.transform = 'scale(0.95)';
+        img.style.transition = 'transform 0.1s ease';
+        
+        setTimeout(() => {
+          img.style.transform = '';
+          img.style.transition = '';
+        }, 100);
+
+        const imgSrc = img.dataset.img;
+        const lightboxImg = document.createElement('img');
+        lightboxImg.src = `src/${imgSrc}.jpg`;
+        lightboxImg.style.maxWidth = '90vw';
+        lightboxImg.style.maxHeight = '90vh';
+        lightboxImg.style.borderRadius = '12px';
+        lightboxImg.style.objectFit = 'contain';
+        lightboxImg.style.opacity = '0';
+        lightboxImg.style.transform = 'scale(0.8)';
+        lightboxImg.style.transition = 'all 0.3s ease';
         
         lightboxContent.innerHTML = '';
-        lightboxContent.appendChild(content);
+        lightboxContent.appendChild(lightboxImg);
         lightbox.classList.add('active');
         document.body.style.overflow = 'hidden';
+
+        // Animate lightbox image entrance
+        setTimeout(() => {
+          lightboxImg.style.opacity = '1';
+          lightboxImg.style.transform = 'scale(1)';
+        }, 50);
       });
     });
 
