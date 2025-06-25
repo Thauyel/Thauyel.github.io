@@ -1,21 +1,32 @@
 {
-  "name": "Thauyel",
-  "short_name": "Thauyel",
+  "name": "Atacan Küçüksarı - Architecture Portfolio",
+  "short_name": "Atacan Portfolio",
+  "description": "4th year architecture student at Istanbul Technical University. Portfolio showcasing innovative architectural projects.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fafafa",
+  "theme_color": "#2563eb",
+  "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "/favicon/web-app-manifest-192x192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "maskable"
+      "src": "favicon/favicon-16x16.png",
+      "sizes": "16x16",
+      "type": "image/png"
     },
     {
-      "src": "/favicon/web-app-manifest-512x512.png",
-      "sizes": "512x512",
+      "src": "favicon/favicon-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "favicon/apple-touch-icon.png",
+      "sizes": "180x180",
       "type": "image/png",
-      "purpose": "maskable"
+      "purpose": "any maskable"
     }
   ],
-  "theme_color": "#000000",
-  "background_color": "#000000",
-  "display": "standalone"
+  "categories": ["architecture", "design", "portfolio"],
+  "lang": "en",
+  "scope": "/",
+  "id": "atacan-portfolio"
 }
