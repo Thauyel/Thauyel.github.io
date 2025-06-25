@@ -1,1 +1,1232 @@
-"Hello World" 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Atacan Küçüksarı – Architect Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary-bg: #fafafa;
+      --secondary-bg: #ffffff;
+      --card-bg: #ffffff;
+      --accent-color: #2563eb;
+      --text-primary: #1a1a1a;
+      --text-secondary: #6b7280;
+      --text-muted: #9ca3af;
+      --border-color: #e5e7eb;
+      --shadow-light: rgba(0, 0, 0, 0.05);
+      --shadow-medium: rgba(0, 0, 0, 0.1);
+      --shadow-heavy: rgba(0, 0, 0, 0.15);
+      --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --gradient-accent: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --primary-bg: #0a0a0a;
+        --secondary-bg: #111111;
+        --card-bg: #1a1a1a;
+        --text-primary: #ffffff;
+        --text-secondary: #a1a1aa;
+        --text-muted: #71717a;
+        --border-color: #27272a;
+        --shadow-light: rgba(255, 255, 255, 0.05);
+        --shadow-medium: rgba(255, 255, 255, 0.1);
+        --shadow-heavy: rgba(255, 255, 255, 0.15);
+      }
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--primary-bg);
+      color: var(--text-primary);
+      line-height: 1.6;
+      overflow-x: hidden;
+      transition: all 0.3s ease;
+    }
+
+    /* Header */
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 70px;
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(20px) saturate(180%);
+      border-bottom: 1px solid var(--border-color);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 2rem;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .header {
+        background: rgba(10, 10, 10, 0.8);
+      }
+    }
+
+    .header-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      text-align: center;
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Mobile Menu Button */
+    .mobile-menu-btn {
+      display: none;
+      position: fixed;
+      top: 15px;
+      left: 15px;
+      z-index: 1001;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 0.5rem;
+      color: var(--text-primary);
+      cursor: pointer;
+      font-size: 1.2rem;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      position: fixed;
+      top: 70px;
+      left: 0;
+      width: 280px;
+      height: calc(100vh - 70px);
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px) saturate(180%);
+      border-right: 1px solid var(--border-color);
+      padding: 2rem;
+      z-index: 900;
+      overflow-y: auto;
+      transform: translateX(0);
+      transition: transform 0.3s ease;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .sidebar {
+        background: rgba(17, 17, 17, 0.95);
+      }
+    }
+
+    .nav-menu {
+      list-style: none;
+    }
+
+    .nav-item {
+      margin-bottom: 1rem;
+    }
+
+    .nav-link {
+      display: flex;
+      align-items: center;
+      padding: 0.75rem 1rem;
+      color: var(--text-secondary);
+      text-decoration: none;
+      border-radius: 12px;
+      transition: all 0.3s ease;
+      font-weight: 500;
+      position: relative;
+    }
+
+    .nav-link::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 3px;
+      height: 0;
+      background: var(--accent-color);
+      border-radius: 2px;
+      transition: height 0.3s ease;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      color: var(--text-primary);
+      background: rgba(37, 99, 235, 0.1);
+    }
+
+    .nav-link:hover::before,
+    .nav-link.active::before {
+      height: 20px;
+    }
+
+    .nav-icon {
+      margin-right: 0.75rem;
+      font-size: 1.1rem;
+    }
+
+    /* Main Content */
+    .main-content {
+      margin-left: 280px;
+      margin-top: 70px;
+      padding: 0;
+    }
+
+    .section {
+      padding: 4rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 3rem;
+      text-align: center;
+      position: relative;
+    }
+
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: -1rem;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 4px;
+      background: var(--gradient-accent);
+      border-radius: 2px;
+    }
+
+    /* Hero Section */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 3rem;
+      align-items: start;
+      background: var(--secondary-bg);
+      position: relative;
+      overflow: hidden;
+      padding: 4rem 3rem;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: 
+        radial-gradient(circle at 20% 50%, rgba(37, 99, 235, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(37, 99, 235, 0.03) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    .hero-photo-section {
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-photo {
+      width: 250px;
+      height: 300px;
+      border-radius: 16px;
+      background: var(--gradient-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+      color: white;
+      box-shadow: 0 20px 40px var(--shadow-medium);
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 2rem;
+    }
+
+    .hero-photo::after {
+      content: 'PHOTO';
+      font-weight: 600;
+      font-size: 1.2rem;
+      letter-spacing: 2px;
+      opacity: 0.8;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-name {
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: var(--text-primary);
+    }
+
+    .hero-title {
+      font-size: 1.3rem;
+      color: var(--accent-color);
+      margin-bottom: 2rem;
+      font-weight: 500;
+    }
+
+    .hero-description {
+      font-size: 1rem;
+      color: var(--text-secondary);
+      margin-bottom: 3rem;
+      line-height: 1.7;
+    }
+
+    .contact-section {
+      margin-bottom: 2rem;
+    }
+
+    .contact-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 1rem;
+    }
+
+    .contact-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    .contact-icon {
+      width: 24px;
+      height: 24px;
+      background: var(--gradient-accent);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      color: white;
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+
+    .contact-link {
+      color: var(--accent-color);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .contact-link:hover {
+      color: var(--text-primary);
+    }
+
+    .info-section {
+      margin-bottom: 2rem;
+    }
+
+    .info-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 1rem;
+    }
+
+    .info-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .info-item {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      line-height: 1.4;
+    }
+
+    .education-period {
+      color: var(--accent-color);
+      font-weight: 500;
+    }
+
+    /* Skills Section */
+    .skills {
+      background: var(--primary-bg);
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1rem;
+    }
+
+    .skill-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.25rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .skill-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(37, 99, 235, 0.05) 0%, transparent 50%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .skill-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px var(--shadow-medium);
+      border-color: var(--accent-color);
+    }
+
+    .skill-card:hover::before {
+      opacity: 1;
+    }
+
+    .skill-name {
+      font-weight: 500;
+      color: var(--text-primary);
+      position: relative;
+      z-index: 1;
+    }
+
+    .skill-rating {
+      display: flex;
+      gap: 0.25rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .skill-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--border-color);
+      transition: all 0.3s ease;
+    }
+
+    .skill-dot.filled {
+      background: var(--accent-color);
+      box-shadow: 0 0 8px rgba(37, 99, 235, 0.4);
+    }
+
+    .skill-dot.half-filled {
+      background: linear-gradient(90deg, var(--accent-color) 50%, var(--border-color) 50%);
+    }
+
+    /* Projects Section */
+    .projects {
+      background: var(--secondary-bg);
+    }
+
+    .projects-grid {
+      display: grid;
+      gap: 3rem;
+    }
+
+    .project-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      overflow: hidden;
+      transition: all 0.4s ease;
+      box-shadow: 0 4px 20px var(--shadow-light);
+    }
+
+    .project-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 60px var(--shadow-heavy);
+      border-color: var(--accent-color);
+    }
+
+    .project-header {
+      padding: 2rem;
+    }
+
+    .project-number {
+      font-size: 0.9rem;
+      color: var(--accent-color);
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .project-title {
+      font-size: 1.8rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--text-primary);
+    }
+
+    .project-description {
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    .project-images {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      padding: 0 2rem 2rem;
+    }
+
+    .project-image {
+      aspect-ratio: 4/3;
+      background: var(--gradient-primary);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      color: white;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .project-image::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.2);
+      transition: opacity 0.3s ease;
+    }
+
+    .project-image:hover {
+      transform: scale(1.02);
+    }
+
+    .project-image:hover::after {
+      opacity: 0;
+    }
+
+    /* Scroll Progress */
+    .scroll-progress {
+      position: fixed;
+      top: 70px;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: var(--border-color);
+      z-index: 999;
+    }
+
+    .scroll-bar {
+      height: 100%;
+      background: var(--gradient-accent);
+      width: 0%;
+      transition: width 0.1s ease;
+    }
+
+    /* Lightbox */
+    .lightbox {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.9);
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+      backdrop-filter: blur(10px);
+    }
+
+    .lightbox.active {
+      display: flex;
+    }
+
+    .lightbox-content {
+      max-width: 90vw;
+      max-height: 90vh;
+      border-radius: 12px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+      .sidebar {
+        transform: translateX(-100%);
+      }
+
+      .sidebar.active {
+        transform: translateX(0);
+      }
+
+      .main-content {
+        margin-left: 0;
+      }
+
+      .mobile-menu-btn {
+        display: block;
+      }
+
+      .hero {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        text-align: center;
+        padding: 3rem 2rem;
+      }
+
+      .hero-photo {
+        margin: 0 auto 2rem;
+        width: 200px;
+        height: 250px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .section {
+        padding: 3rem 1rem;
+      }
+
+      .section-title {
+        font-size: 2rem;
+      }
+
+      .hero-name {
+        font-size: 2.5rem;
+      }
+
+      .hero-title {
+        font-size: 1.2rem;
+      }
+
+      .skills-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .project-images {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .header {
+        padding: 0 1rem;
+      }
+
+      .hero {
+        padding: 2rem 1rem;
+      }
+
+      .hero-photo {
+        width: 150px;
+        height: 200px;
+      }
+
+      .project-images {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        width: 100%;
+      }
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .fade-in {
+      animation: fadeInUp 0.6s ease-out forwards;
+    }
+
+    .loading {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.6s ease;
+    }
+
+    .loaded {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Smooth scrolling */
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* Selection styling */
+    ::selection {
+      background: rgba(37, 99, 235, 0.2);
+      color: var(--text-primary);
+    }
+  </style>
+</head>
+<body>
+  <!-- Scroll Progress -->
+  <div class="scroll-progress">
+    <div class="scroll-bar" id="scrollBar"></div>
+  </div>
+
+  <!-- Header -->
+  <header class="header">
+    <h1 class="header-title">Atacan Küçüksarı – Architect Portfolio</h1>
+  </header>
+
+  <!-- Mobile Menu Button -->
+  <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+
+  <!-- Sidebar Navigation -->
+  <aside class="sidebar" id="sidebar">
+    <nav>
+      <ul class="nav-menu">
+        <li class="nav-item">
+          <a href="#hero" class="nav-link active">
+            <span class="nav-icon">•</span>
+            Introduction
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#skills" class="nav-link">
+            <span class="nav-icon">•</span>
+            Skills
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#projects" class="nav-link">
+            <span class="nav-icon">•</span>
+            Projects
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Hero Section -->
+    <section id="hero" class="hero section">
+      <div class="hero-photo-section">
+        <div class="hero-photo"></div>
+      </div>
+      
+      <div class="hero-content">
+        <h1 class="hero-name">Atacan Küçüksarı</h1>
+        <p class="hero-title">Architect at Istanbul Technical University</p>
+        
+        <p class="hero-description">
+          <strong>I am Atacan Küçüksarı, a 4th year architecture student in Istanbul Technical University.</strong><br><br>
+          I love designing in 3D and tinker with different tools to create stuff.
+        </p>
+        
+        <div class="contact-section">
+          <h4 class="contact-title">Contact me:</h4>
+          <div class="contact-list">
+            <div class="contact-item">
+              <div class="contact-icon">@</div>
+              <a href="mailto:atacan.k03@gmail.com" class="contact-link">atacan.k03@gmail.com</a>
+            </div>
+            <div class="contact-item">
+              <div class="contact-icon">@</div>
+              <a href="mailto:kucuksari21@itu.edu.tr" class="contact-link">kucuksari21@itu.edu.tr</a>
+            </div>
+            <div class="contact-item">
+              <div class="contact-icon">in</div>
+              <a href="#" class="contact-link">atacanks</a>
+            </div>
+            <div class="contact-item">
+              <div class="contact-icon">ig</div>
+              <a href="#" class="contact-link">thauyel</a>
+            </div>
+            <div class="contact-item">
+              <div class="contact-icon">📞</div>
+              <span>+90 542 688 3506</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="info-section">
+          <h4 class="info-title">Languages</h4>
+          <div class="info-list">
+            <div class="info-item">Turkish - Native</div>
+            <div class="info-item">English - Fluent (C1)</div>
+          </div>
+        </div>
+        
+        <div class="info-section">
+          <h4 class="info-title">Education</h4>
+          <div class="info-list">
+            <div class="info-item">
+              Süleyman Demirel Science Highschool | <span class="education-period">2016-2020</span>
+            </div>
+            <div class="info-item">
+              Istanbul Technical University | <span class="education-period">2021 - 2025</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="skills section">
+      <h2 class="section-title">Skills & Tools</h2>
+      <div class="skills-grid">
+        <div class="skill-card loading">
+          <span class="skill-name">Adobe Photoshop</span>
+          <div class="skill-rating">
+            <div class="skill-dot filled"></div>
+            <div class="skill-dot filled"></div>
+            <div class="skill-dot filled"></div>
+            <div class="skill-dot filled"></div>
+            <div class="skill-dot filled"></div>
+          </div>
+        </div>
+        
+        <div class="skill-card loading">
+          <span class="skill-name">Adobe Illustrator</span>
+          <div class="skill-rating">
+            <div class="skill-dot filled"></div>
+            <div class="skill-dot filled"></div>
+            <div class="skill-dot filled"></div>
+            <div class="skill-dot"></div>
+            <div class="skill-dot"></div>
+          </div>
+        </div>
+        
+        <div class="skill-card loading">
+          <span class="skill-name">Adobe After Effects</span>
+          <div class="skill-rating">
+            <div class="skill-dot filled"></div>
+            <div class="skill-dot filled"></div>
+            <div class="skill-dot filled"></div>
+            <div class="skill-dot filled"></div>
+            <div class="skill-dot filled"></div>
+          </div>
+        </div>
+        
+        <div class="skill-card loading">
+          <span class="skill-name">Adobe Premiere Pro</span>
+          <div class="skill-rating">
+            <div class="skill-dot filled"></div>
+            <div class="skill-dot filled"></div>
+            <div class="skill-dot half-filled"></div>
+            <div class="skill-dot"></div>
+            <div class="skill-dot"></div>
+          </div>
+        </div>
+        
+        <div class="skill-card loading">
+          <span class="skill-name">ArchiCAD</span>
+          <div class="skill-rating">
+            <div class="skill-dot filled"></div>
+            <div class="skill-dot filled"></div>
+            <div class="skill-dot filled"></div>
+            <div class="skill-dot filled"></div>
+            <div class="skill-dot"></div>
+          </div>
+        </div>
+        
+        <div class="skill-card loading">
+          <span class="skill-name">Autodesk AutoCAD</span>
+          <div class="skill-rating">
+            <div class="skill-dot filled"></div>
+            <div class="skill-dot filled"></div>
+            <div class="skill-dot filled"></div>
+            <div class="skill-dot filled"></div>
+            <div class="skill-dot"></div>
+          </div>
+        </div>
+        
+        <div class="skill-card loading">
+          <span class="skill-name">Rhinoceros</span>
+          <div class="skill-rating">
+            <div class="skill-dot filled"></div>
+            <div class="skill-dot filled"></div>
+            <div class="skill-dot filled"></div>
+            <div class="skill-dot filled"></div>
+            <div class="skill-dot filled"></div>
+          </div>
+        </div>
+        
+        <div class="skill-card loading">
+          <span class="skill-name">Twinmotion</span>
+          <div class="skill-rating">
+            <div class="skill-dot filled"></div>
+            <div class="skill-dot filled"></div>
+            <div class="skill-dot filled"></div>
+            <div class="skill-dot filled"></div>
+            <div class="skill-dot filled"></div>
+          </div>
+        </div>
+        
+        <div class="skill-card loading">
+          <span class="skill-name">Blender</span>
+          <div class="skill-rating">
+            <div class="skill-dot filled"></div>
+            <div class="skill-dot filled"></div>
+            <div class="skill-dot filled"></div>
+            <div class="skill-dot filled"></div>
+            <div class="skill-dot"></div>
+          </div>
+        </div>
+        
+        <div class="skill-card loading">
+          <span class="skill-name">SketchUp</span>
+          <div class="skill-rating">
+            <div class="skill-dot filled"></div>
+            <div class="skill-dot filled"></div>
+            <div class="skill-dot"></div>
+            <div class="skill-dot"></div>
+            <div class="skill-dot"></div>
+          </div>
+        </div>
+        
+        <div class="skill-card loading">
+          <span class="skill-name">Stable Diffusion</span>
+          <div class="skill-rating">
+            <div class="skill-dot filled"></div>
+            <div class="skill-dot filled"></div>
+            <div class="skill-dot filled"></div>
+            <div class="skill-dot filled"></div>
+            <div class="skill-dot filled"></div>
+          </div>
+        </div>
+        
+        <div class="skill-card loading">
+          <span class="skill-name">Midjourney</span>
+          <div class="skill-rating">
+            <div class="skill-dot filled"></div>
+            <div class="skill-dot filled"></div>
+            <div class="skill-dot filled"></div>
+            <div class="skill-dot filled"></div>
+            <div class="skill-dot filled"></div>
+          </div>
+        </div>
+        
+        <div class="skill-card loading">
+          <span class="skill-name">Microsoft Office Suite</span>
+          <div class="skill-rating">
+            <div class="skill-dot filled"></div>
+            <div class="skill-dot filled"></div>
+            <div class="skill-dot filled"></div>
+            <div class="skill-dot filled"></div>
+            <div class="skill-dot"></div>
+          </div>
+        </div>
+        
+        <div class="skill-card loading">
+          <span class="skill-name">Unreal Engine</span>
+          <div class="skill-rating">
+            <div class="skill-dot filled"></div>
+            <div class="skill-dot"></div>
+            <div class="skill-dot"></div>
+            <div class="skill-dot"></div>
+            <div class="skill-dot"></div>
+          </div>
+        </div>
+        
+        <div class="skill-card loading">
+          <span class="skill-name">D5 Render</span>
+          <div class="skill-rating">
+            <div class="skill-dot filled"></div>
+            <div class="skill-dot half-filled"></div>
+            <div class="skill-dot"></div>
+            <div class="skill-dot"></div>
+            <div class="skill-dot"></div>
+          </div>
+        </div>
+        
+        <div class="skill-card loading">
+          <span class="skill-name">ChatGPT / AI Tools</span>
+          <div class="skill-rating">
+            <div class="skill-dot filled"></div>
+            <div class="skill-dot filled"></div>
+            <div class="skill-dot filled"></div>
+            <div class="skill-dot filled"></div>
+            <div class="skill-dot filled"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="projects section">
+      <h2 class="section-title">Featured Projects</h2>
+      <div class="projects-grid">
+        
+        <!-- Project 1 -->
+        <div class="project-card loading">
+          <div class="project-header">
+            <div class="project-number">01</div>
+            <h3 class="project-title">Residential Complex Design</h3>
+            <p class="project-description">
+              A modern residential complex featuring sustainable design principles, optimized natural lighting, and community-focused spaces. This project explores the integration of green architecture with contemporary living needs.
+            </p>
+          </div>
+          <div class="project-images">
+            <div class="project-image">Exterior View</div>
+            <div class="project-image">Floor Plan</div>
+            <div class="project-image">Interior</div>
+            <div class="project-image">Landscape</div>
+          </div>
+        </div>
+
+        <!-- Project 2 -->
+        <div class="project-card loading">
+          <div class="project-header">
+            <div class="project-number">02</div>
+            <h3 class="project-title">Cultural Center Concept</h3>
+            <p class="project-description">
+              An innovative cultural center design that blends traditional Turkish architectural elements with modern functionality. The project emphasizes community engagement and cultural preservation through spatial design.
+            </p>
+          </div>
+          <div class="project-images">
+            <div class="project-image">Concept Model</div>
+            <div class="project-image">Section View</div>
+            <div class="project-image">Public Space</div>
+            <div class="project-image">Detail Study</div>
+          </div>
+        </div>
+
+        <!-- Project 3 -->
+        <div class="project-card loading">
+          <div class="project-header">
+            <div class="project-number">03</div>
+            <h3 class="project-title">Urban Planning Study</h3>
+            <p class="project-description">
+              A comprehensive urban planning proposal focusing on sustainable transportation, mixed-use development, and green infrastructure. The project addresses contemporary urban challenges through innovative design solutions.
+            </p>
+          </div>
+          <div class="project-images">
+            <div class="project-image">Master Plan</div>
+            <div class="project-image">3D Model</div>
+            <div class="project-image">Analysis</div>
+            <div class="project-image">Visualization</div>
+          </div>
+        </div>
+
+        <!-- Project 4 -->
+        <div class="project-card loading">
+          <div class="project-header">
+            <div class="project-number">04</div>
+            <h3 class="project-title">Sustainable Housing Prototype</h3>
+            <p class="project-description">
+              An experimental housing prototype that explores renewable energy integration, passive cooling strategies, and adaptive living spaces. This project represents the future of eco-conscious residential design.
+            </p>
+          </div>
+          <div class="project-images">
+            <div class="project-image">Prototype</div>
+            <div class="project-image">Energy Model</div>
+            <div class="project-image">Materials</div>
+            <div class="project-image">Performance</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox">
+    <div class="lightbox-content" id="lightboxContent"></div>
+  </div>
+
+  <script>
+    // Mobile menu functionality
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const sidebar = document.getElementById('sidebar');
+
+    mobileMenuBtn.addEventListener('click', () => {
+      sidebar.classList.toggle('active');
+      mobileMenuBtn.textContent = sidebar.classList.contains('active') ? '✕' : '☰';
+    });
+
+    // Navigation functionality
+    const navLinks = document.querySelectorAll('.nav-link');
+    const sections = document.querySelectorAll('.section');
+
+    function updateActiveNav() {
+      let current = 'hero';
+      const scrollPosition = window.pageYOffset + 100;
+
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.offsetHeight;
+        
+        if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+          current = section.getAttribute('id');
+        }
+      });
+
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${current}`) {
+          link.classList.add('active');
+        }
+      });
+    }
+
+    // Smooth scrolling for navigation
+    navLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const targetId = link.getAttribute('href').substring(1);
+        const targetSection = document.getElementById(targetId);
+        
+        if (targetSection) {
+          const offsetTop = targetSection.offsetTop - 70;
+          window.scrollTo({
+            top: offsetTop,
+            behavior: 'smooth'
+          });
+        }
+
+        // Close mobile menu
+        sidebar.classList.remove('active');
+        mobileMenuBtn.textContent = '☰';
+      });
+    });
+
+    // Scroll progress bar
+    function updateScrollProgress() {
+      const scrollBar = document.getElementById('scrollBar');
+      if (scrollBar) {
+        const scrollTop = window.pageYOffset;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollPercent = (scrollTop / docHeight) * 100;
+        
+        scrollBar.style.width = Math.min(scrollPercent, 100) + '%';
+      }
+    }
+
+    // Intersection Observer for animations
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('loaded');
+          entry.target.classList.remove('loading');
+        }
+      });
+    }, observerOptions);
+
+    // Observe elements for animation
+    document.querySelectorAll('.loading').forEach(element => {
+      observer.observe(element);
+    });
+
+    // Project image lightbox functionality
+    const projectImages = document.querySelectorAll('.project-image');
+    const lightbox = document.getElementById('lightbox');
+    const lightboxContent = document.getElementById('lightboxContent');
+
+    projectImages.forEach(img => {
+      img.addEventListener('click', () => {
+        const content = img.cloneNode(true);
+        content.style.fontSize = '4rem';
+        content.style.width = '600px';
+        content.style.height = '400px';
+        content.style.borderRadius = '12px';
+        content.style.cursor = 'default';
+        
+        lightboxContent.innerHTML = '';
+        lightboxContent.appendChild(content);
+        lightbox.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      });
+    });
+
+    // Close lightbox
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) {
+        lightbox.classList.remove('active');
+        document.body.style.overflow = 'auto';
+      }
+    });
+
+    // Escape key to close lightbox
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+        lightbox.classList.remove('active');
+        document.body.style.overflow = 'auto';
+      }
+    });
+
+    // Scroll event listeners
+    let ticking = false;
+    function onScroll() {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          updateActiveNav();
+          updateScrollProgress();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }
+
+    window.addEventListener('scroll', onScroll);
+
+    // Initial calls
+    updateActiveNav();
+    updateScrollProgress();
+
+    // Performance optimization: Debounced resize handler
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        updateActiveNav();
+        updateScrollProgress();
+      }, 150);
+    });
+
+    // Theme detection and smooth transitions
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    mediaQuery.addEventListener('change', (e) => {
+      document.body.style.transition = 'background-color 0.3s ease, color 0.3s ease';
+      setTimeout(() => {
+        document.body.style.transition = '';
+      }, 300);
+    });
+  </script>
+</body>
+</html>
