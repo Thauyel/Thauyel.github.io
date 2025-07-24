@@ -1,0 +1,2 @@
+function XmlHttp(){var t=!1;
+/*@cc_on @*/if(!t&&"undefined"!=typeof XMLHttpRequest)try{t=new XMLHttpRequest}catch(e){t=!1}return t}function XmlHttpMethod(t,e,n,r){if(void 0===r&&(r="GET"),XmlHttpObj=XmlHttp(),!XmlHttpObj)return!1;try{XmlHttpObj.open(r,t,n),"function"==typeof e&&(XmlHttpObj.onreadystatechange=e),XmlHttpObj.setRequestHeader("Accept","message/x-formresult"),XmlHttpObj.setRequestHeader("pragma","no-cache"),XmlHttpObj.setRequestHeader("cache-control","no-cache"),XmlHttpObj.send(null)}catch(t){return!1}return!0}
