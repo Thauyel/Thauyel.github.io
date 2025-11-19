@@ -1,1392 +1,447 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Atacan Küçüksarı – Architect Portfolio</title>
-  
-  <!-- Favicon -->
-  <link rel="icon" type="image/x-icon" href="favicon/favicon.ico">
-  <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
-  <link rel="manifest" href="favicon/site.webmanifest">
-  
-  <!-- SEO Meta Tags -->
-  <meta name="description" content="Atacan Küçüksarı - Architectural Design Portfolio">
-  <meta name="keywords" content="architecture, design, portfolio, Istanbul Technical University, Atacan Küçüksarı, architectural projects, 3D design, sustainable architecture">
-  <meta name="author" content="Atacan Küçüksarı">
-  <meta name="robots" content="index, follow">
-  <meta name="language" content="English">
-  <meta name="revisit-after" content="7 days">
-  <meta name="theme-color" content="#1a1a1a">
-  <meta name="msapplication-TileColor" content="#1a1a1a">
-  
-  <!-- Open Graph / Facebook -->
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://thauyel.github.io/">
-  <meta property="og:title" content="Atacan Küçüksarı – Architectural Design Portfolio">
-  <meta property="og:description" content="Explore innovative architectural projects and 3D designs.">
-  <meta property="og:image" content="https://thauyel.github.io/src/profile.jpg">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="Atacan Küçüksarı Architectural Design Portfolio">
-  <meta property="og:site_name" content="Atacan Küçüksarı Portfolio">
-  <meta property="og:locale" content="en_US">
-  <meta property="og:image:secure_url" content="https://thauyel.github.io/src/profile.jpg">
-  
-  <!-- Twitter -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:url" content="https://thauyel.github.io/">
-  <meta name="twitter:title" content="Atacan Küçüksarı – Architectural Design Portfolio">
-  <meta name="twitter:description" content="Explore innovative architectural projects and 3D designs.">
-  <meta name="twitter:image" content="https://thauyel.github.io/src/profile.jpg">
-  <meta name="twitter:image:alt" content="Atacan Küçüksarı Architecture Portfolio">
-  <meta name="twitter:creator" content="@atacanks">
-  
-  <!-- Canonical URL -->
-  <link rel="canonical" href="https://thauyel.github.io/">
-  
-  <!-- Structured Data -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Person",
-    "name": "Atacan Küçüksarı",
-    "jobTitle": "Architecture Student",
-    "worksFor": {
-      "@type": "EducationalOrganization",
-      "name": "Istanbul Technical University"
-    },
-    "url": "https://thauyel.github.io",
-    "image": "https://thauyel.github.io/src/profile.jpg",
-    "email": "atacan.k03@gmail.com",
-    "sameAs": [
-      "https://www.linkedin.com/in/atacanks/",
-      "https://www.instagram.com/thauyel"
-    ],
-    "knowsAbout": [
-      "Architecture",
-      "3D Design",
-      "Sustainable Architecture",
-      "Adobe Creative Suite",
-      "CAD Software"
-    ]
-  }
-  </script>
-  
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  
-  <style>
-    /* Reset & Base */
-    *, *::before, *::after {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    :root {
-      /* Colors */
-      --primary-bg: #0f0f0f;
-      --secondary-bg: #1a1a1a;
-      --card-bg: #1e1e1e;
-      --surface-bg: #252525;
-      --accent-color: #ffffff;
-      --accent-secondary: #e5e5e5;
-      --text-primary: #ffffff;
-      --text-secondary: #b3b3b3;
-      --text-muted: #6b6b6b;
-      --border-color: #333333;
-      --border-light: #2a2a2a;
-      
-      /* Shadows */
-      --shadow-light: rgba(0, 0, 0, 0.2);
-      --shadow-medium: rgba(0, 0, 0, 0.4);
-      --shadow-heavy: rgba(0, 0, 0, 0.6);
-      
-      /* Gradients */
-      --gradient-primary: linear-gradient(135deg, #333333 0%, #1a1a1a 100%);
-      --gradient-accent: linear-gradient(135deg, #ffffff 0%, #e5e5e5 100%);
-      
-      /* Fonts */
-      --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      --font-mono: 'JetBrains Mono', monospace;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      font-family: var(--font-primary);
-      background: var(--primary-bg);
-      color: var(--text-primary);
-      line-height: 1.5;
-      overflow-x: hidden;
-      font-weight: 400;
-      letter-spacing: -0.01em;
-    }
-
-    ::selection {
-      background: rgba(255, 255, 255, 0.2);
-      color: var(--text-primary);
-    }
-
-    /* Scroll Progress */
-    .scroll-progress {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 2px;
-      background: var(--border-color);
-      z-index: 999;
-    }
-
-    .scroll-bar {
-      height: 100%;
-      background: var(--text-primary);
-      width: 0%;
-      transition: width 0.1s ease;
-    }
-
-    /* Header */
-    .header {
-      position: fixed;
-      top: 2rem;
-      left: 2rem;
-      width: 250px;
-      background: rgba(15, 15, 15, 0.95);
-      backdrop-filter: blur(20px) saturate(180%);
-      border: 1px solid var(--border-light);
-      border-radius: 4px;
-      z-index: 1000;
-      padding: 1rem 1.5rem;
-      box-shadow: 0 8px 30px var(--shadow-light);
-    }
-
-    .header-title {
-      color: var(--text-primary);
-      line-height: 1.3;
-      text-align: left;
-    }
-
-    .header-name {
-      font-size: 1.2rem;
-      font-weight: 600;
-      margin-bottom: 0.1rem;
-    }
-
-    .header-subtitle {
-      font-size: 0.85rem;
-      font-weight: 400;
-      color: var(--text-secondary);
-      font-family: var(--font-mono);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    /* Mobile Menu Button */
-    .mobile-menu-btn {
-      display: none;
-      position: fixed;
-      top: 2rem;
-      right: 2rem;
-      z-index: 1001;
-      background: rgba(15, 15, 15, 0.95);
-      backdrop-filter: blur(20px) saturate(180%);
-      border: 1px solid var(--border-color);
-      border-radius: 4px;
-      padding: 0.5rem;
-      color: var(--text-primary);
-      cursor: pointer;
-      font-size: 1rem;
-      box-shadow: 0 8px 30px var(--shadow-light);
-      transition: all 0.3s ease;
-    }
-
-    .mobile-menu-btn:hover {
-      border-color: var(--text-primary);
-    }
-
-    /* Sidebar Navigation */
-    .sidebar {
-      position: fixed;
-      top: 50%;
-      left: 2rem;
-      transform: translateY(-50%);
-      width: 250px;
-      background: rgba(15, 15, 15, 0.95);
-      backdrop-filter: blur(20px) saturate(180%);
-      border: 1px solid var(--border-light);
-      border-radius: 4px;
-      padding: 2rem;
-      z-index: 900;
-      box-shadow: 0 8px 30px var(--shadow-light);
-      transition: transform 0.3s ease;
-    }
-
-    .nav-menu {
-      list-style: none;
-    }
-
-    .nav-item {
-      margin-bottom: 1rem;
-    }
-
-    .nav-link {
-      display: flex;
-      align-items: center;
-      padding: 0.75rem 1rem;
-      color: var(--text-secondary);
-      text-decoration: none;
-      border-radius: 4px;
-      transition: all 0.3s ease;
-      font-weight: 500;
-      position: relative;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      font-family: var(--font-mono);
-    }
-
-    .nav-link::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 3px;
-      height: 0;
-      background: var(--text-primary);
-      border-radius: 2px;
-      transition: height 0.3s ease;
-    }
-
-    .nav-link:hover,
-    .nav-link.active {
-      color: var(--text-primary);
-      background: var(--surface-bg);
-    }
-
-    .nav-link:hover::before,
-    .nav-link.active::before {
-      height: 20px;
-    }
-
-    .nav-icon {
-      margin-right: 0.75rem;
-      font-size: 1.1rem;
-    }
-
-    /* Main Content */
-    .main-content {
-      margin: 0;
-      padding: 0;
-    }
-
-    .section {
-      padding: 4rem 2rem;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .section-title {
-      font-size: 3rem;
-      font-weight: 800;
-      margin-bottom: 4rem;
-      text-align: left;
-      position: relative;
-      letter-spacing: -0.02em;
-    }
-
-    .section-number {
-      font-family: var(--font-mono);
-      font-size: 1rem;
-      color: var(--text-muted);
-      margin-bottom: 0.5rem;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      font-weight: 600;
-    }
-
-    /* Hero Section */
-    .hero {
-      min-height: 100vh;
-      display: grid;
-      grid-template-columns: 300px 1fr;
-      gap: 6rem;
-      align-items: start;
-      position: relative;
-      overflow: hidden;
-      padding: 4rem 3rem;
-    }
-
-    .hero-photo-section {
-      position: relative;
-      z-index: 2;
-    }
-
-    .hero-photo {
-      width: 300px;
-      height: 300px;
-      border-radius: 4px;
-      position: relative;
-      overflow: hidden;
-      margin-bottom: 3rem;
-      background: url('src/profile.jpg') center top / cover no-repeat;
-      border: 1px solid var(--border-color);
-    }
-
-    .hero-content {
-      position: relative;
-      z-index: 2;
-    }
-
-    .hero-name {
-      font-size: 4rem;
-      font-weight: 800;
-      margin-bottom: 1rem;
-      color: var(--text-primary);
-      letter-spacing: -0.03em;
-      line-height: 0.9;
-    }
-
-    .hero-title {
-      font-size: 1.5rem;
-      color: var(--text-secondary);
-      margin-bottom: 3rem;
-      font-weight: 400;
-      font-family: var(--font-mono);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    .hero-description {
-      font-size: 1.1rem;
-      color: var(--text-secondary);
-      margin-bottom: 4rem;
-      line-height: 1.6;
-      max-width: 600px;
-    }
-
-    /* Contact Section */
-    .contact-section {
-      margin-bottom: 3rem;
-    }
-
-    .contact-title {
-      font-size: 1rem;
-      font-weight: 600;
-      color: var(--text-primary);
-      margin-bottom: 1.5rem;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      font-family: var(--font-mono);
-    }
-
-    .contact-list {
-      display: flex;
-      flex-direction: column;
-      gap: 0.8rem;
-    }
-
-    .contact-item {
-      display: flex;
-      align-items: center;
-      gap: 0.8rem;
-      color: var(--text-secondary);
-      font-size: 0.9rem;
-      padding: 0.8rem;
-      background: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 4px;
-      transition: all 0.3s ease;
-    }
-
-    .contact-item:hover {
-      border-color: var(--text-primary);
-      background: var(--surface-bg);
-    }
-
-    .contact-icon {
-      width: 24px;
-      height: 24px;
-      background: var(--gradient-accent);
-      border-radius: 4px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.7rem;
-      color: var(--primary-bg);
-      font-weight: 600;
-      flex-shrink: 0;
-      font-family: var(--font-mono);
-    }
-
-    .contact-link {
-      color: var(--text-primary);
-      text-decoration: none;
-      transition: color 0.3s ease;
-    }
-
-    .contact-link:hover {
-      color: var(--accent-secondary);
-    }
-
-    /* Info Section */
-    .info-section {
-      margin-bottom: 2rem;
-    }
-
-    .info-title {
-      font-size: 1rem;
-      font-weight: 600;
-      color: var(--text-primary);
-      margin-bottom: 1.5rem;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      font-family: var(--font-mono);
-    }
-
-    .info-list {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-
-    .info-item {
-      color: var(--text-secondary);
-      font-size: 0.9rem;
-      line-height: 1.4;
-      padding: 0.8rem;
-      background: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 4px;
-      font-weight: 500;
-    }
-
-    .education-period {
-      color: var(--text-primary);
-      font-weight: 600;
-      font-family: var(--font-mono);
-    }
-
-    /* Skills Section */
-    .skills {
-      background: transparent;
-    }
-
-    .skills-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-      gap: 1rem;
-    }
-
-    .skill-card {
-      background: var(--card-bg);
-      padding: 1.5rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      transition: all 0.3s ease;
-      position: relative;
-    }
-
-    .skill-card:hover {
-      background: var(--surface-bg);
-    }
-
-    .skill-name {
-      font-weight: 500;
-      color: var(--text-primary);
-      font-size: 0.95rem;
-    }
-
-    .skill-rating {
-      display: flex;
-      gap: 0.4rem;
-    }
-
-    .skill-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--border-color);
-      transition: all 0.3s ease;
-    }
-
-    .skill-dot.filled {
-      background: var(--text-primary);
-    }
-
-    .skill-dot.half-filled {
-      background: linear-gradient(90deg, var(--text-primary) 50%, var(--border-color) 50%);
-    }
-
-    /* Projects Section */
-    .projects {
-      background: transparent;
-    }
-
-    .projects-grid {
-      display: grid;
-      gap: 6rem;
-    }
-
-    .project-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 4px;
-      overflow: hidden;
-      transition: all 0.4s ease;
-    }
-
-    .project-card:hover {
-      border-color: var(--text-primary);
-      background: var(--surface-bg);
-    }
-
-    .project-header {
-      padding: 3rem;
-      border-bottom: 1px solid var(--border-color);
-    }
-
-    .project-number {
-      font-size: 0.9rem;
-      color: var(--text-muted);
-      font-weight: 600;
-      margin-bottom: 1rem;
-      font-family: var(--font-mono);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-    }
-
-    .project-title {
-      font-size: 2.5rem;
-      font-weight: 700;
-      margin-bottom: 2rem;
-      color: var(--text-primary);
-      letter-spacing: -0.02em;
-    }
-
-    .project-description {
-      color: var(--text-secondary);
-      line-height: 1.6;
-      font-size: 1rem;
-      max-width: 800px;
-    }
-
-    .project-images {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1px;
-      background: var(--border-color);
-    }
-
-    .project-image {
-      aspect-ratio: 1/1;
-      transition: all 0.3s ease;
-      cursor: pointer;
-      position: relative;
-      overflow: hidden;
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-    }
-
-    .project-image::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.1);
-      transition: opacity 0.3s ease;
-    }
-
-    .project-image:hover::after {
-      opacity: 0;
-    }
-
-    .project-image:active {
-      transform: scale(0.98);
-      transition: transform 0.1s ease;
-    }
-
-    /* Project Image Backgrounds */
-    .project-image[data-img="pr1-1"] { background-image: url('src/pr1-1.jpg'); }
-    .project-image[data-img="pr1-2"] { background-image: url('src/pr1-2.jpg'); }
-    .project-image[data-img="pr1-3"] { background-image: url('src/pr1-3.jpg'); }
-    .project-image[data-img="pr1-4"] { background-image: url('src/pr1-4.jpg'); }
-    .project-image[data-img="pr2-1"] { background-image: url('src/pr2-1.jpg'); }
-    .project-image[data-img="pr2-2"] { background-image: url('src/pr2-2.jpg'); }
-    .project-image[data-img="pr2-3"] { background-image: url('src/pr2-3.jpg'); }
-    .project-image[data-img="pr2-4"] { background-image: url('src/pr2-4.jpg'); }
-    .project-image[data-img="pr3-1"] { background-image: url('src/pr3-1.jpg'); }
-    .project-image[data-img="pr3-2"] { background-image: url('src/pr3-2.jpg'); }
-    .project-image[data-img="pr3-3"] { background-image: url('src/pr3-3.jpg'); }
-    .project-image[data-img="pr3-4"] { background-image: url('src/pr3-4.jpg'); }
-    .project-image[data-img="pr4-1"] { background-image: url('src/pr4-1.jpg'); }
-    .project-image[data-img="pr4-2"] { background-image: url('src/pr4-2.jpg'); }
-    .project-image[data-img="pr4-3"] { background-image: url('src/pr4-3.jpg'); }
-    .project-image[data-img="pr4-4"] { background-image: url('src/pr4-4.jpg'); }
-
-    /* Lightbox */
-    .lightbox {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(0, 0, 0, 0.95);
-      justify-content: center;
-      align-items: center;
-      z-index: 2000;
-      backdrop-filter: blur(10px);
-    }
-
-    .lightbox.active {
-      display: flex;
-    }
-
-    .lightbox-content {
-      max-width: 90vw;
-      max-height: 90vh;
-      border-radius: 4px;
-      border: 1px solid var(--border-color);
-    }
-
-    /* Animations */
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .fade-in {
-      animation: fadeInUp 0.6s ease-out forwards;
-    }
-
-    .loading {
-      opacity: 0;
-      transform: translateY(20px);
-      transition: all 0.6s ease;
-    }
-
-    .loaded {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* Responsive Design */
-    @media (max-width: 1024px) {
-      .sidebar {
-        transform: translateY(-50%) translateX(-100%);
-      }
-
-      .sidebar.active {
-        transform: translateY(-50%) translateX(0);
-      }
-
-      .mobile-menu-btn {
-        display: block;
-      }
-
-      .hero {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-        text-align: left;
-        padding: 3rem 2rem;
-      }
-
-      .hero-photo {
-        margin: 0 auto 2rem;
-        width: 250px;
-        height: 250px;
-      }
-    }
-
-    @media (max-width: 768px) {
-      .header {
-        top: 1rem;
-        left: 1rem;
-        width: calc(100vw - 2rem);
-        max-width: 300px;
-        padding: 0.75rem 1rem;
-      }
-
-      .header-name {
-        font-size: 1rem;
-      }
-
-      .header-subtitle {
-        font-size: 0.8rem;
-      }
-
-      .mobile-menu-btn {
-        top: 1rem;
-        right: 1rem;
-        padding: 0.5rem;
-      }
-
-      .sidebar {
-        left: 1rem;
-        width: calc(100vw - 2rem);
-        max-width: 300px;
-      }
-
-      .section {
-        padding: 3rem 1rem;
-      }
-
-      .section-title {
-        font-size: 2.5rem;
-      }
-
-      .hero-name {
-        font-size: 3rem;
-      }
-
-      .hero-title {
-        font-size: 1.2rem;
-      }
-
-      .skills-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .project-header {
-        padding: 2rem;
-      }
-
-      .project-title {
-        font-size: 2rem;
-      }
-
-      .project-images {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    @media (max-width: 480px) {
-      .hero {
-        padding: 2rem 1rem;
-      }
-
-      .hero-photo {
-        width: 200px;
-        height: 200px;
-      }
-
-      .hero-name {
-        font-size: 2.5rem;
-      }
-
-      .section-title {
-        font-size: 2rem;
-      }
-
-      .project-header {
-        padding: 1.5rem;
-      }
-
-      .project-images {
-        grid-template-columns: 1fr;
-      }
-    }
-	
-	a:link {
-  color: white;
-  background-color: transparent;
-  text-decoration: none;
-}
-
-a:visited {
-  color: lightgray;
-  background-color: transparent;
-  text-decoration: none;
-}
-
-a:hover {
-  color: white;
-  background-color: transparent;
-  text-decoration: underline;
-}
-
-a:active {
-  color: white;
-  background-color: transparent;
-  text-decoration: underline;
-}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atacan Küçüksarı | Architect & 3D Visualizer</title>
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+    <link rel="shortcut icon" href="favicon/favicon.ico">
+    <link rel="manifest" href="favicon/site.webmanifest">
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Atacan Küçüksarı | Architect & 3D Visualizer">
+    <meta property="og:description" content="M.Arch Candidate at Politecnico Di Milano. Computational Design & 3D Visualization Portfolio.">
+    <meta property="og:image" content="favicon/og-image.png">
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Atacan Küçüksarı | Architect & 3D Visualizer">
+    <meta name="twitter:description" content="M.Arch Candidate at Politecnico Di Milano. Computational Design & 3D Visualization Portfolio.">
+    <meta name="twitter:image" content="favicon/twitter-image.png">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Scroll Progress -->
-  <div class="scroll-progress">
-    <div class="scroll-bar" id="scrollBar"></div>
-  </div>
 
-  <!-- Header -->
-  <header class="header">
-    <div class="header-title">
-      <div class="header-name">Atacan Küçüksarı</div>
-      <div class="header-subtitle">Architecture Portfolio</div>
+    <div class="command-line">
+        <span>Command:</span> <div id="typing-text">_System_Ready...</div>
     </div>
-  </header>
 
-  <!-- Mobile Menu Button -->
-  <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
-
-  <!-- Sidebar Navigation -->
-  <aside class="sidebar" id="sidebar">
-    <nav>
-      <ul class="nav-menu">
-        <li class="nav-item">
-          <a href="#hero" class="nav-link active">
-            <span class="nav-icon">•</span>
-            About
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="#skills" class="nav-link">
-            <span class="nav-icon">•</span>
-            Skills
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="#projects" class="nav-link">
-            <span class="nav-icon">•</span>
-            Projects
-          </a>
-        </li>
-      </ul>
+    <nav class="rhino-toolbar">
+        <a href="#home" class="nav-btn"><i class="fas fa-home"></i> Home</a>
+        <a href="#education" class="nav-btn"><i class="fas fa-graduation-cap"></i> Education</a>
+        <a href="#experience" class="nav-btn"><i class="fas fa-briefcase"></i> Experience</a>
+        <a href="#skills" class="nav-btn"><i class="fas fa-tools"></i> Skills</a>
+        
+        <div class="nav-separator"></div>
+        
+        <a href="#tremora" class="nav-btn">TREMORA</a> 
+        <a href="#travion" class="nav-btn">TRAVION</a>
+        <a href="#apollo" class="nav-btn">APOLLO</a> 
+        <a href="#hermes" class="nav-btn">HERMES</a>
     </nav>
-  </aside>
 
-  <!-- Main Content -->
-  <main class="main-content">
-    <!-- Hero Section -->
-    <section id="hero" class="hero section">
-      <div class="hero-photo-section">
-        <div class="hero-photo"></div>
-      </div>
-      
-      <div class="hero-content">
-        <h1 class="hero-name">Atacan Küçüksarı</h1>
-        <p class="hero-title">Architect</p>
-        
-        <p class="hero-description">
-          I am Atacan Küçüksarı, architect. I specialize in 3D design and enjoy experimenting with various tools to create innovative architectural solutions.
-        </p>
-        
-        <div class="contact-section">
-          <h4 class="contact-title">Contact Information</h4>
-          <div class="contact-list">
-            <div class="contact-item">
-              <div class="contact-icon">@</div>
-              <a href="mailto:atacan.k03@gmail.com" class="contact-link">atacan.k03@gmail.com</a>
+    <section id="home">
+        <div class="viewport-label">PERSPECTIVE</div>
+        <div class="hero-content hidden">
+            <img src="src/profile.jpg" alt="Atacan Küçüksarı" class="profile-img">
+            
+            <h1>Atacan Küçüksarı</h1>
+            <p style="color: var(--rhino-cyan); margin-bottom: 20px; font-weight: 600; letter-spacing: 1px;">
+                Architect / 3D Visualizer
+            </p>
+            
+            <div style="border-left: 2px solid var(--rhino-accent); padding-left: 15px; margin: 20px 0; text-align: left; font-style: italic; color: #ccc;">
+                <p style="margin-bottom: 10px;">
+                    "M.Arch Candidate at <span style="color: white; font-weight: bold;">Politecnico Di Milano</span>.
+                </p>
+                <p>
+                    I don't just design; I tinker with tools to create 3D realities."
+                </p>
             </div>
-            <div class="contact-item">
-              <div class="contact-icon">@</div>
-              <a href="mailto:kucuksariatacan@gmail.com" class="contact-link">kucuksariatacan@gmail.com</a>
+            
+            <div class="contact-links">
+                <a href="https://www.linkedin.com/in/atacanks/" target="_blank">LINKEDIN</a>
+                <a href="mailto:kucuksariatacan@gmail.com">E-MAIL</a>
+                <a href="https://thauyel.github.io/resume.pdf" target="_blank">RESUME_PDF</a>
+                <a href="https://thauyel.github.io/portfolio.pdf" target="_blank">PORTFOLIO_PDF</a>
             </div>
-            <div class="contact-item">
-              <div class="contact-icon">in</div>
-              <a href="https://www.linkedin.com/in/atacanks/" class="contact-link" target="_blank" rel="noopener noreferrer">atacanks</a>
-            </div>
-            <div class="contact-item">
-              <div class="contact-icon">ig</div>
-              <a href="https://www.instagram.com/thauyel" class="contact-link" target="_blank" rel="noopener noreferrer">thauyel</a>
-            </div>
-            <div class="contact-item">
-              <div class="contact-icon">tel</div>
-              <span>+90 542 688 3506</span>
-            </div>
-          </div>
         </div>
-        
-        <div class="info-section">
-          <h4 class="info-title">Languages</h4>
-          <div class="info-list">
-            <div class="info-item">Turkish - <span class="education-period">Native</span></div>
-            <div class="info-item">English - <span class="education-period">Fluent (C1)</span></div>
-          </div>
-        </div>
-        
-        <div class="info-section">
-          <h4 class="info-title">Education</h4>
-          <div class="info-list">
-            <div class="info-item">
-              Süleyman Demirel Science Highschool | <span class="education-period">2016-2020</span>
-            </div>
-            <div class="info-item">
-              Istanbul Technical University | <span class="education-period">2021 - 2025</span>
-            </div>
-            <div class="info-item">
-              Politecnico di Milano | <span class="education-period">2025 - Current</span>
-            </div>
-          </div>
-        </div>
-      </div>
     </section>
 
-    <!-- Skills Section -->
-    <section id="skills" class="skills section">
-      <div class="section-number">02</div>
-      <h2 class="section-title">Skills</h2>
-      <div class="skills-grid">
-        <div class="skill-card loading">
-          <span class="skill-name">Adobe Photoshop</span>
-          <div class="skill-rating">
-            <div class="skill-dot filled"></div>
-            <div class="skill-dot filled"></div>
-            <div class="skill-dot filled"></div>
-            <div class="skill-dot filled"></div>
-            <div class="skill-dot filled"></div>
-          </div>
+    <section id="education">
+        <div class="viewport-label">FRONT_VIEW</div>
+        <div class="container hidden">
+            <h2>Education</h2>
+            
+            <div class="timeline-item">
+                <span class="year">2025 - Present</span>
+                <h3>Master's Degree | Architectural Engineering</h3>
+                <p>Politecnico di Milano</p>
+            </div>
+
+            <div class="timeline-item">
+                <span class="year">2021 - 2025</span>
+                <h3>Bachelor of Architecture | BArch</h3>
+                <p>Istanbul Technical University (İTÜ)</p>
+                <p style="font-size:0.9rem; opacity:0.7; color: var(--rhino-cyan); margin-top:5px;">GPA: 3.19</p>
+            </div>
         </div>
-        
-        <div class="skill-card loading">
-          <span class="skill-name">Adobe Illustrator</span>
-          <div class="skill-rating">
-            <div class="skill-dot filled"></div>
-            <div class="skill-dot filled"></div>
-            <div class="skill-dot filled"></div>
-            <div class="skill-dot"></div>
-            <div class="skill-dot"></div>
-          </div>
-        </div>
-        
-        <div class="skill-card loading">
-          <span class="skill-name">Adobe After Effects</span>
-          <div class="skill-rating">
-            <div class="skill-dot filled"></div>
-            <div class="skill-dot filled"></div>
-            <div class="skill-dot filled"></div>
-            <div class="skill-dot filled"></div>
-            <div class="skill-dot filled"></div>
-          </div>
-        </div>
-        
-        <div class="skill-card loading">
-          <span class="skill-name">Adobe Premiere Pro</span>
-          <div class="skill-rating">
-            <div class="skill-dot filled"></div>
-            <div class="skill-dot filled"></div>
-            <div class="skill-dot half-filled"></div>
-            <div class="skill-dot"></div>
-            <div class="skill-dot"></div>
-          </div>
-        </div>
-        
-        <div class="skill-card loading">
-          <span class="skill-name">ArchiCAD</span>
-          <div class="skill-rating">
-            <div class="skill-dot filled"></div>
-            <div class="skill-dot filled"></div>
-            <div class="skill-dot filled"></div>
-            <div class="skill-dot filled"></div>
-            <div class="skill-dot"></div>
-          </div>
-        </div>
-        
-        <div class="skill-card loading">
-          <span class="skill-name">Autodesk AutoCAD</span>
-          <div class="skill-rating">
-            <div class="skill-dot filled"></div>
-            <div class="skill-dot filled"></div>
-            <div class="skill-dot filled"></div>
-            <div class="skill-dot filled"></div>
-            <div class="skill-dot"></div>
-          </div>
-        </div>
-        
-        <div class="skill-card loading">
-          <span class="skill-name">Rhinoceros</span>
-          <div class="skill-rating">
-            <div class="skill-dot filled"></div>
-            <div class="skill-dot filled"></div>
-            <div class="skill-dot filled"></div>
-            <div class="skill-dot filled"></div>
-            <div class="skill-dot filled"></div>
-          </div>
-        </div>
-        
-        <div class="skill-card loading">
-          <span class="skill-name">Twinmotion</span>
-          <div class="skill-rating">
-            <div class="skill-dot filled"></div>
-            <div class="skill-dot filled"></div>
-            <div class="skill-dot filled"></div>
-            <div class="skill-dot filled"></div>
-            <div class="skill-dot filled"></div>
-          </div>
-        </div>
-        
-        <div class="skill-card loading">
-          <span class="skill-name">Blender</span>
-          <div class="skill-rating">
-            <div class="skill-dot filled"></div>
-            <div class="skill-dot filled"></div>
-            <div class="skill-dot filled"></div>
-            <div class="skill-dot filled"></div>
-            <div class="skill-dot"></div>
-          </div>
-        </div>
-        
-        <div class="skill-card loading">
-          <span class="skill-name">SketchUp</span>
-          <div class="skill-rating">
-            <div class="skill-dot filled"></div>
-            <div class="skill-dot filled"></div>
-            <div class="skill-dot"></div>
-            <div class="skill-dot"></div>
-            <div class="skill-dot"></div>
-          </div>
-        </div>
-        
-        <div class="skill-card loading">
-          <span class="skill-name">Stable Diffusion</span>
-          <div class="skill-rating">
-            <div class="skill-dot filled"></div>
-            <div class="skill-dot filled"></div>
-            <div class="skill-dot filled"></div>
-            <div class="skill-dot filled"></div>
-            <div class="skill-dot filled"></div>
-          </div>
-        </div>
-        
-        <div class="skill-card loading">
-          <span class="skill-name">Midjourney</span>
-          <div class="skill-rating">
-            <div class="skill-dot filled"></div>
-            <div class="skill-dot filled"></div>
-            <div class="skill-dot filled"></div>
-            <div class="skill-dot filled"></div>
-            <div class="skill-dot filled"></div>
-          </div>
-        </div>
-        
-        <div class="skill-card loading">
-          <span class="skill-name">Microsoft Office Suite</span>
-          <div class="skill-rating">
-            <div class="skill-dot filled"></div>
-            <div class="skill-dot filled"></div>
-            <div class="skill-dot filled"></div>
-            <div class="skill-dot filled"></div>
-            <div class="skill-dot"></div>
-          </div>
-        </div>
-        
-        <div class="skill-card loading">
-          <span class="skill-name">Unreal Engine</span>
-          <div class="skill-rating">
-            <div class="skill-dot filled"></div>
-            <div class="skill-dot"></div>
-            <div class="skill-dot"></div>
-            <div class="skill-dot"></div>
-            <div class="skill-dot"></div>
-          </div>
-        </div>
-        
-        <div class="skill-card loading">
-          <span class="skill-name">D5 Render</span>
-          <div class="skill-rating">
-            <div class="skill-dot filled"></div>
-            <div class="skill-dot half-filled"></div>
-            <div class="skill-dot"></div>
-            <div class="skill-dot"></div>
-            <div class="skill-dot"></div>
-          </div>
-        </div>
-        
-        <div class="skill-card loading">
-          <span class="skill-name">ChatGPT / AI Tools</span>
-          <div class="skill-rating">
-            <div class="skill-dot filled"></div>
-            <div class="skill-dot filled"></div>
-            <div class="skill-dot filled"></div>
-            <div class="skill-dot filled"></div>
-            <div class="skill-dot filled"></div>
-          </div>
-        </div>
-      </div>
     </section>
 
-    <!-- Projects Section -->
-    <section id="projects" class="projects section">
-      <div class="section-number">03</div>
-      <h2 class="section-title">Selected Projects</h2>
-      <div class="projects-grid">
-        
-        <!-- Project 1 -->
-        <div class="project-card loading">
-          <div class="project-header">
-            <div class="project-number">Project 01</div>
-            <h3 class="project-title">Apollo</h3>
-            <p class="project-description">
-              A comprehensive cultural arts center designed for Bagdat Street, serving as a community hub for artistic expression and cultural exchange. The project features modular sustainable architecture with exhibition halls, multipurpose studios, workshops, and performance spaces. Designed to accommodate diverse user groups including art enthusiasts, collectors, creators, and the curious public, while promoting local artists and providing accessible cultural programming for the neighborhood.
-            </p>
-          </div>
-          <div class="project-images">
-            <div class="project-image" data-img="pr1-1"></div>
-            <div class="project-image" data-img="pr1-2"></div>
-            <div class="project-image" data-img="pr1-3"></div>
-            <div class="project-image" data-img="pr1-4"></div>
-          </div>
-        </div>
+    <section id="experience">
+        <div class="viewport-label">RIGHT_VIEW</div>
+        <div class="container hidden">
+            <h2>Professional Experience</h2>
 
-        <!-- Project 2 -->
-        <div class="project-card loading">
-          <div class="project-header">
-            <div class="project-number">Project 02</div>
-            <h3 class="project-title">Tremora</h3>
-            <p class="project-description">
-              A safe haven in times of need, a community hub every day. This project aims deliver a relief home structure to support a modular assembly system. The building's core components are designed for rapid assembly and disassembly, allowing for an efficient transformation from a community center to an emergency response hub. The modular units can be used simultaneously from world gatherings to crisis response, disaster recovery, and relief efforts as community-centric response scenarios.
-            </p>
-			<br>
-			<a target="_blank" rel="noopener noreferrer" href="https://dented-port-5f4.notion.site/Welcome-to-WebXR-Portal-1802e040667e8002861ef17c41bb3039">Access Panoramic Presentation</a>
-          </div>
-          <div class="project-images">
-            <div class="project-image" data-img="pr2-1"></div>
-            <div class="project-image" data-img="pr2-2"></div>
-            <div class="project-image" data-img="pr2-3"></div>
-            <div class="project-image" data-img="pr2-4"></div>
-          </div>
-        </div>
+            <div class="timeline-item">
+                <span class="year">Jan 2025 - Feb 2025</span>
+                <h3>Architectural Intern | Summa Turizm Yatırımcılığı A.Ş.</h3>
+                <p>Istanbul, Turkey (On-site)</p>
+                <p style="margin-top:10px; border-top: 1px dashed #555; padding-top: 10px;">
+                    <em>Tasks:</em> Served as a <strong>Construction Site Examiner</strong>; monitored construction progress, inspected on-site tasks for quality control, and ensured adherence to the project schedule.
+                </p>
+            </div>
 
-        <!-- Project 3 -->
-        <div class="project-card loading">
-          <div class="project-header">
-            <div class="project-number">Project 03</div>
-            <h3 class="project-title">Hermes</h3>
-            <p class="project-description">
-              Located within the confines of a former quarry, Hermes reinterprets an artificial landscape through deliberate architectural intervention. The design accepts the site's post-industrial condition and engages in active reshaping, introducing a dual-axis organizational strategy that guides visitors through open recreational programs while accommodating controlled-access functions. The modular structure of steel and sandwich panels extends downward, adapting to the topographic slope and transforming the quarry into a dynamic recreational hub. Rather than merely occupying the space, the building dialogues with the evolving landscape, serving as a constructed memory that mediates between the visible and hidden, the active and contemplative. 
-            </p>
-			<br>
-			<a target="_blank" rel="noopener noreferrer" href="https://youtu.be/SxEzgLZ7ucI">Access Video Presentation</a>
-          </div>
-          <div class="project-images">
-            <div class="project-image" data-img="pr3-1"></div>
-            <div class="project-image" data-img="pr3-2"></div>
-            <div class="project-image" data-img="pr3-3"></div>
-            <div class="project-image" data-img="pr3-4"></div>
-          </div>
-        </div>
+            <div class="timeline-item">
+                <span class="year">Jul 2024 - Aug 2024</span>
+                <h3>Architectural Intern | Megaron Proje</h3>
+                <p>Istanbul, Turkey (On-site)</p>
+                <p style="margin-top:10px; border-top: 1px dashed #555; padding-top: 10px;">
+                    <em>Tasks:</em> Managed municipal project approval processes and coordinated with local authorities. Gained experience in <strong>client relations</strong>, architectural design development, and produced high-quality <strong>3D visualizations</strong>.
+                </p>
+            </div>
 
-        <!-- Project 4 -->
-        <div class="project-card loading">
-          <div class="project-header">
-            <div class="project-number">Project 04</div>
-            <h3 class="project-title">Travion</h3>
-            <p class="project-description">
-              A hub solution for Izmir/Kemeraltı residents that serves as both a resting place and a passageway, seamlessly integrating modern amenities with the rich history of the area. Travion includes a public square, a bazaar area, and an auction house, all infused with historical elements that pay homage to Kemeraltı's vibrant trading tradition. By modernizing these existing trade functions, the project creates a dynamic and versatile space that caters to contemporary needs while preserving cultural heritage. The hub serves as a gateway to the historic market, providing both entrance and exit points, making it a central and functional part of the community where people can pause, interact, and engage with their surroundings.
-            </p>
-          </div>
-          <div class="project-images">
-            <div class="project-image" data-img="pr4-1"></div>
-            <div class="project-image" data-img="pr4-2"></div>
-            <div class="project-image" data-img="pr4-3"></div>
-            <div class="project-image" data-img="pr4-4"></div>
-          </div>
+            <div class="timeline-item research-item">
+                <span class="year" style="color: var(--rhino-magenta);">2025</span>
+                <h3>Academic Researcher | GAIA (ITU)</h3>
+                <p>Istanbul Technical University</p> 
+                <p style="margin-top:10px; border-top: 1px dashed #555; padding-top: 10px;">
+                    <em>Focus:</em> <strong>GAIA (Generative Architecture & Intelligence Agency)</strong> Project.
+                </p>
+                <p style="margin-top:5px; font-size: 0.9rem;">
+                    Contributed to the development of a custom <strong>AI Interface</strong> designed to integrate artificial intelligence into architectural workflows. Explored methods for utilizing AI to optimize design processes and bridge the gap between conceptual inputs and structural forms.
+                </p>
+            </div>
         </div>
-
-      </div>
     </section>
-  </main>
 
-  <!-- Lightbox -->
-  <div class="lightbox" id="lightbox">
-    <div class="lightbox-content" id="lightboxContent"></div>
-  </div>
+    <section id="skills">
+        <div class="viewport-label">TOP_VIEW</div>
+        <div class="container hidden">
+            <h2>Technical Skills</h2>
+            
+            <div class="skills-grid">
+                <div class="skill-row"><span class="skill-name">Adobe Photoshop</span><div class="skill-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div></div></div>
+                <div class="skill-row"><span class="skill-name">Adobe Illustrator</span><div class="skill-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot"></div><div class="dot"></div></div></div>
+                <div class="skill-row"><span class="skill-name">Adobe After Effects</span><div class="skill-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div></div></div>
+                <div class="skill-row"><span class="skill-name">Adobe Premiere Pro</span><div class="skill-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot"></div><div class="dot"></div></div></div>
+                <div class="skill-row"><span class="skill-name">ArchiCAD</span><div class="skill-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot"></div></div></div>
+                <div class="skill-row"><span class="skill-name">Autodesk AutoCAD</span><div class="skill-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot"></div></div></div>
+                <div class="skill-row"><span class="skill-name">Rhinoceros</span><div class="skill-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div></div></div>
+                <div class="skill-row"><span class="skill-name">Twinmotion</span><div class="skill-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div></div></div>
+                <div class="skill-row"><span class="skill-name">Blender</span><div class="skill-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot"></div></div></div>
+                <div class="skill-row"><span class="skill-name">SketchUp</span><div class="skill-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>
+                <div class="skill-row"><span class="skill-name">Stable Diffusion</span><div class="skill-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div></div></div>
+                <div class="skill-row"><span class="skill-name">Midjourney</span><div class="skill-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div></div></div>
+                <div class="skill-row"><span class="skill-name">MS Office Suite</span><div class="skill-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot"></div></div></div>
+                <div class="skill-row"><span class="skill-name">Unreal Engine</span><div class="skill-dots"><div class="dot filled"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>
+                <div class="skill-row"><span class="skill-name">D5 Render</span><div class="skill-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>
+                <div class="skill-row"><span class="skill-name">ChatGPT / AI Tools</span><div class="skill-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div></div></div>
+            </div>
 
-  <script>
-    // Mobile menu functionality
-    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-    const sidebar = document.getElementById('sidebar');
+            <h2>Languages</h2>
+            <div class="skills-grid">
+                <div class="skill-row">
+                    <span class="skill-name">Turkish</span>
+                    <span class="skill-value">Native</span>
+                </div>
+                <div class="skill-row">
+                    <span class="skill-name">English</span>
+                    <span class="skill-value">Fluent (C1)</span>
+                </div>
+            </div>
 
-    mobileMenuBtn.addEventListener('click', () => {
-      sidebar.classList.toggle('active');
-      mobileMenuBtn.textContent = sidebar.classList.contains('active') ? '✕' : '☰';
-    });
+        </div>
+    </section>
 
-    // Navigation functionality
-    const navLinks = document.querySelectorAll('.nav-link');
-    const sections = document.querySelectorAll('.section');
+    <section id="tremora">
+        <div class="viewport-label">PROJECT_VIEW_TREMORA</div>
+        <div class="container hidden">
+            <div class="project-header">
+                <h2 style="border-color: #ff0055;">Tremora</h2>
+                <h3 style="opacity: 0.7;">"A Safe Haven"</h3>
+            </div>
+            
+            <div class="project-details">
+                <div class="detail-list">
+                    <p><strong>Location:</strong> Şişli, Istanbul</p>
+                    <p><strong>Type:</strong> Emergency Response / Modular</p>
+                    <p><strong>Year:</strong> 2024</p>
+                    <p><strong>Role:</strong> Concept & System Design</p>
+                    
+                    <a href="https://dented-port-5f4.notion.site/Welcome-to-WebXR-Portal-1802e040667e8002861ef17c41bb3039" target="_blank" class="panorama-button">
+                        <i class="fas fa-vr-cardboard"></i> View 360° Panorama
+                    </a>
+                </div>
+                <div class="summary">
+                    <p>A safe haven in times of need, a community hub every day. This project aims deliver a relief home structure to support a modular assembly system. The building's core components are designed for rapid assembly and disassembly, allowing for an efficient transformation from a community center to an emergency response hub.</p>
+                    <p>The modular units can be used simultaneously from world gatherings to crisis response, disaster recovery, and relief efforts as community-centric response scenarios.</p>
+                    
+                    <div class="poster-gallery">
+                        <img src="src/ITU-7/ITU-7_Poster1.jpg" onclick="openLightbox(this)">
+                        <img src="src/ITU-7/ITU-7_Poster2.jpg" onclick="openLightbox(this)">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    function updateActiveNav() {
-      let current = 'hero';
-      const scrollPosition = window.pageYOffset + 100;
+    <section id="travion">
+        <div class="viewport-label">PROJECT_VIEW_TRAVION</div>
+        <div class="container hidden">
+            <div class="project-header">
+                <h2 style="border-color: #00ff00;">Travion</h2>
+                <h3 style="opacity: 0.7;">"Trade, Travel & Transform"</h3>
+            </div>
+            
+            <div class="project-details">
+                <div class="detail-list">
+                    <p><strong>Location:</strong> Kemeraltı, Konak, Izmir</p>
+                    <p><strong>Type:</strong> Public Hub / Historical Bazaar</p>
+                    <p><strong>Year:</strong> 2023</p>
+                    <p><strong>Role:</strong> Architectural Design & Contextual Analysis</p>
+                </div>
+                <div class="summary">
+                    <p>A hub solution for Izmir/Kemeraltı residents that serves as both a resting place and a passageway, seamlessly integrating modern amenities with the rich history of the area. Travion includes a public square, a bazaar area, and an auction house, all infused with historical elements that pay homage to Kemeraltı's vibrant trading tradition.</p>
+                    <p>By modernizing these existing trade functions, the project creates a dynamic and versatile space that caters to contemporary needs while preserving cultural heritage. The hub serves as a gateway to the historic market, providing both entrance and exit points, making it a central and functional part of the community where people can pause, interact, and engage with their surroundings.</p>
+                    
+                    <div class="horizontal-gallery">
+                        <img src="src/ITU-5/ITU-5_Poster1.jpg" onclick="openLightbox(this)">
+                        <img src="src/ITU-5/ITU-5_Poster2.jpg" onclick="openLightbox(this)">
+                        <img src="src/ITU-5/ITU-5_Poster3.jpg" onclick="openLightbox(this)">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-      sections.forEach(section => {
-        const sectionTop = section.offsetTop;
-        const sectionHeight = section.offsetHeight;
-        
-        if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
-          current = section.getAttribute('id');
+    <section id="apollo">
+        <div class="viewport-label">PROJECT_VIEW_APOLLO</div> 
+        <div class="container hidden">
+            <div class="project-header">
+                <h2 style="border-color: #ff9900;">Apollo</h2>
+                <h3 style="opacity: 0.7;">"Create and Exhibit"</h3>
+            </div>
+            
+            <div class="project-details">
+                <div class="detail-list">
+                    <p><strong>Location:</strong> Bagdat Street, Istanbul</p>
+                    <p><strong>Type:</strong> Cultural Arts Center</p>
+                    <p><strong>Year:</strong> 2024</p>
+                    <p><strong>Role:</strong> Architectural Design & Visualization</p>
+                    
+                    <button class="mockup-button" onclick="openMockupGallery()">
+                        <i class="fas fa-cube"></i> View Model Photos
+                    </button>
+                </div>
+                <div class="summary">
+                    <p>A comprehensive cultural arts center designed for Bagdat Street, serving as a community hub for artistic expression and cultural exchange. The project features modular sustainable architecture with exhibition halls, multipurpose studios, workshops, and performance spaces.</p>
+                    <p>Designed to accommodate diverse user groups including art enthusiasts, collectors, creators, and the curious public, while promoting local artists and providing accessible cultural programming for the neighborhood.</p>
+                    
+                    <div class="poster-gallery">
+                        <img src="src/ITU-6/ITU-6_Poster1.jpg" onclick="openLightbox(this)">
+                        <img src="src/ITU-6/ITU-6_Poster2.jpg" onclick="openLightbox(this)">
+                        <img src="src/ITU-6/ITU-6_Poster3.jpg" onclick="openLightbox(this)">
+                        <img src="src/ITU-6/ITU-6_Poster4.jpg" onclick="openLightbox(this)">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="hermes">
+        <div class="viewport-label">PROJECT_VIEW_HERMES</div>
+        <div class="container hidden">
+            <div class="project-header">
+                <h2 style="border-color: #aa00ff;">Hermes</h2>
+                <h3 style="opacity: 0.7;">"Move, Play, Thrive!"</h3>
+            </div>
+            
+            <div class="project-details">
+                <div class="detail-list">
+                    <p><strong>Location:</strong> Gebze, Kocaeli / Turkey (Former Quarry)</p>
+                    <p><strong>Type:</strong> Recreational Hub / Landscape Integration</p>
+                    <p><strong>Year:</strong> 2025</p>
+                    <p><strong>Role:</strong> Architectural Design & Landscape Integration</p>
+                    
+                    <button class="mockup-button" onclick="openHermesMockupGallery()">
+                        <i class="fas fa-cube"></i> View Model Photos
+                    </button>
+
+                    <div style="margin-top: 25px; border-top: 1px dashed #555; padding-top: 15px;">
+                        <p style="color: var(--rhino-accent); font-size: 0.9rem; margin-bottom: 10px;">
+                            <i class="fab fa-youtube"></i> Project Video
+                        </p>
+                        <div class="sidebar-video-container">
+                            <iframe src="https://www.youtube.com/embed/SxEzgLZ7ucI" 
+                                    title="Hermes Project Video" 
+                                    frameborder="0" 
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                    allowfullscreen>
+                            </iframe>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="summary">
+                    <p>Located within the confines of a former quarry, Hermes reinterprets an artificial landscape through deliberate architectural intervention. The design accepts the site's post-industrial condition and engages in active reshaping, introducing a dual-axis organizational strategy that guides visitors through open recreational programs while accommodating controlled-access functions.</p>
+                    <p>The modular structure of steel and sandwich panels extends downward, adapting to the topographic slope and transforming the quarry into a dynamic recreational hub. Rather than merely occupying the space, the building dialogues with the evolving landscape, serving as a constructed memory that mediates between the visible and hidden, the active and contemplative.</p>
+                    
+                    <div class="hermes-gallery">
+                        <img src="src/ITU-8/ITU-8_Poster-1.jpg" onclick="openLightbox(this)">
+                        <img src="src/ITU-8/ITU-8_Poster-2.jpg" onclick="openLightbox(this)">
+                        <img src="src/ITU-8/ITU-8_Poster-3.jpg" onclick="openLightbox(this)">
+                        <img src="src/ITU-8/ITU-8_Poster-4.jpg" onclick="openLightbox(this)">
+                        <img src="src/ITU-8/ITU-8_Poster-5.jpg" onclick="openLightbox(this)">
+                        <img src="src/ITU-8/ITU-8_Poster-6.jpg" onclick="openLightbox(this)">
+                        <img src="src/ITU-8/ITU-8_Poster-7.jpg" onclick="openLightbox(this)">
+                        <img src="src/ITU-8/ITU-8_Poster-8.jpg" onclick="openLightbox(this)">
+                        <img src="src/ITU-8/ITU-8_Poster-9.jpg" onclick="openLightbox(this)">
+                        <img src="src/ITU-8/ITU-8_Poster-10.jpg" onclick="openLightbox(this)">
+                        <img src="src/ITU-8/ITU-8_Poster-11.jpg" onclick="openLightbox(this)">
+                        <img src="src/ITU-8/ITU-8_Poster-12.jpg" onclick="openLightbox(this)">
+                        <img src="src/ITU-8/ITU-8_Poster-13.jpg" onclick="openLightbox(this)">
+                        <img src="src/ITU-8/ITU-8_Poster-14.jpg" onclick="openLightbox(this)">
+                        <img src="src/ITU-8/ITU-8_Poster-15.jpg" onclick="openLightbox(this)">
+                        <img src="src/ITU-8/ITU-8_Poster-16.jpg" onclick="openLightbox(this)">
+                        <img src="src/ITU-8/ITU-8_Poster-17.jpg" onclick="openLightbox(this)">
+                        <img src="src/ITU-8/ITU-8_Poster-18.jpg" onclick="openLightbox(this)">
+                        <img src="src/ITU-8/ITU-8_Poster-19.jpg" onclick="openLightbox(this)">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="lightbox" onclick="closeLightbox()">
+        <span id="close-btn">&times;</span>
+        <img id="lightbox-img" src="">
+    </div>
+
+    <div id="mockup-lightbox" onclick="closeMockupOnBackground(event)">
+        <span id="mockup-close-btn" onclick="closeMockupGallery()">&times;</span>
+        <div class="mockup-gallery-grid">
+            <img src="src/ITU-6/mockup/1.jpg" onclick="viewMockupSingle(this)">
+            <img src="src/ITU-6/mockup/2.jpg" onclick="viewMockupSingle(this)">
+            <img src="src/ITU-6/mockup/3.jpg" onclick="viewMockupSingle(this)">
+            <img src="src/ITU-6/mockup/4.jpg" onclick="viewMockupSingle(this)">
+            <img src="src/ITU-6/mockup/5.jpg" onclick="viewMockupSingle(this)">
+            <img src="src/ITU-6/mockup/6.jpg" onclick="viewMockupSingle(this)">
+            <img src="src/ITU-6/mockup/7.jpg" onclick="viewMockupSingle(this)">
+            <img src="src/ITU-6/mockup/8.jpg" onclick="viewMockupSingle(this)">
+            <img src="src/ITU-6/mockup/9.jpg" onclick="viewMockupSingle(this)">
+            <img src="src/ITU-6/mockup/10.jpg" onclick="viewMockupSingle(this)">
+            <img src="src/ITU-6/mockup/11.jpg" onclick="viewMockupSingle(this)">
+        </div>
+    </div>
+
+    <div id="hermes-mockup-lightbox" onclick="closeHermesMockupOnBackground(event)">
+        <span id="hermes-mockup-close-btn" onclick="closeHermesMockupGallery()">&times;</span>
+        <div class="mockup-gallery-grid">
+            <img src="src/ITU-8/mockup/1.jpg" onclick="viewMockupSingle(this)">
+            <img src="src/ITU-8/mockup/2.jpg" onclick="viewMockupSingle(this)">
+        </div>
+    </div>
+
+    <script>
+        // 1. Scroll Animation & Navbar Logic
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('show');
+                    const id = entry.target.closest('section').id;
+                    updateCommandLine(id);
+                    document.querySelectorAll('.nav-btn').forEach(btn => {
+                        btn.classList.remove('active');
+                        if(btn.getAttribute('href') === '#' + id) {
+                            btn.classList.add('active');
+                        }
+                    });
+                }
+            });
+        }, { threshold: 0.2 });
+
+        const hiddenElements = document.querySelectorAll('.hidden');
+        hiddenElements.forEach((el) => observer.observe(el));
+
+        // 2. Command Line Text Updater
+        function updateCommandLine(sectionId) {
+            const commandText = document.getElementById('typing-text');
+            let formattedText = sectionId.charAt(0).toUpperCase() + sectionId.slice(1);
+            formattedText = formattedText.replace('-', '_'); 
+            commandText.innerHTML = `_SetView_${formattedText} <span style="animation: blink 1s infinite">|</span>`;
         }
-      });
 
-      navLinks.forEach(link => {
-        link.classList.remove('active');
-        if (link.getAttribute('href') === `#${current}`) {
-          link.classList.add('active');
-        }
-      });
-    }
-
-    // Smooth scrolling for navigation
-    navLinks.forEach(link => {
-      link.addEventListener('click', (e) => {
-        e.preventDefault();
-        const targetId = link.getAttribute('href').substring(1);
-        const targetSection = document.getElementById(targetId);
-        
-        if (targetSection) {
-          const offsetTop = targetSection.offsetTop - 70;
-          window.scrollTo({
-            top: offsetTop,
-            behavior: 'smooth'
-          });
+        // 3. Standard Lightbox (For Posters/Images)
+        function openLightbox(element) {
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            lightboxImg.src = element.src;
+            lightbox.style.display = 'flex';
+            
+            // Animation
+            lightboxImg.style.transform = "scale(0.8)";
+            setTimeout(() => {
+                lightboxImg.style.transform = "scale(1)";
+                lightboxImg.style.transition = "transform 0.3s ease";
+            }, 50);
         }
 
-        // Close mobile menu
-        sidebar.classList.remove('active');
-        mobileMenuBtn.textContent = '☰';
-      });
-    });
-
-    // Scroll progress bar
-    function updateScrollProgress() {
-      const scrollBar = document.getElementById('scrollBar');
-      if (scrollBar) {
-        const scrollTop = window.pageYOffset;
-        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-        const scrollPercent = (scrollTop / docHeight) * 100;
-        
-        scrollBar.style.width = Math.min(scrollPercent, 100) + '%';
-      }
-    }
-
-    // Intersection Observer for animations
-    const observerOptions = {
-      threshold: 0.1,
-      rootMargin: '0px 0px -50px 0px'
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('loaded');
-          entry.target.classList.remove('loading');
+        function closeLightbox() {
+            document.getElementById('lightbox').style.display = 'none';
         }
-      });
-    }, observerOptions);
 
-    // Observe elements for animation
-    document.querySelectorAll('.loading').forEach(element => {
-      observer.observe(element);
-    });
+        // 4. Apollo Mockup Gallery Functions
+        function openMockupGallery() {
+            document.getElementById('mockup-lightbox').style.display = 'flex';
+        }
 
-    // Project image lightbox functionality
-    const projectImages = document.querySelectorAll('.project-image');
-    const lightbox = document.getElementById('lightbox');
-    const lightboxContent = document.getElementById('lightboxContent');
+        function closeMockupGallery() {
+            document.getElementById('mockup-lightbox').style.display = 'none';
+        }
 
-    projectImages.forEach(img => {
-      img.addEventListener('click', (e) => {
-        const imgSrc = img.dataset.img;
-        const lightboxImg = document.createElement('img');
-        lightboxImg.src = `src/${imgSrc}.jpg`;
-        lightboxImg.style.maxWidth = '90vw';
-        lightboxImg.style.maxHeight = '90vh';
-        lightboxImg.style.borderRadius = '4px';
-        lightboxImg.style.objectFit = 'contain';
-        lightboxImg.style.opacity = '0';
-        lightboxImg.style.transform = 'scale(0.9)';
-        lightboxImg.style.transition = 'all 0.3s ease';
-        lightboxImg.style.border = '1px solid var(--border-color)';
-        
-        lightboxContent.innerHTML = '';
-        lightboxContent.appendChild(lightboxImg);
-        lightbox.classList.add('active');
-        document.body.style.overflow = 'hidden';
+        function closeMockupOnBackground(event) {
+            if (event.target.id === 'mockup-lightbox') {
+                document.getElementById('mockup-lightbox').style.display = 'none';
+            }
+        }
 
-        // Animate lightbox image entrance
-        setTimeout(() => {
-          lightboxImg.style.opacity = '1';
-          lightboxImg.style.transform = 'scale(1)';
-        }, 50);
-      });
-    });
+        // 5. Hermes Mockup Gallery Functions (MISSING IN PREVIOUS CODE - FIXED NOW)
+        function openHermesMockupGallery() {
+            document.getElementById('hermes-mockup-lightbox').style.display = 'flex';
+        }
 
-    // Close lightbox
-    lightbox.addEventListener('click', (e) => {
-      if (e.target === lightbox) {
-        lightbox.classList.remove('active');
-        document.body.style.overflow = 'auto';
-      }
-    });
+        function closeHermesMockupGallery() {
+            document.getElementById('hermes-mockup-lightbox').style.display = 'none';
+        }
 
-    // Escape key to close lightbox
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && lightbox.classList.contains('active')) {
-        lightbox.classList.remove('active');
-        document.body.style.overflow = 'auto';
-      }
-    });
+        function closeHermesMockupOnBackground(event) {
+            if (event.target.id === 'hermes-mockup-lightbox') {
+                document.getElementById('hermes-mockup-lightbox').style.display = 'none';
+            }
+        }
 
-    // Close mobile menu when clicking outside
-    document.addEventListener('click', (e) => {
-      if (sidebar.classList.contains('active') && 
-          !sidebar.contains(e.target) && 
-          !mobileMenuBtn.contains(e.target)) {
-        sidebar.classList.remove('active');
-        mobileMenuBtn.textContent = '☰';
-      }
-    });
+        // 6. View Single Image from ANY Mockup Grid
+        function viewMockupSingle(element) {
+            openLightbox(element);
+        }
+    </script>
 
-    // Scroll event listeners
-    let ticking = false;
-    function onScroll() {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          updateActiveNav();
-          updateScrollProgress();
-          ticking = false;
-        });
-        ticking = true;
-      }
-    }
-
-    window.addEventListener('scroll', onScroll);
-
-    // Initial calls
-    updateActiveNav();
-    updateScrollProgress();
-
-    // Performance optimization: Debounced resize handler
-    let resizeTimeout;
-    window.addEventListener('resize', () => {
-      clearTimeout(resizeTimeout);
-      resizeTimeout = setTimeout(() => {
-        updateActiveNav();
-        updateScrollProgress();
-      }, 150);
-    });
-
-    // Smooth page load
-    window.addEventListener('load', () => {
-      document.body.style.opacity = '1';
-    });
-  </script>
 </body>
 </html>
