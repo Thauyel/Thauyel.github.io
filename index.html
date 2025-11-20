@@ -15,7 +15,11 @@
     <meta property="og:title" content="Atacan Küçüksarı | Architect & 3D Visualizer">
     <meta property="og:description" content="M.Arch Candidate at Politecnico Di Milano. Computational Design & 3D Visualization Portfolio.">
     <meta property="og:image" content="favicon/og-image.png">
+    
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Atacan Küçüksarı | Architect & 3D Visualizer">
+    <meta name="twitter:description" content="M.Arch Candidate at Politecnico Di Milano. Computational Design & 3D Visualization Portfolio.">
+    <meta name="twitter:image" content="favicon/twitter-image.png">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -167,7 +171,7 @@
                     </button>
                 </div>
                 <div class="summary">
-                    <p>A safe haven in times of need, a community hub every day. This project aims to deliver a relief home structure to support a modular assembly system.</p>
+                    <p>A safe haven in times of need, a community hub every day. This project aims to deliver a relief home structure to support a modular assembly system. The building's core components are designed for rapid assembly and disassembly.</p>
                     <div class="poster-gallery">
                         <img src="src/ITU-7/ITU-7_Poster1.jpg" onclick="openLightbox(this)">
                         <img src="src/ITU-7/ITU-7_Poster2.jpg" onclick="openLightbox(this)">
@@ -219,7 +223,7 @@
                     </button>
                 </div>
                 <div class="summary">
-                    <p>A comprehensive cultural arts center designed for Bagdat Street.</p>
+                    <p>A comprehensive cultural arts center designed for Bagdat Street, serving as a community hub for artistic expression.</p>
                     <div class="poster-gallery">
                         <img src="src/ITU-6/ITU-6_Poster1.jpg" onclick="openLightbox(this)">
                         <img src="src/ITU-6/ITU-6_Poster2.jpg" onclick="openLightbox(this)">
@@ -256,7 +260,7 @@
                     </div>
                 </div>
                 <div class="summary">
-                    <p>Located within the confines of a former quarry, Hermes reinterprets an artificial landscape.</p>
+                    <p>Located within the confines of a former quarry, Hermes reinterprets an artificial landscape through deliberate architectural intervention.</p>
                     <div class="hermes-gallery">
                         <img src="src/ITU-8/ITU-8_Poster-1.jpg" onclick="openLightbox(this)">
                         <img src="src/ITU-8/ITU-8_Poster-2.jpg" onclick="openLightbox(this)">
@@ -315,27 +319,80 @@
 
     <div id="panorama-gallery-modal" onclick="closePanoramaGalleryOnBackground(event)">
         <span id="panorama-close-btn" onclick="closePanoramaGallery()">&times;</span>
+        
         <div style="text-align: center; max-width: 1000px; width: 90%; height: 90%; overflow-y: auto;">
-            <h3 style="color: var(--rhino-magenta); margin-bottom: 20px; text-transform: uppercase; background: #000; display: inline-block; padding: 5px 15px; border: 1px solid var(--rhino-magenta);">Tremora 360° Panoramas</h3>
+            <h3 style="color: var(--rhino-magenta); margin-bottom: 20px; text-transform: uppercase; background: #000; display: inline-block; padding: 5px 15px; border: 1px solid var(--rhino-magenta);">
+                Tremora 360° Panoramas
+            </h3>
+            
             <div class="mockup-gallery-grid" style="border-color: var(--rhino-magenta);">
-                <div class="panorama-item" onclick="openPanoramaViewer('src/ITU-7/panoramas/p1.jpg')"><img src="src/ITU-7/panoramas/p1.jpg"><p>Corner of Commercial Area</p></div>
-                <div class="panorama-item" onclick="openPanoramaViewer('src/ITU-7/panoramas/p2.jpg')"><img src="src/ITU-7/panoramas/p2.jpg"><p>Main Entrance</p></div>
-                <div class="panorama-item" onclick="openPanoramaViewer('src/ITU-7/panoramas/p3.jpg')"><img src="src/ITU-7/panoramas/p3.jpg"><p>Kindergarten & Vertical Garden</p></div>
-                <div class="panorama-item" onclick="openPanoramaViewer('src/ITU-7/panoramas/p4.jpg')"><img src="src/ITU-7/panoramas/p4.jpg"><p>Upper Parking Lot</p></div>
-                <div class="panorama-item" onclick="openPanoramaViewer('src/ITU-7/panoramas/p5.jpg')"><img src="src/ITU-7/panoramas/p5.jpg"><p>Parking Lot Facade</p></div>
-                <div class="panorama-item" onclick="openPanoramaViewer('src/ITU-7/panoramas/p6.jpg')"><img src="src/ITU-7/panoramas/p6.jpg"><p>Side Facade</p></div>
-                <div class="panorama-item" onclick="openPanoramaViewer('src/ITU-7/panoramas/p7.jpg')"><img src="src/ITU-7/panoramas/p7.jpg"><p>Soup Kitchen</p></div>
-                <div class="panorama-item" onclick="openPanoramaViewer('src/ITU-7/panoramas/p8.jpg')"><img src="src/ITU-7/panoramas/p8.jpg"><p>Commercial Facade</p></div>
-                <div class="panorama-item" onclick="openPanoramaViewer('src/ITU-7/panoramas/p9.jpg')"><img src="src/ITU-7/panoramas/p9.jpg"><p>Commercial Facade 2</p></div>
-                <div class="panorama-item" onclick="openPanoramaViewer('src/ITU-7/panoramas/p10.jpg')"><img src="src/ITU-7/panoramas/p10.jpg"><p>Commercial Facade 3</p></div>
-                <div class="panorama-item" onclick="openPanoramaViewer('src/ITU-7/panoramas/p11.jpg')"><img src="src/ITU-7/panoramas/p11.jpg"><p>Thrift Shop Facade</p></div>
-                <div class="panorama-item" onclick="openPanoramaViewer('src/ITU-7/panoramas/p12.jpg')"><img src="src/ITU-7/panoramas/p12.jpg"><p>Closer Entrance</p></div>
+                
+                <div class="panorama-item" onclick="openPanoramaViewer('src/ITU-7/panoramas/p1.jpg')">
+                    <i class="fas fa-vr-cardboard fa-2x" style="margin-bottom:10px; color:#888;"></i>
+                    <p>Corner of Commercial Area</p>
+                </div>
+
+                <div class="panorama-item" onclick="openPanoramaViewer('src/ITU-7/panoramas/p2.jpg')">
+                    <i class="fas fa-vr-cardboard fa-2x" style="margin-bottom:10px; color:#888;"></i>
+                    <p>Main Entrance</p>
+                </div>
+
+                <div class="panorama-item" onclick="openPanoramaViewer('src/ITU-7/panoramas/p3.jpg')">
+                    <i class="fas fa-vr-cardboard fa-2x" style="margin-bottom:10px; color:#888;"></i>
+                    <p>Kindergarten & Garden</p>
+                </div>
+
+                <div class="panorama-item" onclick="openPanoramaViewer('src/ITU-7/panoramas/p4.jpg')">
+                    <i class="fas fa-vr-cardboard fa-2x" style="margin-bottom:10px; color:#888;"></i>
+                    <p>Upper Parking Lot</p>
+                </div>
+
+                <div class="panorama-item" onclick="openPanoramaViewer('src/ITU-7/panoramas/p5.jpg')">
+                    <i class="fas fa-vr-cardboard fa-2x" style="margin-bottom:10px; color:#888;"></i>
+                    <p>Parking Lot Facade</p>
+                </div>
+
+                <div class="panorama-item" onclick="openPanoramaViewer('src/ITU-7/panoramas/p6.jpg')">
+                    <i class="fas fa-vr-cardboard fa-2x" style="margin-bottom:10px; color:#888;"></i>
+                    <p>Side Facade</p>
+                </div>
+
+                <div class="panorama-item" onclick="openPanoramaViewer('src/ITU-7/panoramas/p7.jpg')">
+                    <i class="fas fa-vr-cardboard fa-2x" style="margin-bottom:10px; color:#888;"></i>
+                    <p>Soup Kitchen</p>
+                </div>
+
+                <div class="panorama-item" onclick="openPanoramaViewer('src/ITU-7/panoramas/p8.jpg')">
+                    <i class="fas fa-vr-cardboard fa-2x" style="margin-bottom:10px; color:#888;"></i>
+                    <p>Commercial Facade</p>
+                </div>
+
+                <div class="panorama-item" onclick="openPanoramaViewer('src/ITU-7/panoramas/p9.jpg')">
+                    <i class="fas fa-vr-cardboard fa-2x" style="margin-bottom:10px; color:#888;"></i>
+                    <p>Commercial Facade 2</p>
+                </div>
+
+                <div class="panorama-item" onclick="openPanoramaViewer('src/ITU-7/panoramas/p10.jpg')">
+                    <i class="fas fa-vr-cardboard fa-2x" style="margin-bottom:10px; color:#888;"></i>
+                    <p>Commercial Facade 3</p>
+                </div>
+
+                <div class="panorama-item" onclick="openPanoramaViewer('src/ITU-7/panoramas/p11.jpg')">
+                    <i class="fas fa-vr-cardboard fa-2x" style="margin-bottom:10px; color:#888;"></i>
+                    <p>Thrift Shop Facade</p>
+                </div>
+
+                <div class="panorama-item" onclick="openPanoramaViewer('src/ITU-7/panoramas/p12.jpg')">
+                    <i class="fas fa-vr-cardboard fa-2x" style="margin-bottom:10px; color:#888;"></i>
+                    <p>Closer Entrance</p>
+                </div>
+                
             </div>
         </div>
     </div>
 
     <div id="panorama-viewer-modal">
-        <span id="panorama-viewer-close-btn" onclick="closePanoramaViewer()"><i class="fas fa-arrow-left"></i> Back</span>
+        <span id="panorama-viewer-close-btn" onclick="closePanoramaViewer()">&times;</span>
         <div id="panorama-360-view"></div>
     </div>
 
@@ -368,7 +425,7 @@
         function openMockupGallery() { document.getElementById('mockup-lightbox').style.display = 'flex'; }
         function closeMockupGallery() { document.getElementById('mockup-lightbox').style.display = 'none'; }
         function closeMockupOnBackground(e) { if (e.target.id === 'mockup-lightbox') closeMockupGallery(); }
-
+        
         function openHermesMockupGallery() { document.getElementById('hermes-mockup-lightbox').style.display = 'flex'; }
         function closeHermesMockupGallery() { document.getElementById('hermes-mockup-lightbox').style.display = 'none'; }
         function closeHermesMockupOnBackground(e) { if (e.target.id === 'hermes-mockup-lightbox') closeHermesMockupGallery(); }
