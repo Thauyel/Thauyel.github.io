@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Neon Survivor: Final</title>
+    <title>Neon Survivor: Audio Final</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700;900&display=swap');
 
         body {
             margin: 0; overflow: hidden; background-color: #050505; color: white;
@@ -12,6 +12,7 @@
         }
         canvas { display: block; }
 
+        /* --- UI --- */
         #ui-layer {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             pointer-events: none; display: flex; flex-direction: column;
@@ -80,7 +81,7 @@
         .key { border: 1px solid #444; padding: 5px 10px; border-radius: 5px; color: #fff; margin-right: 5px; }
         @keyframes pulseTitle { from { text-shadow: 0 0 20px rgba(0, 243, 255, 0.2); } to { text-shadow: 0 0 60px rgba(0, 243, 255, 0.8); } }
 
-        /* CARDS & SHOP */
+        /* CARDS */
         .card-container { display: flex; gap: 30px; flex-wrap: wrap; justify-content: center; padding: 20px; perspective: 1000px; }
         .card-lv { width: 230px; height: 340px; background: linear-gradient(165deg, #1a1a1a 0%, #0a0a0a 100%); border: 2px solid #333; border-radius: 20px; display: flex; flex-direction: column; align-items: center; padding: 20px; box-sizing: border-box; cursor: pointer; transition: 0.3s; position: relative; overflow: hidden; animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) backwards; }
         @keyframes popIn { from { transform: scale(0.5) translateY(50px); opacity: 0; } to { transform: scale(1) translateY(0); opacity: 1; } }
@@ -96,7 +97,7 @@
         .btn-select { margin-top: auto; padding: 12px 0; border-radius: 20px; border: none; font-weight: bold; background: rgba(255,255,255,0.1); color: white; width: 100%; transition: 0.2s; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; }
         .card-lv:hover .btn-select { background: white; color: black; }
 
-        /* Shop Specific */
+        /* Shop */
         .shop-header { display: flex; justify-content: space-between; width: 900px; align-items: flex-end; border-bottom: 2px solid #333; padding-bottom: 15px; margin-bottom: 20px; }
         .card.shopitem { width: 260px; height: 340px; background: #111; border: 1px solid #444; border-top: 4px solid #ffd700; border-radius: 16px; padding: 25px; text-align: center; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer; transition: 0.3s; }
         .card.shopitem:hover { border-color: #ffd700; box-shadow: 0 0 40px rgba(255, 215, 0, 0.3); transform: translateY(-8px); }
@@ -118,7 +119,7 @@
 
     <div id="start-screen" class="overlay" style="display:flex;">
         <div class="title-main">NEON SURVIVOR</div>
-        <div class="title-sub">FINAL EDITION</div>
+        <div class="title-sub">AUDIO EDITION</div>
         <button class="btn-start" onclick="game.start()">INITIATE</button>
         <div class="controls-hint">
             <div><span class="key">W</span><span class="key">A</span><span class="key">S</span><span class="key">D</span> MOVE</div>
@@ -202,6 +203,102 @@
     function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
     window.addEventListener('resize', resize); resize();
 
+    // --- AUDIO ENGINE ---
+    const Sound = {
+        ctx: null,
+        musicOsc: null, musicGain: null, interval: null,
+        init: function() {
+            if (!this.ctx) { this.ctx = new (window.AudioContext || window.webkitAudioContext)(); }
+            if (this.ctx.state === 'suspended') { this.ctx.resume(); }
+            this.startMusic();
+        },
+        play: function(type) {
+            if (!this.ctx) return;
+            const t = this.ctx.currentTime;
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.connect(gain); gain.connect(this.ctx.destination);
+
+            // SFX VOLUME (Reduced to 50% of original)
+            const vol = 0.05; 
+
+            if (type === 'shoot') {
+                osc.type = 'square'; osc.frequency.setValueAtTime(400, t);
+                osc.frequency.exponentialRampToValueAtTime(100, t + 0.1);
+                gain.gain.setValueAtTime(vol, t); gain.gain.linearRampToValueAtTime(0, t + 0.1);
+                osc.start(t); osc.stop(t + 0.1);
+            } else if (type === 'hit') {
+                osc.type = 'sawtooth'; osc.frequency.setValueAtTime(100, t);
+                gain.gain.setValueAtTime(vol, t); gain.gain.linearRampToValueAtTime(0, t + 0.1);
+                osc.start(t); osc.stop(t + 0.1);
+            } else if (type === 'explosion') {
+                osc.type = 'sawtooth'; osc.frequency.setValueAtTime(100, t);
+                osc.frequency.exponentialRampToValueAtTime(10, t + 0.3);
+                gain.gain.setValueAtTime(vol*2, t); gain.gain.linearRampToValueAtTime(0, t + 0.3);
+                osc.start(t); osc.stop(t + 0.3);
+            } else if (type === 'pickup') {
+                osc.type = 'sine'; osc.frequency.setValueAtTime(1200, t);
+                osc.frequency.linearRampToValueAtTime(1800, t + 0.1);
+                gain.gain.setValueAtTime(vol, t); gain.gain.linearRampToValueAtTime(0, t + 0.1);
+                osc.start(t); osc.stop(t + 0.1);
+            } else if (type === 'levelup') {
+                this.playTone(440, t, 0.1, vol); this.playTone(554, t+0.1, 0.1, vol); this.playTone(659, t+0.2, 0.3, vol);
+            } else if (type === 'click') {
+                osc.type = 'sine'; osc.frequency.setValueAtTime(800, t);
+                gain.gain.setValueAtTime(vol, t); gain.gain.linearRampToValueAtTime(0, t+0.05);
+                osc.start(t); osc.stop(t+0.05);
+            }
+        },
+        playTone: function(freq, time, dur, vol) {
+            const o = this.ctx.createOscillator(); const g = this.ctx.createGain();
+            o.connect(g); g.connect(this.ctx.destination);
+            o.type = 'square'; o.frequency.setValueAtTime(freq, time);
+            g.gain.setValueAtTime(vol, time); g.gain.linearRampToValueAtTime(0, time+dur);
+            o.start(time); o.stop(time+dur);
+        },
+        startMusic: function() {
+            if (this.interval) clearInterval(this.interval);
+            let beat = 0;
+            const bassNotes = [110, 110, 130, 146, 98, 98, 110, 110]; // Synthwave bass line
+            
+            this.interval = setInterval(() => {
+                if(gameState !== "PLAYING") return; // Only play in game
+                const t = this.ctx.currentTime;
+                
+                // Kick (Beat 1 & 3) - Very low volume
+                if(beat % 4 === 0) {
+                    const k = this.ctx.createOscillator(); const kg = this.ctx.createGain();
+                    k.connect(kg); kg.connect(this.ctx.destination);
+                    k.frequency.setValueAtTime(100, t); k.frequency.exponentialRampToValueAtTime(1, t+0.1);
+                    kg.gain.setValueAtTime(0.1, t); kg.gain.linearRampToValueAtTime(0, t+0.1);
+                    k.start(t); k.stop(t+0.1);
+                }
+                
+                // Bass (8th notes) - Low volume background
+                const b = this.ctx.createOscillator(); const bg = this.ctx.createGain();
+                b.connect(bg); bg.connect(this.ctx.destination);
+                b.type = 'sawtooth';
+                b.frequency.setValueAtTime(bassNotes[beat%8], t);
+                bg.gain.setValueAtTime(0.05, t); bg.gain.linearRampToValueAtTime(0, t+0.2);
+                b.start(t); b.stop(t+0.2);
+
+                // High Arp (16th notes) - Subtle neon feel
+                if(beat % 2 === 0) {
+                    const a = this.ctx.createOscillator(); const ag = this.ctx.createGain();
+                    a.connect(ag); ag.connect(this.ctx.destination);
+                    a.type = 'sine';
+                    a.frequency.setValueAtTime(440 + (Math.random()*200), t);
+                    ag.gain.setValueAtTime(0.03, t); ag.gain.linearRampToValueAtTime(0, t+0.1);
+                    a.start(t); a.stop(t+0.1);
+                }
+
+                beat++;
+            }, 250); // 240 BPM approx (fast pace)
+        }
+    };
+
+
+    // --- INPUTS ---
     const keys = { w:false, a:false, s:false, d:false };
     const mouse = { x:canvas.width/2, y:canvas.height/2, down:false };
     
@@ -214,29 +311,27 @@
         if(['w','a','s','d','W','A','S','D'].includes(e.key)) keys[e.key.toLowerCase()] = false;
     });
     window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
-    window.addEventListener('mousedown', () => mouse.down = true);
+    window.addEventListener('mousedown', () => { mouse.down = true; Sound.play('click'); });
     window.addEventListener('mouseup', () => mouse.down = false);
     window.addEventListener('contextmenu', e => e.preventDefault());
 
-    // --- STATE ---
+    // --- GLOBALS ---
     let gameState = "START"; 
     let frames = 0;
     let score = 0;
     let credits = 0;
     let gameTimeSec = 0;
     let shakeAmount = 0;
-    
-    // Helper: Squared Distance (Optimization)
+
+    // Helpers
     const getDistSq = (x1,y1,x2,y2) => (x1-x2)**2 + (y1-y2)**2;
     function getNearest(r) { 
         let n=null, md=r*r; 
-        enemies.forEach(e=>{ 
-            let d=getDistSq(e.x,e.y,player.x,player.y); 
-            if(d<md){ md=d; n=e; } 
-        }); 
+        enemies.forEach(e=>{ let d=getDistSq(e.x,e.y,player.x,player.y); if(d<md){md=d;n=e;} }); 
         return n; 
     }
 
+    // Player
     const player = {
         x:0, y:0, radius:15, color:'#00f3ff', speed:3, hp:3, maxHp:3, invulnerable:0,
         damage:15, fireRate:40, cooldown:0, bulletSpeed:8, bulletCount:1, pierce:0, ricochet:0, bulletSize:4,
@@ -248,14 +343,16 @@
         'medkit': { n:"Medkit", c:"#ff0044", i:"❤️", t:"instant" },
         'nuke': { n:"Tac-Nuke", c:"#ffaa00", i:"☢️", t:"instant" },
         'magnet': { n:"Black Hole", c:"#aa00ff", i:"🧲", t:"instant" },
-        'clock': { n:"Zero Kelvin", c:"#00ffff", i:"❄️", t:"dur", d:180 }, // 3s (60fps)
-        'overclock': { n:"Overclock", c:"#ffff00", i:"⚡", t:"dur", d:180 }, // 3s
-        'shield': { n:"Aegis", c:"#00ff88", i:"🛡️", t:"dur", d:300 }, // 5s
-        'frenzy': { n:"Berserk", c:"#ff00ff", i:"👿", t:"dur", d:240 } // 4s
+        'clock': { n:"Zero Kelvin", c:"#00ffff", i:"❄️", t:"dur", d:180 }, 
+        'overclock': { n:"Overclock", c:"#ffff00", i:"⚡", t:"dur", d:180 },
+        'shield': { n:"Aegis", c:"#00ff88", i:"🛡️", t:"dur", d:300 },
+        'frenzy': { n:"Berserk", c:"#ff00ff", i:"👿", t:"dur", d:240 }
     };
 
+    // Arrays
     let enemies=[], projectiles=[], items=[], particles=[], floatTexts=[];
 
+    // --- CLASSES ---
     class AutoWeapon {
         constructor(type) { this.type = type; this.level = 0; this.cooldown = 0; this.stats = this.getBaseStats(type); }
         getBaseStats(type) {
@@ -291,7 +388,7 @@
             if(this.type==='orbital') this.stats.angle=(this.stats.angle||0)+this.stats.param;
             else if(this.type==='missile' && this.cooldown<=0) {
                 let t=getNearest(canvas.width);
-                if(t){ projectiles.push(new Projectile(player.x,player.y,0,'missile',t,this.stats)); this.cooldown=this.stats.cooldown; }
+                if(t){ projectiles.push(new Projectile(player.x,player.y,0,'missile',t,this.stats)); this.cooldown=this.stats.cooldown; Sound.play('shoot'); }
             }
             else if(this.type==='tesla' && this.cooldown<=0) {
                 let hit=false; let rSq = this.stats.range*this.stats.range;
@@ -300,7 +397,7 @@
                         e.takeDamage(this.stats.dmg, false, player.x, player.y); createBolt(player.x,player.y,e.x,e.y); hit=true;
                     }
                 });
-                if(hit) this.cooldown=this.stats.cooldown;
+                if(hit) { this.cooldown=this.stats.cooldown; Sound.play('shoot'); }
             }
             else if(this.type==='inferno' && this.cooldown<=0) {
                  let t=getNearest(this.stats.range);
@@ -308,11 +405,11 @@
             }
             else if(this.type==='saw' && this.cooldown<=0) {
                 let t=getNearest(canvas.width); let a=t?Math.atan2(t.y-player.y, t.x-player.x):Math.random()*6.28;
-                projectiles.push(new Projectile(player.x,player.y,a,'saw',null,this.stats)); this.cooldown=this.stats.cooldown;
+                projectiles.push(new Projectile(player.x,player.y,a,'saw',null,this.stats)); this.cooldown=this.stats.cooldown; Sound.play('shoot');
             }
             else if(this.type==='swarm' && this.cooldown<=0) {
                 for(let i=0; i<this.stats.count; i++) projectiles.push(new Projectile(player.x,player.y,Math.random()*6.28,'drone',null,this.stats));
-                this.cooldown=this.stats.cooldown;
+                this.cooldown=this.stats.cooldown; Sound.play('shoot');
             }
         }
         draw() {
@@ -327,6 +424,7 @@
             this.x=x; this.y=y; this.type=type; this.target=target; this.hitIds=[];
             this.vx=Math.cos(a); this.vy=Math.sin(a); this.isCrit=false;
             this.angle = a;
+
             if(type==='bullet') {
                 this.r=player.bulletSize; this.c='#fff700'; this.speed=player.bulletSpeed; this.dmg=player.damage; 
                 this.pierce=player.pierce; this.ricochet=player.ricochet; this.life=100;
@@ -336,6 +434,7 @@
             else if(type==='fire') { this.r=3; this.c='orange'; this.speed=6; this.dmg=stats.dmg; this.life=30; this.pierce=10; }
             else if(type==='saw') { this.r=10; this.c='#ccc'; this.speed=stats.speed; this.dmg=stats.dmg; this.life=150; this.pierce=999; this.ricochet=5; this.angle=0;}
             else if(type==='drone') { this.r=4; this.c='#00ffff'; this.speed=3; this.dmg=stats.dmg; this.life=300; }
+            
             this.vx *= this.speed||1; this.vy *= this.speed||1;
         }
         update() {
@@ -387,6 +486,7 @@
             let angle = Math.atan2(this.y - srcY, this.x - srcX);
             for(let i=0; i<3; i++) particles.push(new Particle(this.x, this.y, 'spark', this.c, angle + (Math.random()-0.5)));
             if(this.hp<=0) killEnemy(this);
+            Sound.play('hit');
         }
         draw() {
             ctx.beginPath();
@@ -456,6 +556,7 @@
     function killEnemy(e, loot=true) {
         let i=enemies.indexOf(e); if(i===-1)return; enemies.splice(i,1);
         for(let j=0; j<10; j++) particles.push(new Particle(e.x, e.y, 'explosion', e.c));
+        Sound.play('explosion');
         if(loot) {
             credits+=e.val; score+=e.val;
             document.getElementById('credits').innerText=credits; document.getElementById('end-score').innerText=score;
@@ -474,6 +575,7 @@
         start: () => {
             document.getElementById('start-screen').style.display = 'none';
             document.getElementById('ui-layer').style.display = 'flex';
+            Sound.init();
             gameState = "PLAYING";
             player.x = canvas.width/2; player.y = canvas.height/2;
             ['orbital','missile','tesla','inferno','saw','swarm'].forEach(t => player.arsenal.push(new AutoWeapon(t)));
@@ -485,7 +587,6 @@
             game.activePowerup = null;
             enemies.length = 0; projectiles.length = 0; items.length = 0; particles.length = 0; floatTexts.length = 0;
             
-            // Reset Player
             player.x=canvas.width/2; player.y=canvas.height/2; player.hp=3; player.maxHp=3; player.invulnerable=0;
             player.damage=15; player.fireRate=40; player.cooldown=0; player.bulletSpeed=8; player.bulletCount=1; player.pierce=0; player.ricochet=0; player.bulletSize=4;
             player.critChance=0.05; player.critMultiplier=2.0; player.magnetRange=100; player.luck=1.0; player.regenRate=0;
@@ -498,10 +599,10 @@
             document.getElementById('xp-bar').style.width = "0%";
             ['orbital','missile','tesla','inferno','saw','swarm'].forEach(t => player.arsenal.push(new AutoWeapon(t)));
         },
-        openShop: () => { if(gameState!=="PLAYING")return; gameState="SHOP"; document.getElementById('shop-overlay').style.display='flex'; document.getElementById('shop-credits').innerText=credits; if(game.shopStock.length===0)game.genShop(); else game.renShop(); },
-        closeShop: () => { gameState="PLAYING"; document.getElementById('shop-overlay').style.display='none'; },
-        togglePause: () => { if(gameState==="SHOP"||gameState==="GAMEOVER"||gameState==="LEVEL_UP"||gameState==="START")return; if(gameState==="PLAYING"){gameState="PAUSED";document.getElementById('pause-menu').style.display='flex';}else{gameState="PLAYING";document.getElementById('pause-menu').style.display='none';} },
-        rerollShop: () => { if(credits>=game.rerollCost){credits-=game.rerollCost; document.getElementById('credits').innerText=credits; document.getElementById('shop-credits').innerText=credits; game.rerollCost+=50; game.genShop();} else showNotif("NO FUNDS","red"); },
+        openShop: () => { if(gameState!=="PLAYING")return; gameState="SHOP"; document.getElementById('shop-overlay').style.display='flex'; document.getElementById('shop-credits').innerText=credits; if(game.shopStock.length===0)game.genShop(); else game.renShop(); Sound.play('click'); },
+        closeShop: () => { gameState="PLAYING"; document.getElementById('shop-overlay').style.display='none'; Sound.play('click'); },
+        togglePause: () => { if(gameState==="SHOP"||gameState==="GAMEOVER"||gameState==="LEVEL_UP"||gameState==="START")return; if(gameState==="PLAYING"){gameState="PAUSED";document.getElementById('pause-menu').style.display='flex';}else{gameState="PLAYING";document.getElementById('pause-menu').style.display='none';} Sound.play('click'); },
+        rerollShop: () => { if(credits>=game.rerollCost){credits-=game.rerollCost; document.getElementById('credits').innerText=credits; document.getElementById('shop-credits').innerText=credits; game.rerollCost+=50; game.genShop(); Sound.play('click');} else showNotif("NO FUNDS","red"); },
         
         genShop: () => { game.shopStock=[]; const p=['orbital','missile','tesla','inferno','saw','swarm']; let o=[]; while(o.length<3){let t=p[Math.floor(Math.random()*p.length)];if(!o.includes(t))o.push(t);} o.forEach(t=>game.shopStock.push(t)); game.renShop(); },
         
@@ -518,15 +619,15 @@
         
         buyWeapon: (t,p) => {
             if(credits>=p){ credits-=p; document.getElementById('credits').innerText=credits; document.getElementById('shop-credits').innerText=credits;
-                let ex=player.arsenal.find(a=>a.type===t); if(ex)ex.upgrade(); else{let n=new AutoWeapon(t); n.level=1; player.arsenal.push(n);} game.genShop();
+                let ex=player.arsenal.find(a=>a.type===t); if(ex)ex.upgrade(); else{let n=new AutoWeapon(t); n.level=1; player.arsenal.push(n);} game.genShop(); Sound.play('levelup');
             } else showNotif("NO FUNDS","red");
         },
         
         activatePower: (key) => {
-            const p=POWERUPS[key]; showNotif(p.n, p.c);
+            const p=POWERUPS[key]; showNotif(p.n, p.c); Sound.play('pickup');
             if(p.t==='instant') {
                 if(key==='medkit'){player.hp=Math.min(player.hp+1,player.maxHp); updateHP();}
-                if(key==='nuke'){ document.getElementById('flash-screen').style.opacity=1; setTimeout(()=>document.getElementById('flash-screen').style.opacity=0,150); for(let i=enemies.length-1;i>=0;i--)killEnemy(enemies[i],false); shakeAmount=50; }
+                if(key==='nuke'){ document.getElementById('flash-screen').style.opacity=1; setTimeout(()=>document.getElementById('flash-screen').style.opacity=0,150); for(let i=enemies.length-1;i>=0;i--)killEnemy(enemies[i],false); shakeAmount=50; Sound.play('explosion');}
                 if(key==='magnet'){ items.forEach(i=>i.magnetized=true); }
             } else {
                 game.activePowerup=key; game.powerupMax=p.d; game.powerupTimer=p.d;
@@ -557,7 +658,7 @@
             d.onclick=()=>{
                 if(o.id==='dmg')player.damage*=1.25; if(o.id==='spd')player.speed*=1.15; if(o.id==='fire')player.fireRate*=0.85; if(o.id==='hp'){player.maxHp++;player.hp=player.maxHp;updateHP();}
                 if(o.id==='multi')player.bulletCount++; if(o.id==='pierce')player.pierce++; if(o.id==='magnet')player.magnetRange+=30; if(o.id==='crit')player.critChance+=0.05; if(o.id==='luck')player.luck+=0.2;
-                gameState="PLAYING"; document.getElementById('levelup-overlay').style.display='none';
+                gameState="PLAYING"; document.getElementById('levelup-overlay').style.display='none'; Sound.play('levelup');
             }; c.appendChild(d);
         });
     }
@@ -594,6 +695,7 @@
             let spread=0.15, ba=Math.atan2(mouse.y-player.y,mouse.x-player.x), start=ba-((player.bulletCount-1)*spread/2);
             for(let i=0;i<player.bulletCount;i++) projectiles.push(new Projectile(player.x,player.y,start+i*spread,'bullet'));
             player.cooldown=fr;
+            Sound.play('shoot');
         }
         if(player.cooldown>0) player.cooldown--;
         if(player.invulnerable>0) player.invulnerable--;
@@ -620,6 +722,7 @@
             let e=enemies[i]; e.update(); e.draw();
             if(getDistSq(e.x,e.y,player.x,player.y) < (e.r+15)**2 && player.invulnerable<=0 && game.activePowerup!=='shield') {
                 player.hp--; updateHP(); player.invulnerable=60; shakeAmount=20;
+                Sound.play('hit');
                 if(player.hp<=0){gameState="GAMEOVER"; document.getElementById('gameover-screen').style.display='flex'; document.getElementById('end-score').innerText=score; document.getElementById('end-time').innerText=document.getElementById('timer').innerText; document.getElementById('end-level').innerText=player.level;}
             }
             for(let j=projectiles.length-1; j>=0; j--) {
@@ -641,6 +744,7 @@
                     let v=it.type===1?5:(it.type===2?15:50); player.xp+=v;
                     if(player.xp>=player.xpNeeded){player.xp=0;player.level++;player.xpNeeded=Math.floor(player.xpNeeded*1.3);document.getElementById('lvl-badge').innerText="LVL "+player.level;levelUp();}
                     document.getElementById('xp-bar').style.width=(player.xp/player.xpNeeded*100)+"%";
+                    Sound.play('pickup');
                 }
                 items.splice(i,1);
             }
