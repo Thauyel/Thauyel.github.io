@@ -15,11 +15,7 @@
     <meta property="og:title" content="Atacan Küçüksarı | Architect & 3D Visualizer">
     <meta property="og:description" content="M.Arch Candidate at Politecnico Di Milano. Computational Design & 3D Visualization Portfolio.">
     <meta property="og:image" content="favicon/og-image.png">
-    
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Atacan Küçüksarı | Architect & 3D Visualizer">
-    <meta name="twitter:description" content="M.Arch Candidate at Politecnico Di Milano. Computational Design & 3D Visualization Portfolio.">
-    <meta name="twitter:image" content="favicon/twitter-image.png">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -50,7 +46,8 @@
     <section id="home">
         <div class="viewport-label">PERSPECTIVE</div>
         <div class="hero-content hidden">
-            <img src="src/profile.jpg" alt="Atacan Küçüksarı" class="profile-img">
+            <img src="src/profile.jpg" alt="Atacan Küçüksarı" class="profile-img" onclick="window.location.href='game.html'">
+            
             <h1>Atacan Küçüksarı</h1>
             <p style="color: var(--rhino-cyan); margin-bottom: 20px; font-weight: 600; letter-spacing: 1px;">
                 Architect / 3D Visualizer
@@ -312,8 +309,8 @@
     <div id="hermes-mockup-lightbox" onclick="closeHermesMockupOnBackground(event)">
         <span id="hermes-mockup-close-btn" onclick="closeHermesMockupGallery()">&times;</span>
         <div class="mockup-gallery-grid">
-            <img src="src/ITU-8/mockup/1.jpg" onclick="viewMockupSingle(this)">
-            <img src="src/ITU-8/mockup/2.jpg" onclick="viewMockupSingle(this)">
+            <img src="src/ITU-8/mockup/1.jpg" onclick="openLightbox(this)">
+            <img src="src/ITU-8/mockup/2.jpg" onclick="openLightbox(this)">
         </div>
     </div>
 
@@ -425,7 +422,7 @@
         function openMockupGallery() { document.getElementById('mockup-lightbox').style.display = 'flex'; }
         function closeMockupGallery() { document.getElementById('mockup-lightbox').style.display = 'none'; }
         function closeMockupOnBackground(e) { if (e.target.id === 'mockup-lightbox') closeMockupGallery(); }
-        
+
         function openHermesMockupGallery() { document.getElementById('hermes-mockup-lightbox').style.display = 'flex'; }
         function closeHermesMockupGallery() { document.getElementById('hermes-mockup-lightbox').style.display = 'none'; }
         function closeHermesMockupOnBackground(e) { if (e.target.id === 'hermes-mockup-lightbox') closeHermesMockupGallery(); }
