@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Sözel Bellek Testi: Smart Logic</title>
+    <title>Digit Span: Dark Love Edition</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
         
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #111827; /* Gray-900 */
-            color: #f3f4f6;
+            background-color: #000000; /* Pure Black */
+            color: #e5e7eb;
             user-select: none;
             -webkit-user-select: none;
             overflow: hidden;
@@ -22,8 +22,8 @@
         .number-circle {
             width: 180px;
             height: 180px;
-            background: #ea580c; /* Orange-600 */
-            border: 8px solid #374151; /* Gray-700 */
+            background: linear-gradient(135deg, #ea580c, #9a3412); /* Daha derin turuncu */
+            border: 4px solid #27272a; /* Zinc-800 */
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -31,7 +31,7 @@
             font-size: 6rem;
             color: #ffffff;
             font-weight: 800;
-            box-shadow: 0 0 50px rgba(234, 88, 12, 0.4);
+            box-shadow: 0 0 60px rgba(234, 88, 12, 0.25); /* Daha soft glow */
             will-change: contents;
         }
 
@@ -45,99 +45,157 @@
         }
 
         .numpad-btn {
-            background-color: #1f2937; /* Gray-800 */
-            border: 1px solid #374151; /* Gray-700 */
-            border-radius: 12px;
+            background-color: #18181b; /* Zinc-950 */
+            border: 1px solid #27272a; /* Zinc-800 */
+            border-radius: 16px;
             font-size: 2rem;
-            color: #f9fafb;
+            color: #f4f4f5;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            height: 65px;
+            height: 70px;
             font-weight: 600;
-            box-shadow: 0 4px 0 #00000040;
-            transition: transform 0.1s, box-shadow 0.1s;
+            box-shadow: 0 4px 0 #000000;
+            transition: transform 0.1s, box-shadow 0.1s, background-color 0.2s;
         }
 
         .numpad-btn:active {
             transform: translateY(4px);
             box-shadow: 0 0 0 transparent;
+            background-color: #27272a;
         }
 
         /* --- INPUT ALANI --- */
         .input-display {
-            border-bottom: 3px solid #ef4444; /* Red-500 */
+            border-bottom: 2px solid #dc2626; /* Red-600 */
             min-height: 60px;
             display: flex;
             align-items: flex-end;
             justify-content: center;
-            font-size: 2.25rem;
+            font-size: 2.5rem;
             letter-spacing: 0.5rem;
-            color: #e5e7eb;
-            margin-bottom: 20px;
+            color: #ffffff;
+            margin-bottom: 24px;
             font-weight: 700;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            text-shadow: 0 0 10px rgba(220, 38, 38, 0.5);
         }
 
         .hidden { display: none !important; }
         .flex-center { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        
+        /* Overlay Backdrop */
+        .backdrop {
+            background-color: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(8px);
+        }
 
         /* --- TIMER --- */
         .timer-track {
-            background-color: #374151;
+            background-color: #27272a;
             border-radius: 999px;
-            height: 8px;
+            height: 6px;
             width: 100%;
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
             overflow: hidden;
         }
         
         .timer-fill {
             height: 100%;
-            background: linear-gradient(90deg, #ef4444, #b91c1c);
+            background: linear-gradient(90deg, #dc2626, #991b1b);
             width: 100%;
             border-radius: 999px;
             transform-origin: left;
         }
+
+        /* --- LOVE BOX --- */
+        .love-box {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(244, 114, 182, 0.3); /* Soft pink border */
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 2rem 0;
+            color: #f472b6; /* Pink-400 */
+            font-weight: 600;
+            font-size: 1.1rem;
+            letter-spacing: 0.05em;
+            box-shadow: 0 0 20px rgba(244, 114, 182, 0.1);
+            animation: pulse-glow 3s infinite ease-in-out;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 15px rgba(244, 114, 182, 0.05); border-color: rgba(244, 114, 182, 0.2); }
+            50% { box-shadow: 0 0 25px rgba(244, 114, 182, 0.2); border-color: rgba(244, 114, 182, 0.5); }
+        }
+
+        /* Pause Button Area */
+        .top-controls {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            z-index: 60;
+        }
+        
+        .btn-pause {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #a1a1aa;
+            padding: 8px 16px;
+            border-radius: 99px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            backdrop-filter: blur(4px);
+        }
+        
+        .btn-pause:hover { background: rgba(255,255,255,0.1); color: white; border-color: rgba(255,255,255,0.3); }
+
+        /* Panel Style */
+        .dark-panel {
+            background-color: #09090b; /* Zinc-950 */
+            border: 1px solid #27272a; /* Zinc-800 */
+        }
     </style>
 </head>
-<body class="h-screen w-screen flex-center bg-gray-900">
+<body class="h-screen w-screen flex-center bg-black relative">
+
+    <!-- GLOBAL PAUSE BUTTON -->
+    <div id="controls-area" class="top-controls hidden">
+        <button onclick="App.togglePause()" class="btn-pause">
+            DURAKLAT
+        </button>
+    </div>
 
     <!-- 1. MENÜ EKRANI -->
-    <div id="screen-menu" class="w-full max-w-md p-6 bg-gray-800 rounded-2xl shadow-2xl text-center border border-gray-700 mx-4">
-        <h1 class="text-3xl font-black mb-2 text-white tracking-tight">SÖZEL BELLEK</h1>
-        <h2 class="text-lg text-gray-400 mb-6 font-medium">Digit Span (B2)</h2>
+    <div id="screen-menu" class="w-full max-w-md p-8 rounded-3xl text-center mx-4 dark-panel shadow-2xl">
+        <h1 class="text-4xl font-black mb-1 text-white tracking-tighter" style="text-shadow: 0 0 30px rgba(255,255,255,0.1);">DIGIT SPAN</h1>
         
-        <div class="bg-gray-900/60 border border-gray-700 p-4 rounded-xl text-left text-sm text-gray-300 mb-6 space-y-2">
-            <p class="font-bold text-white border-b border-gray-600 pb-2 mb-2">Zorluk Seviyeleri</p>
-            <ul class="list-disc pl-4 space-y-2 marker:text-orange-500">
-                <li><span class="text-emerald-400 font-bold">KOLAY:</span> 4 Sayı Hatırlama ile başlar.</li>
-                <li><span class="text-amber-400 font-bold">ORTA:</span> 6 Sayı Hatırlama ile başlar.</li>
-                <li><span class="text-rose-400 font-bold">ZOR:</span> 8 Sayı Hatırlama ile başlar.</li>
-            </ul>
+        <!-- LOVE BOX -->
+        <div class="love-box">
+            Seni çok seviyorum <3
         </div>
 
         <div class="grid grid-cols-3 gap-3">
-            <button onclick="App.startGame('easy')" class="py-3 bg-emerald-700 hover:bg-emerald-600 text-white rounded-lg font-bold shadow transition">KOLAY</button>
-            <button onclick="App.startGame('medium')" class="py-3 bg-amber-700 hover:bg-amber-600 text-white rounded-lg font-bold shadow transition">ORTA</button>
-            <button onclick="App.startGame('hard')" class="py-3 bg-rose-700 hover:bg-rose-600 text-white rounded-lg font-bold shadow transition">ZOR</button>
+            <button onclick="App.startGame('easy')" class="py-4 bg-emerald-900/40 hover:bg-emerald-800/60 border border-emerald-800/50 text-emerald-400 rounded-xl font-bold transition duration-300">KOLAY</button>
+            <button onclick="App.startGame('medium')" class="py-4 bg-amber-900/40 hover:bg-amber-800/60 border border-amber-800/50 text-amber-400 rounded-xl font-bold transition duration-300">ORTA</button>
+            <button onclick="App.startGame('hard')" class="py-4 bg-rose-900/40 hover:bg-rose-800/60 border border-rose-800/50 text-rose-400 rounded-xl font-bold transition duration-300">ZOR</button>
         </div>
     </div>
 
     <!-- 2. GÖSTERİM EKRANI -->
-    <div id="screen-display" class="hidden fixed inset-0 z-50 flex-center bg-gray-900">
-        <div id="number-container" class="number-circle mb-8"></div>
-        <p class="text-gray-500 text-lg font-medium tracking-[0.2em] uppercase animate-pulse">
-            Odaklan...
+    <div id="screen-display" class="hidden fixed inset-0 z-40 flex-center bg-black">
+        <div id="number-container" class="number-circle mb-10"></div>
+        <p class="text-zinc-500 text-sm font-bold tracking-[0.4em] uppercase animate-pulse">
+            Odaklan
         </p>
     </div>
 
     <!-- 3. GİRİŞ EKRANI -->
-    <div id="screen-input" class="hidden w-full max-w-md p-4 flex-center">
-        <div class="w-full flex justify-between items-end mb-4 px-2">
-            <div class="text-gray-400 font-medium text-sm">SET: <span id="lbl-level" class="text-white font-bold text-xl ml-1">1</span></div>
-            <div id="lbl-info" class="text-[10px] font-bold bg-gray-800 px-2 py-1 rounded text-gray-400 uppercase border border-gray-700"></div>
+    <div id="screen-input" class="hidden w-full max-w-md p-4 flex-center z-40 relative">
+        <div class="w-full flex justify-between items-end mb-6 px-2">
+            <div class="text-zinc-500 font-medium text-xs tracking-wider">SORU <span id="lbl-level" class="text-white font-bold text-lg ml-1">1</span>/10</div>
+            <div id="lbl-info" class="text-[10px] font-bold bg-zinc-900 px-3 py-1 rounded-full text-zinc-400 uppercase border border-zinc-800"></div>
         </div>
 
         <div class="timer-track">
@@ -146,7 +204,7 @@
 
         <div class="w-full text-center">
             <div id="input-display" class="input-display"></div>
-            <p class="text-gray-600 text-xs uppercase tracking-widest font-semibold mb-4">Sırayı Giriniz</p>
+            <p class="text-zinc-600 text-[10px] uppercase tracking-[0.3em] font-bold mb-6">Sırayı Giriniz</p>
         </div>
 
         <div class="numpad-grid">
@@ -159,44 +217,79 @@
             <button class="numpad-btn" onclick="App.addInput(7)">7</button>
             <button class="numpad-btn" onclick="App.addInput(8)">8</button>
             <button class="numpad-btn" onclick="App.addInput(9)">9</button>
-            <div class="numpad-btn" style="visibility: hidden;"></div>
+            <div class="numpad-btn opacity-0 pointer-events-none"></div>
             <button class="numpad-btn" onclick="App.addInput(0)">0</button>
-            <button class="numpad-btn text-red-400 bg-gray-800 hover:bg-gray-700" onclick="App.removeInput()">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"></path><line x1="18" y1="9" x2="12" y2="15"></line><line x1="12" y1="9" x2="18" y2="15"></line></svg>
+            <button class="numpad-btn text-rose-500 border-rose-900/30 bg-rose-900/10 hover:bg-rose-900/20" onclick="App.removeInput()">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"></path><line x1="18" y1="9" x2="12" y2="15"></line><line x1="12" y1="9" x2="18" y2="15"></line></svg>
             </button>
         </div>
     </div>
 
-    <!-- 4. SONUÇ EKRANI -->
-    <div id="screen-feedback" class="hidden w-full max-w-md p-6 bg-gray-800 rounded-2xl shadow-2xl text-center border border-gray-700 mx-4">
-        <div id="fb-icon" class="text-6xl mb-4"></div>
-        <h2 id="fb-title" class="text-3xl font-black mb-2 text-white"></h2>
-        <p id="fb-msg" class="text-gray-400 mb-6 text-sm"></p>
+    <!-- 4. ARA SONUÇ (FEEDBACK) EKRANI -->
+    <div id="screen-feedback" class="hidden w-full max-w-md p-8 dark-panel rounded-3xl text-center mx-4 z-50 shadow-2xl">
+        <div id="fb-icon" class="text-6xl mb-6 scale-110"></div>
+        <h2 id="fb-title" class="text-3xl font-black mb-2 text-white tracking-tight"></h2>
+        <p id="fb-msg" class="text-zinc-400 mb-8 text-sm font-medium"></p>
         
-        <div class="text-left bg-gray-900 border border-gray-700 p-4 rounded-xl mb-6 shadow-inner">
-            <div class="grid grid-cols-1 gap-3">
+        <div class="text-left bg-black border border-zinc-800 p-5 rounded-2xl mb-8">
+            <div class="grid grid-cols-1 gap-4">
                 <div>
-                    <span class="text-gray-500 text-[10px] uppercase font-bold">Tam Dizi (Gösterilen)</span>
-                    <p id="fb-shown" class="font-mono text-base text-gray-400 tracking-wider break-all"></p>
+                    <span class="text-zinc-600 text-[10px] uppercase font-bold tracking-widest">Tam Dizi</span>
+                    <p id="fb-shown" class="font-mono text-base text-zinc-400 mt-1 break-all"></p>
                 </div>
                 <div>
-                    <span class="text-gray-500 text-[10px] uppercase font-bold">Doğru Cevap (Hatırlanan)</span>
-                    <p id="fb-correct" class="font-mono text-base text-emerald-400 font-bold tracking-wider break-all"></p>
+                    <span class="text-zinc-600 text-[10px] uppercase font-bold tracking-widest">Doğru Cevap</span>
+                    <p id="fb-correct" class="font-mono text-base text-emerald-500 font-bold mt-1 break-all"></p>
                 </div>
                 <div>
-                    <span class="text-gray-500 text-[10px] uppercase font-bold">Senin Girişin</span>
-                    <p id="fb-user" class="font-mono text-base text-rose-400 font-bold tracking-wider break-all"></p>
+                    <span class="text-zinc-600 text-[10px] uppercase font-bold tracking-widest">Senin Girişin</span>
+                    <p id="fb-user" class="font-mono text-base text-rose-500 font-bold mt-1 break-all"></p>
                 </div>
             </div>
         </div>
 
-        <button id="btn-next" onclick="App.nextLevel()" class="w-full py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-bold text-lg shadow-lg transition hidden">Devam Et</button>
-        <button id="btn-restart" onclick="location.reload()" class="w-full py-3 bg-gray-700 hover:bg-gray-600 text-white rounded-xl font-bold text-lg shadow-lg transition hidden">Ana Menü</button>
+        <button id="btn-next" onclick="App.nextStep()" class="w-full py-4 bg-white text-black hover:bg-zinc-200 rounded-xl font-bold text-lg shadow-lg transition transform active:scale-95">Sıradaki Soru</button>
+    </div>
+
+    <!-- 5. DURAKLATMA EKRANI -->
+    <div id="screen-pause" class="hidden fixed inset-0 z-[100] flex-center backdrop">
+        <div class="w-full max-w-sm p-8 dark-panel rounded-3xl text-center mx-4 border border-zinc-700">
+            <h2 class="text-2xl font-black text-white mb-8 tracking-wide">DURAKLATILDI</h2>
+            
+            <div class="space-y-3">
+                <button onclick="App.togglePause()" class="w-full py-4 bg-white text-black hover:bg-zinc-200 rounded-xl font-bold shadow-lg">
+                    DEVAM ET
+                </button>
+                <button onclick="location.reload()" class="w-full py-4 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 rounded-xl font-bold shadow-lg">
+                    ANA MENÜ
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 6. FINAL SKOR EKRANI -->
+    <div id="screen-result" class="hidden w-full max-w-md p-8 dark-panel rounded-3xl text-center mx-4 z-50 shadow-2xl">
+        <div class="text-7xl mb-6">👑</div>
+        <h2 class="text-3xl font-black text-white mb-2 tracking-tight">OYUN BİTTİ</h2>
+        <p class="text-zinc-500 mb-8 font-medium">Bütün sorular tamamlandı.</p>
+        
+        <div class="bg-black rounded-2xl p-8 mb-8 border border-zinc-800 relative overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-br from-emerald-900/20 to-transparent"></div>
+            <div class="relative z-10">
+                <div class="text-zinc-500 text-xs font-bold uppercase tracking-[0.2em] mb-2">TOPLAM SKOR</div>
+                <div class="text-6xl font-black text-white tracking-tighter">
+                    <span id="res-score">0</span><span class="text-3xl text-zinc-600 font-normal">/10</span>
+                </div>
+            </div>
+        </div>
+
+        <button onclick="location.reload()" class="w-full py-4 bg-white text-black hover:bg-zinc-200 rounded-xl font-bold text-lg shadow-lg transition">
+            ANA MENÜYE DÖN
+        </button>
     </div>
 
     <script>
         const App = {
-            // YENİ KONFİGÜRASYON: "startAnswerLen" = Hatırlanması gereken (numpade girilecek) sayı adedi
             config: {
                 easy: { startAnswerLen: 4, maxAnswerLen: 10, timePerDigit: 2500 },
                 medium: { startAnswerLen: 6, maxAnswerLen: 10, timePerDigit: 2000 },
@@ -205,21 +298,29 @@
 
             state: {
                 activeProcessId: 0,
+                isPaused: false,
                 difficulty: 'medium',
                 level: 1,
-                targetAnswerCount: 0, // Hedeflenen hatırlanacak sayı adedi
+                maxLevels: 10,
+                score: 0,
+                targetAnswerCount: 0,
                 fullSequence: [],
                 correctAnswer: [],
                 userInputs: [],
-                timerId: null
+                timerId: null,
+                timerStartTime: 0,
+                timerRemaining: 0
             },
 
             dom: {
+                controls: document.getElementById('controls-area'),
                 screens: {
                     menu: document.getElementById('screen-menu'),
                     display: document.getElementById('screen-display'),
                     input: document.getElementById('screen-input'),
-                    feedback: document.getElementById('screen-feedback')
+                    feedback: document.getElementById('screen-feedback'),
+                    pause: document.getElementById('screen-pause'),
+                    result: document.getElementById('screen-result')
                 },
                 numberBox: document.getElementById('number-container'),
                 inputBox: document.getElementById('input-display'),
@@ -232,23 +333,61 @@
                     fbIcon: document.getElementById('fb-icon'),
                     shown: document.getElementById('fb-shown'),
                     correct: document.getElementById('fb-correct'),
-                    user: document.getElementById('fb-user')
+                    user: document.getElementById('fb-user'),
+                    finalScore: document.getElementById('res-score')
                 },
                 btns: {
-                    next: document.getElementById('btn-next'),
-                    restart: document.getElementById('btn-restart')
+                    next: document.getElementById('btn-next')
                 }
             },
 
             sleep: (ms) => new Promise(r => setTimeout(r, ms)),
 
             showScreen: function(name) {
-                Object.values(this.dom.screens).forEach(el => el.classList.add('hidden'));
+                ['menu', 'display', 'input', 'feedback', 'result'].forEach(key => {
+                    this.dom.screens[key].classList.add('hidden');
+                });
+                
                 const target = this.dom.screens[name];
                 target.classList.remove('hidden');
+                
                 if (name === 'display' || name === 'input') {
                     target.classList.add('flex-center');
                     if(name === 'input') target.style.display = 'flex'; 
+                    this.dom.controls.classList.remove('hidden');
+                } else {
+                    this.dom.controls.classList.add('hidden');
+                }
+            },
+
+            togglePause: function() {
+                this.state.isPaused = !this.state.isPaused;
+                
+                if (this.state.isPaused) {
+                    this.dom.screens.pause.classList.remove('hidden');
+                    this.dom.screens.pause.classList.add('flex-center');
+                    
+                    if (this.state.timerId) {
+                        clearTimeout(this.state.timerId);
+                        const elapsed = Date.now() - this.state.timerStartTime;
+                        this.state.timerRemaining -= elapsed;
+                        const computedStyle = window.getComputedStyle(this.dom.timerBar);
+                        const width = computedStyle.getPropertyValue('width');
+                        this.dom.timerBar.style.transition = 'none';
+                        this.dom.timerBar.style.width = width;
+                    }
+
+                } else {
+                    this.dom.screens.pause.classList.add('hidden');
+                    if (!this.dom.screens.input.classList.contains('hidden')) {
+                        this.resumeTimer();
+                    }
+                }
+            },
+
+            waitWhilePaused: async function() {
+                while(this.state.isPaused) {
+                    await this.sleep(100);
                 }
             },
 
@@ -256,72 +395,53 @@
                 this.state.activeProcessId++;
                 this.state.difficulty = difficulty;
                 this.state.level = 1;
-                // Başlangıçta kaç tane hatırlanacak sayı olacağı config'den alınır
+                this.state.score = 0;
+                this.state.isPaused = false;
                 this.state.targetAnswerCount = this.config[difficulty].startAnswerLen;
                 
                 this.playRound();
             },
 
-            playRound: function() {
+            playRound: async function() {
                 this.state.userInputs = [];
-                // YENİ LOGIC: Hedeflenen cevap uzunluğuna göre dizi üret
                 this.state.fullSequence = this.generateSmartSequence(this.state.targetAnswerCount);
                 this.state.correctAnswer = this.calculateLogic(this.state.fullSequence);
                 
                 this.dom.inputBox.innerText = "";
                 this.dom.labels.level.innerText = this.state.level;
-                this.dom.labels.info.innerText = `${this.state.difficulty.toUpperCase()} - HEDEF: ${this.state.targetAnswerCount}`;
+                this.dom.labels.info.innerText = `${this.state.difficulty}`;
                 
                 this.showScreen('display');
-                this.runDisplayLoop(this.state.activeProcessId);
+                await this.runDisplayLoop(this.state.activeProcessId);
             },
 
-            // --- AKILLI DİZİ OLUŞTURUCU ---
-            // Belirtilen sayıda (targetCount) "cevap" içerecek şekilde bir dizi inşa eder.
             generateSmartSequence: function(targetAnswerCount) {
                 let seq = [];
                 let currentAnswerCount = 0;
-                
-                // İlk sayı her zaman hatırlanır
                 let lastNum = Math.floor(Math.random() * 10);
                 seq.push(lastNum);
                 currentAnswerCount++;
 
                 while (currentAnswerCount < targetAnswerCount) {
-                    // Karar ver: Sıradaki sayı hatırlanacak mı (Büyük) yoksa şaşırtmaca mı (Küçük)?
-                    // Şansa bırakıyoruz ama kurallara uymak zorundayız.
-                    
-                    let canGoUp = lastNum < 9; // 9'dan yukarı çıkamayız
-                    let canGoDown = lastNum > 0; // 0'dan aşağı inemeyiz (eşit olamaz çünkü ardışık fark kuralı)
-                    
-                    // %60 ihtimalle cevabı tamamlamaya çalış, %40 şaşırtmaca at
+                    let canGoUp = lastNum < 9;
+                    let canGoDown = lastNum > 0;
                     let wantTarget = Math.random() > 0.4;
 
                     if (canGoUp && (wantTarget || !canGoDown)) {
-                        // YUKARI GİT (Hatırlanacak Sayı Ekle)
-                        // lastNum+1 ile 9 arasında rastgele bir sayı
                         let min = lastNum + 1;
                         let max = 9;
                         let nextNum = Math.floor(Math.random() * (max - min + 1)) + min;
-                        
                         seq.push(nextNum);
                         lastNum = nextNum;
                         currentAnswerCount++;
                     } else {
-                        // AŞAĞI GİT (Şaşırtmaca Ekle)
-                        // 0 ile lastNum-1 arasında rastgele sayı
-                        // Not: Kural gereği "ardışık iki rakam farklı". Eşit olamaz.
-                        // O yüzden lastNum dahil değil.
                         let min = 0;
                         let max = lastNum - 1;
                         let nextNum = Math.floor(Math.random() * (max - min + 1)) + min;
-                        
                         seq.push(nextNum);
                         lastNum = nextNum;
-                        // currentAnswerCount ARTMAZ çünkü bu hatırlanmayacak
                     }
                 }
-                
                 return seq;
             },
 
@@ -329,9 +449,7 @@
                 if (!seq.length) return [];
                 const ans = [seq[0]];
                 for (let i = 1; i < seq.length; i++) {
-                    if (seq[i] > seq[i-1]) {
-                        ans.push(seq[i]);
-                    }
+                    if (seq[i] > seq[i-1]) ans.push(seq[i]);
                 }
                 return ans;
             },
@@ -342,14 +460,20 @@
 
                 box.innerText = "";
                 await this.sleep(1000);
+                await this.waitWhilePaused();
 
                 for (let i = 0; i < seq.length; i++) {
                     if (processId !== this.state.activeProcessId) return;
+                    await this.waitWhilePaused();
+
                     box.innerText = seq[i];
-                    await this.sleep(1000); // 1 saniye göster
+                    await this.sleep(1000);
+                    
                     if (processId !== this.state.activeProcessId) return;
+                    await this.waitWhilePaused();
+
                     box.innerText = "";
-                    await this.sleep(200); // 0.2 saniye boşluk
+                    await this.sleep(200);
                 }
 
                 if (processId !== this.state.activeProcessId) return;
@@ -359,11 +483,13 @@
             startInputPhase: function() {
                 this.showScreen('input');
                 
-                // Cevap uzunluğuna göre süre veriyoruz
                 const ansLen = this.state.correctAnswer.length;
                 const msPerDigit = this.config[this.state.difficulty].timePerDigit;
-                const timeAllowed = Math.max(4000, ansLen * msPerDigit); // Minimum 4 saniye
+                const timeAllowed = Math.max(4000, ansLen * msPerDigit); 
                 
+                this.state.timerRemaining = timeAllowed;
+                this.state.timerStartTime = Date.now();
+
                 const bar = this.dom.timerBar;
                 bar.style.transition = 'none';
                 bar.style.width = '100%';
@@ -378,8 +504,22 @@
                 }, timeAllowed);
             },
 
+            resumeTimer: function() {
+                const timeAllowed = this.state.timerRemaining;
+                this.state.timerStartTime = Date.now();
+
+                const bar = this.dom.timerBar;
+                bar.style.transition = `width ${timeAllowed}ms linear`;
+                bar.style.width = '0%';
+
+                this.state.timerId = setTimeout(() => {
+                    this.finalize(false);
+                }, timeAllowed);
+            },
+
             addInput: function(num) {
-                if (this.dom.screens.input.classList.contains('hidden')) return;
+                if (this.dom.screens.input.classList.contains('hidden') || this.state.isPaused) return;
+                
                 this.state.userInputs.push(num);
                 this.dom.inputBox.innerText = this.state.userInputs.join(' - ');
 
@@ -391,61 +531,67 @@
             },
 
             removeInput: function() {
-                if (!this.state.userInputs.length) return;
+                if (!this.state.userInputs.length || this.state.isPaused) return;
                 this.state.userInputs.pop();
                 this.dom.inputBox.innerText = this.state.userInputs.join(' - ');
             },
 
             finalize: function(triggeredByUser) {
                 if (this.state.timerId) clearTimeout(this.state.timerId);
+                
                 const isCorrect = JSON.stringify(this.state.userInputs) === JSON.stringify(this.state.correctAnswer);
+                
+                if (isCorrect) {
+                    this.state.score++;
+                }
+
                 this.showFeedback(isCorrect);
             },
 
             showFeedback: function(isCorrect) {
                 this.showScreen('feedback');
                 const l = this.dom.labels;
+                const btn = this.dom.btns.next;
                 
-                // Uzun dizileri ekrana sığdırmak için join karakterini ayarlayabiliriz
                 l.shown.innerText = this.state.fullSequence.join('-');
                 l.correct.innerText = this.state.correctAnswer.join('-');
                 l.user.innerText = this.state.userInputs.length ? this.state.userInputs.join('-') : "(Boş)";
 
-                if (isCorrect) {
-                    l.fbIcon.innerText = "✅";
-                    l.fbTitle.innerText = "DOĞRU";
-                    l.fbTitle.className = "text-4xl font-black mb-2 text-emerald-500";
-                    l.fbMsg.innerText = "Mükemmel! Bir sonraki aşamaya geçiliyor.";
-                    
-                    this.dom.btns.next.classList.remove('hidden');
-                    this.dom.btns.restart.classList.add('hidden');
+                if (this.state.level >= this.state.maxLevels) {
+                    btn.innerText = "SONUÇLARI GÖR";
+                    btn.onclick = () => App.showFinalResults();
+                } else {
+                    btn.innerText = "SIRADAKİ SORU";
+                    btn.onclick = () => App.nextStep();
+                }
 
-                    // ZORLUK ARTIRMA MANTIĞI:
-                    // Eğer kullanıcı başarılıysa, hedef sayıyı 1 artır.
-                    // Max limite (10 veya 12) gelince dur.
+                if (isCorrect) {
+                    l.fbIcon.innerText = "✨";
+                    l.fbTitle.innerText = "MÜKEMMEL";
+                    l.fbTitle.className = "text-4xl font-black mb-2 text-white tracking-tight";
+                    l.fbMsg.innerText = "Doğru bildin! Puan eklendi.";
+                    
                     const maxLen = this.config[this.state.difficulty].maxAnswerLen;
                     if (this.state.targetAnswerCount < maxLen) {
-                         // Her turda 1 tane artırarak zorlaştırıyoruz (İsteğe göre 2 turda bir yapılabilir)
                          this.state.targetAnswerCount++;
                     }
 
-                    setTimeout(() => this.nextLevel(), 3000);
-
                 } else {
-                    l.fbIcon.innerText = "❌";
-                    l.fbTitle.innerText = "YANLIŞ";
-                    l.fbTitle.className = "text-4xl font-black mb-2 text-rose-500";
-                    l.fbMsg.innerText = "Üzgünüm, limitine ulaştın.";
-                    
-                    this.dom.btns.next.classList.add('hidden');
-                    this.dom.btns.restart.classList.remove('hidden');
+                    l.fbIcon.innerText = "💔";
+                    l.fbTitle.innerText = "OLMADI";
+                    l.fbTitle.className = "text-4xl font-black mb-2 text-white tracking-tight";
+                    l.fbMsg.innerText = "Bu seferlik kaçtı, moral bozmak yok.";
                 }
             },
 
-            nextLevel: function() {
-                if (document.getElementById('screen-feedback').classList.contains('hidden')) return;
+            nextStep: function() {
                 this.state.level++;
                 this.playRound();
+            },
+
+            showFinalResults: function() {
+                this.showScreen('result');
+                this.dom.labels.finalScore.innerText = this.state.score;
             }
         };
     </script>
