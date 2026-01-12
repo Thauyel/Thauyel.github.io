@@ -12,3 +12,5 @@ Thanks for stopping by!
 _"Architecture is a visual art, and the buildings speak for themselves."_
 
 👉 **[Click Here to Enter the Portfolio](https://thauyel.vercel.app)**
+
+A quick tip: There is an easter egg on the website. Just click my face!
