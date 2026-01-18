@@ -368,13 +368,13 @@
             document.getElementById('typing-text').innerHTML = `_SetView_${formattedText} <span style="animation: blink 1s infinite">|</span>`;
         }
 
-        // --- LIGHTBOX (ZOOM/DRAG FIXED) ---
+        // --- LIGHTBOX (MOUSE-CENTRIC ZOOM) ---
         let currentImages = [];
         let currentIndex = 0;
         let isZoomed = false;
         let scale = 1;
         let isDragging = false;
-        let isDragAction = false; // Click vs Drag distinguish
+        let isDragAction = false; 
         let startX, startY, translateX = 0, translateY = 0;
 
         const lightbox = document.getElementById('lightbox');
@@ -390,7 +390,9 @@
                 currentIndex = 0;
             }
             updateLightboxImage();
+            
             lightbox.style.display = 'flex';
+            document.body.style.overflow = 'hidden'; // Disable scroll
             resetZoom();
         }
 
@@ -415,47 +417,99 @@
             }
         });
 
-        // CLOSE: Background Click Fix
         function closeLightbox(e, force = false) {
             if (force || e.target.id === 'lightbox' || e.target.id === 'lightbox-content') {
                 lightbox.style.display = 'none';
+                document.body.style.overflow = ''; // Re-enable scroll
                 resetZoom();
             }
         }
 
-        // ZOOM LOGIC
+        // --- MOUSE-AWARE ZOOM LOGIC ---
+
+        img.addEventListener('wheel', function(e) {
+            e.preventDefault(); // Prevent page scroll
+
+            // 1. Calculate Scale Change
+            const delta = e.deltaY * -0.005;
+            let newScale = scale + delta;
+            newScale = Math.min(Math.max(1, newScale), 5); // Clamp scale (1x to 5x)
+
+            if (newScale === scale) return;
+
+            // 2. Calculate Position Adjustment (Zoom to Mouse)
+            const rect = img.getBoundingClientRect();
+            
+            // We use the window center because the image is centered in the flex container
+            const viewCenterX = window.innerWidth / 2;
+            const viewCenterY = window.innerHeight / 2;
+
+            // Mouse position relative to the viewport
+            const mouseX = e.clientX;
+            const mouseY = e.clientY;
+
+            // Math to keep the point under the mouse stationary:
+            // Calculate the mouse's offset from the *current* image center
+            const mouseOffsetFromCenterX = mouseX - viewCenterX - translateX;
+            const mouseOffsetFromCenterY = mouseY - viewCenterY - translateY;
+
+            // Calculate the ratio of growth
+            const ratio = newScale / scale;
+
+            // Shift translateX/Y in the opposite direction of the growth
+            translateX -= mouseOffsetFromCenterX * (ratio - 1);
+            translateY -= mouseOffsetFromCenterY * (ratio - 1);
+
+            // 3. Apply
+            scale = newScale;
+            
+            if (scale > 1) {
+                isZoomed = true;
+                img.style.cursor = 'grab';
+            } else {
+                // If we zoom back out to 100%, reset everything to perfect center
+                resetZoom();
+                return;
+            }
+
+            updateTransform();
+        }, { passive: false });
+
         img.addEventListener('click', function(e) {
             e.stopPropagation(); 
-            // If it was a drag action, don't toggle zoom
-            if (isDragAction) {
-                isDragAction = false;
-                return; 
-            }
-            toggleZoom();
-        });
-
-        function toggleZoom() {
-            if (isZoomed) {
+            if (isDragAction) { isDragAction = false; return; }
+            
+            // Click toggles zoom (Standard Center Zoom for click, Mouse zoom for wheel)
+            if (scale > 1) {
                 resetZoom();
             } else {
-                isZoomed = true;
-                scale = 2.0; // 200% Zoom
-                img.style.cursor = 'grab';
-                img.style.transform = `scale(${scale}) translate(0px, 0px)`;
+                toggleZoomCenter(); 
             }
+        });
+
+        function toggleZoomCenter() {
+            isZoomed = true;
+            scale = 2.0; 
+            img.style.cursor = 'grab';
+            updateTransform();
         }
 
         function resetZoom() {
             isZoomed = false;
             scale = 1;
-            translateX = 0; translateY = 0;
-            img.style.transform = `scale(1) translate(0px, 0px)`;
+            translateX = 0; 
+            translateY = 0;
             img.style.cursor = 'zoom-in';
+            img.style.transform = `translate(0px, 0px) scale(1)`;
+        }
+
+        function updateTransform() {
+            img.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
         }
 
         // DRAG LOGIC
         img.addEventListener('mousedown', (e) => {
-            if (!isZoomed) return;
+            if (scale <= 1) return;
             isDragging = true;
             isDragAction = false;
             startX = e.clientX - translateX;
@@ -472,30 +526,48 @@
         });
 
         window.addEventListener('mousemove', (e) => {
-            if (!isDragging || !isZoomed) return;
+            if (!isDragging || scale <= 1) return;
             e.preventDefault();
-            isDragAction = true; // Mark as moved
+            isDragAction = true;
             translateX = e.clientX - startX;
             translateY = e.clientY - startY;
-            img.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`; 
+            updateTransform(); 
         });
 
 
         // --- MOCKUP GALLERIES ---
-        function openMockupGallery() { document.getElementById('mockup-lightbox').style.display = 'flex'; }
-        function closeMockupGallery() { document.getElementById('mockup-lightbox').style.display = 'none'; }
+        function openMockupGallery() { 
+            document.getElementById('mockup-lightbox').style.display = 'flex'; 
+            document.body.style.overflow = 'hidden'; 
+        }
+        function closeMockupGallery() { 
+            document.getElementById('mockup-lightbox').style.display = 'none'; 
+            document.body.style.overflow = ''; 
+        }
         function closeMockupOnBackground(e) { if (e.target.id === 'mockup-lightbox') closeMockupGallery(); }
 
-        function openHermesMockupGallery() { document.getElementById('hermes-mockup-lightbox').style.display = 'flex'; }
-        function closeHermesMockupGallery() { document.getElementById('hermes-mockup-lightbox').style.display = 'none'; }
+        function openHermesMockupGallery() { 
+            document.getElementById('hermes-mockup-lightbox').style.display = 'flex'; 
+            document.body.style.overflow = 'hidden';
+        }
+        function closeHermesMockupGallery() { 
+            document.getElementById('hermes-mockup-lightbox').style.display = 'none'; 
+            document.body.style.overflow = '';
+        }
         function closeHermesMockupOnBackground(e) { if (e.target.id === 'hermes-mockup-lightbox') closeHermesMockupGallery(); }
         
         function viewMockupSingle(el) { openLightbox(el); }
 
         // --- PANORAMA ---
         let viewer;
-        function openPanoramaGallery() { document.getElementById('panorama-gallery-modal').style.display = 'flex'; }
-        function closePanoramaGallery() { document.getElementById('panorama-gallery-modal').style.display = 'none'; }
+        function openPanoramaGallery() { 
+            document.getElementById('panorama-gallery-modal').style.display = 'flex'; 
+            document.body.style.overflow = 'hidden';
+        }
+        function closePanoramaGallery() { 
+            document.getElementById('panorama-gallery-modal').style.display = 'none'; 
+            document.body.style.overflow = '';
+        }
         function closePanoramaGalleryOnBackground(e) { if (e.target.id === 'panorama-gallery-modal') closePanoramaGallery(); }
 
         function openPanoramaViewer(imagePath) {
