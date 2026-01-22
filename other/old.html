@@ -1,27 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Atacan Küçüksarı – Architect Portfolio</title>
-  
+
   <!-- Favicon -->
   <link rel="icon" type="image/x-icon" href="favicon/favicon.ico">
   <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
   <link rel="manifest" href="favicon/site.webmanifest">
-  
+
   <!-- SEO Meta Tags -->
   <meta name="description" content="Atacan Küçüksarı - Architectural Design Portfolio">
-  <meta name="keywords" content="architecture, design, portfolio, Istanbul Technical University, Atacan Küçüksarı, architectural projects, 3D design, sustainable architecture">
+  <meta name="keywords"
+    content="architecture, design, portfolio, Istanbul Technical University, Atacan Küçüksarı, architectural projects, 3D design, sustainable architecture">
   <meta name="author" content="Atacan Küçüksarı">
   <meta name="robots" content="index, follow">
   <meta name="language" content="English">
   <meta name="revisit-after" content="7 days">
   <meta name="theme-color" content="#1a1a1a">
   <meta name="msapplication-TileColor" content="#1a1a1a">
-  
+
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://thauyel.github.io/">
@@ -34,7 +36,7 @@
   <meta property="og:site_name" content="Atacan Küçüksarı Portfolio">
   <meta property="og:locale" content="en_US">
   <meta property="og:image:secure_url" content="https://thauyel.github.io/src/profile.jpg">
-  
+
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:url" content="https://thauyel.github.io/">
@@ -43,10 +45,10 @@
   <meta name="twitter:image" content="https://thauyel.github.io/src/profile.jpg">
   <meta name="twitter:image:alt" content="Atacan Küçüksarı Architecture Portfolio">
   <meta name="twitter:creator" content="@atacanks">
-  
+
   <!-- Canonical URL -->
   <link rel="canonical" href="https://thauyel.github.io/">
-  
+
   <!-- Structured Data -->
   <script type="application/ld+json">
   {
@@ -74,13 +76,17 @@
     ]
   }
   </script>
-  
+
   <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet">
+
   <style>
     /* Reset & Base */
-    *, *::before, *::after {
+    *,
+    *::before,
+    *::after {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
@@ -99,16 +105,16 @@
       --text-muted: #6b6b6b;
       --border-color: #333333;
       --border-light: #2a2a2a;
-      
+
       /* Shadows */
       --shadow-light: rgba(0, 0, 0, 0.2);
       --shadow-medium: rgba(0, 0, 0, 0.4);
       --shadow-heavy: rgba(0, 0, 0, 0.6);
-      
+
       /* Gradients */
       --gradient-primary: linear-gradient(135deg, #333333 0%, #1a1a1a 100%);
       --gradient-accent: linear-gradient(135deg, #ffffff 0%, #e5e5e5 100%);
-      
+
       /* Fonts */
       --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       --font-mono: 'JetBrains Mono', monospace;
@@ -616,22 +622,69 @@
     }
 
     /* Project Image Backgrounds */
-    .project-image[data-img="pr1-1"] { background-image: url('src/pr1-1.jpg'); }
-    .project-image[data-img="pr1-2"] { background-image: url('src/pr1-2.jpg'); }
-    .project-image[data-img="pr1-3"] { background-image: url('src/pr1-3.jpg'); }
-    .project-image[data-img="pr1-4"] { background-image: url('src/pr1-4.jpg'); }
-    .project-image[data-img="pr2-1"] { background-image: url('src/pr2-1.jpg'); }
-    .project-image[data-img="pr2-2"] { background-image: url('src/pr2-2.jpg'); }
-    .project-image[data-img="pr2-3"] { background-image: url('src/pr2-3.jpg'); }
-    .project-image[data-img="pr2-4"] { background-image: url('src/pr2-4.jpg'); }
-    .project-image[data-img="pr3-1"] { background-image: url('src/pr3-1.jpg'); }
-    .project-image[data-img="pr3-2"] { background-image: url('src/pr3-2.jpg'); }
-    .project-image[data-img="pr3-3"] { background-image: url('src/pr3-3.jpg'); }
-    .project-image[data-img="pr3-4"] { background-image: url('src/pr3-4.jpg'); }
-    .project-image[data-img="pr4-1"] { background-image: url('src/pr4-1.jpg'); }
-    .project-image[data-img="pr4-2"] { background-image: url('src/pr4-2.jpg'); }
-    .project-image[data-img="pr4-3"] { background-image: url('src/pr4-3.jpg'); }
-    .project-image[data-img="pr4-4"] { background-image: url('src/pr4-4.jpg'); }
+    .project-image[data-img="pr1-1"] {
+      background-image: url('src/pr1-1.jpg');
+    }
+
+    .project-image[data-img="pr1-2"] {
+      background-image: url('src/pr1-2.jpg');
+    }
+
+    .project-image[data-img="pr1-3"] {
+      background-image: url('src/pr1-3.jpg');
+    }
+
+    .project-image[data-img="pr1-4"] {
+      background-image: url('src/pr1-4.jpg');
+    }
+
+    .project-image[data-img="pr2-1"] {
+      background-image: url('src/pr2-1.jpg');
+    }
+
+    .project-image[data-img="pr2-2"] {
+      background-image: url('src/pr2-2.jpg');
+    }
+
+    .project-image[data-img="pr2-3"] {
+      background-image: url('src/pr2-3.jpg');
+    }
+
+    .project-image[data-img="pr2-4"] {
+      background-image: url('src/pr2-4.jpg');
+    }
+
+    .project-image[data-img="pr3-1"] {
+      background-image: url('src/pr3-1.jpg');
+    }
+
+    .project-image[data-img="pr3-2"] {
+      background-image: url('src/pr3-2.jpg');
+    }
+
+    .project-image[data-img="pr3-3"] {
+      background-image: url('src/pr3-3.jpg');
+    }
+
+    .project-image[data-img="pr3-4"] {
+      background-image: url('src/pr3-4.jpg');
+    }
+
+    .project-image[data-img="pr4-1"] {
+      background-image: url('src/pr4-1.jpg');
+    }
+
+    .project-image[data-img="pr4-2"] {
+      background-image: url('src/pr4-2.jpg');
+    }
+
+    .project-image[data-img="pr4-3"] {
+      background-image: url('src/pr4-3.jpg');
+    }
+
+    .project-image[data-img="pr4-4"] {
+      background-image: url('src/pr4-4.jpg');
+    }
 
     /* Lightbox */
     .lightbox {
@@ -665,6 +718,7 @@
         opacity: 0;
         transform: translateY(30px);
       }
+
       to {
         opacity: 1;
         transform: translateY(0);
@@ -802,30 +856,30 @@
         grid-template-columns: 1fr;
       }
     }
-	
-	a:link {
-  color: white;
-  background-color: transparent;
-  text-decoration: none;
-}
 
-a:visited {
-  color: lightgray;
-  background-color: transparent;
-  text-decoration: none;
-}
+    a:link {
+      color: white;
+      background-color: transparent;
+      text-decoration: none;
+    }
 
-a:hover {
-  color: white;
-  background-color: transparent;
-  text-decoration: underline;
-}
+    a:visited {
+      color: lightgray;
+      background-color: transparent;
+      text-decoration: none;
+    }
 
-a:active {
-  color: white;
-  background-color: transparent;
-  text-decoration: underline;
-}
+    a:hover {
+      color: white;
+      background-color: transparent;
+      text-decoration: underline;
+    }
+
+    a:active {
+      color: white;
+      background-color: transparent;
+      text-decoration: underline;
+    }
   </style>
 
   <!-- Vercel Web Analytics -->
@@ -834,6 +888,7 @@ a:active {
   </script>
   <script defer src="/_vercel/insights/script.js"></script>
 </head>
+
 <body>
   <!-- Scroll Progress -->
   <div class="scroll-progress">
@@ -884,15 +939,16 @@ a:active {
       <div class="hero-photo-section">
         <div class="hero-photo"></div>
       </div>
-      
+
       <div class="hero-content">
         <h1 class="hero-name">Atacan Küçüksarı</h1>
         <p class="hero-title">Architect</p>
-        
+
         <p class="hero-description">
-          I am Atacan Küçüksarı, architect. I specialize in 3D design and enjoy experimenting with various tools to create innovative architectural solutions.
+          I am Atacan Küçüksarı, architect. I specialize in 3D design and enjoy experimenting with various tools to
+          create innovative architectural solutions.
         </p>
-        
+
         <div class="contact-section">
           <h4 class="contact-title">Contact Information</h4>
           <div class="contact-list">
@@ -900,17 +956,16 @@ a:active {
               <div class="contact-icon">@</div>
               <a href="mailto:atacan.k03@gmail.com" class="contact-link">atacan.k03@gmail.com</a>
             </div>
-            <div class="contact-item">
-              <div class="contact-icon">@</div>
-              <a href="mailto:kucuksariatacan@gmail.com" class="contact-link">kucuksariatacan@gmail.com</a>
-            </div>
+
             <div class="contact-item">
               <div class="contact-icon">in</div>
-              <a href="https://www.linkedin.com/in/atacanks/" class="contact-link" target="_blank" rel="noopener noreferrer">atacanks</a>
+              <a href="https://www.linkedin.com/in/atacanks/" class="contact-link" target="_blank"
+                rel="noopener noreferrer">atacanks</a>
             </div>
             <div class="contact-item">
               <div class="contact-icon">ig</div>
-              <a href="https://www.instagram.com/thauyel" class="contact-link" target="_blank" rel="noopener noreferrer">thauyel</a>
+              <a href="https://www.instagram.com/thauyel" class="contact-link" target="_blank"
+                rel="noopener noreferrer">thauyel</a>
             </div>
             <div class="contact-item">
               <div class="contact-icon">tel</div>
@@ -918,7 +973,7 @@ a:active {
             </div>
           </div>
         </div>
-        
+
         <div class="info-section">
           <h4 class="info-title">Languages</h4>
           <div class="info-list">
@@ -926,7 +981,7 @@ a:active {
             <div class="info-item">English - <span class="education-period">Fluent (C1)</span></div>
           </div>
         </div>
-        
+
         <div class="info-section">
           <h4 class="info-title">Education</h4>
           <div class="info-list">
@@ -959,7 +1014,7 @@ a:active {
             <div class="skill-dot filled"></div>
           </div>
         </div>
-        
+
         <div class="skill-card loading">
           <span class="skill-name">Adobe Illustrator</span>
           <div class="skill-rating">
@@ -970,7 +1025,7 @@ a:active {
             <div class="skill-dot"></div>
           </div>
         </div>
-        
+
         <div class="skill-card loading">
           <span class="skill-name">Adobe After Effects</span>
           <div class="skill-rating">
@@ -981,7 +1036,7 @@ a:active {
             <div class="skill-dot filled"></div>
           </div>
         </div>
-        
+
         <div class="skill-card loading">
           <span class="skill-name">Adobe Premiere Pro</span>
           <div class="skill-rating">
@@ -992,7 +1047,7 @@ a:active {
             <div class="skill-dot"></div>
           </div>
         </div>
-        
+
         <div class="skill-card loading">
           <span class="skill-name">ArchiCAD</span>
           <div class="skill-rating">
@@ -1003,7 +1058,7 @@ a:active {
             <div class="skill-dot"></div>
           </div>
         </div>
-        
+
         <div class="skill-card loading">
           <span class="skill-name">Autodesk AutoCAD</span>
           <div class="skill-rating">
@@ -1014,7 +1069,7 @@ a:active {
             <div class="skill-dot"></div>
           </div>
         </div>
-        
+
         <div class="skill-card loading">
           <span class="skill-name">Rhinoceros</span>
           <div class="skill-rating">
@@ -1025,7 +1080,7 @@ a:active {
             <div class="skill-dot filled"></div>
           </div>
         </div>
-        
+
         <div class="skill-card loading">
           <span class="skill-name">Twinmotion</span>
           <div class="skill-rating">
@@ -1036,7 +1091,7 @@ a:active {
             <div class="skill-dot filled"></div>
           </div>
         </div>
-        
+
         <div class="skill-card loading">
           <span class="skill-name">Blender</span>
           <div class="skill-rating">
@@ -1047,7 +1102,7 @@ a:active {
             <div class="skill-dot"></div>
           </div>
         </div>
-        
+
         <div class="skill-card loading">
           <span class="skill-name">SketchUp</span>
           <div class="skill-rating">
@@ -1058,7 +1113,7 @@ a:active {
             <div class="skill-dot"></div>
           </div>
         </div>
-        
+
         <div class="skill-card loading">
           <span class="skill-name">Stable Diffusion</span>
           <div class="skill-rating">
@@ -1069,7 +1124,7 @@ a:active {
             <div class="skill-dot filled"></div>
           </div>
         </div>
-        
+
         <div class="skill-card loading">
           <span class="skill-name">Midjourney</span>
           <div class="skill-rating">
@@ -1080,7 +1135,7 @@ a:active {
             <div class="skill-dot filled"></div>
           </div>
         </div>
-        
+
         <div class="skill-card loading">
           <span class="skill-name">Microsoft Office Suite</span>
           <div class="skill-rating">
@@ -1091,7 +1146,7 @@ a:active {
             <div class="skill-dot"></div>
           </div>
         </div>
-        
+
         <div class="skill-card loading">
           <span class="skill-name">Unreal Engine</span>
           <div class="skill-rating">
@@ -1102,7 +1157,7 @@ a:active {
             <div class="skill-dot"></div>
           </div>
         </div>
-        
+
         <div class="skill-card loading">
           <span class="skill-name">D5 Render</span>
           <div class="skill-rating">
@@ -1113,7 +1168,7 @@ a:active {
             <div class="skill-dot"></div>
           </div>
         </div>
-        
+
         <div class="skill-card loading">
           <span class="skill-name">ChatGPT / AI Tools</span>
           <div class="skill-rating">
@@ -1132,14 +1187,18 @@ a:active {
       <div class="section-number">03</div>
       <h2 class="section-title">Selected Projects</h2>
       <div class="projects-grid">
-        
+
         <!-- Project 1 -->
         <div class="project-card loading">
           <div class="project-header">
             <div class="project-number">Project 01</div>
             <h3 class="project-title">Apollo</h3>
             <p class="project-description">
-              A comprehensive cultural arts center designed for Bagdat Street, serving as a community hub for artistic expression and cultural exchange. The project features modular sustainable architecture with exhibition halls, multipurpose studios, workshops, and performance spaces. Designed to accommodate diverse user groups including art enthusiasts, collectors, creators, and the curious public, while promoting local artists and providing accessible cultural programming for the neighborhood.
+              A comprehensive cultural arts center designed for Bagdat Street, serving as a community hub for artistic
+              expression and cultural exchange. The project features modular sustainable architecture with exhibition
+              halls, multipurpose studios, workshops, and performance spaces. Designed to accommodate diverse user
+              groups including art enthusiasts, collectors, creators, and the curious public, while promoting local
+              artists and providing accessible cultural programming for the neighborhood.
             </p>
           </div>
           <div class="project-images">
@@ -1156,10 +1215,16 @@ a:active {
             <div class="project-number">Project 02</div>
             <h3 class="project-title">Tremora</h3>
             <p class="project-description">
-              A safe haven in times of need, a community hub every day. This project aims deliver a relief home structure to support a modular assembly system. The building's core components are designed for rapid assembly and disassembly, allowing for an efficient transformation from a community center to an emergency response hub. The modular units can be used simultaneously from world gatherings to crisis response, disaster recovery, and relief efforts as community-centric response scenarios.
+              A safe haven in times of need, a community hub every day. This project aims deliver a relief home
+              structure to support a modular assembly system. The building's core components are designed for rapid
+              assembly and disassembly, allowing for an efficient transformation from a community center to an emergency
+              response hub. The modular units can be used simultaneously from world gatherings to crisis response,
+              disaster recovery, and relief efforts as community-centric response scenarios.
             </p>
-			<br>
-			<a target="_blank" rel="noopener noreferrer" href="https://dented-port-5f4.notion.site/Welcome-to-WebXR-Portal-1802e040667e8002861ef17c41bb3039">Access Panoramic Presentation</a>
+            <br>
+            <a target="_blank" rel="noopener noreferrer"
+              href="https://dented-port-5f4.notion.site/Welcome-to-WebXR-Portal-1802e040667e8002861ef17c41bb3039">Access
+              Panoramic Presentation</a>
           </div>
           <div class="project-images">
             <div class="project-image" data-img="pr2-1"></div>
@@ -1175,10 +1240,18 @@ a:active {
             <div class="project-number">Project 03</div>
             <h3 class="project-title">Hermes</h3>
             <p class="project-description">
-              Located within the confines of a former quarry, Hermes reinterprets an artificial landscape through deliberate architectural intervention. The design accepts the site's post-industrial condition and engages in active reshaping, introducing a dual-axis organizational strategy that guides visitors through open recreational programs while accommodating controlled-access functions. The modular structure of steel and sandwich panels extends downward, adapting to the topographic slope and transforming the quarry into a dynamic recreational hub. Rather than merely occupying the space, the building dialogues with the evolving landscape, serving as a constructed memory that mediates between the visible and hidden, the active and contemplative. 
+              Located within the confines of a former quarry, Hermes reinterprets an artificial landscape through
+              deliberate architectural intervention. The design accepts the site's post-industrial condition and engages
+              in active reshaping, introducing a dual-axis organizational strategy that guides visitors through open
+              recreational programs while accommodating controlled-access functions. The modular structure of steel and
+              sandwich panels extends downward, adapting to the topographic slope and transforming the quarry into a
+              dynamic recreational hub. Rather than merely occupying the space, the building dialogues with the evolving
+              landscape, serving as a constructed memory that mediates between the visible and hidden, the active and
+              contemplative.
             </p>
-			<br>
-			<a target="_blank" rel="noopener noreferrer" href="https://youtu.be/SxEzgLZ7ucI">Access Video Presentation</a>
+            <br>
+            <a target="_blank" rel="noopener noreferrer" href="https://youtu.be/SxEzgLZ7ucI">Access Video
+              Presentation</a>
           </div>
           <div class="project-images">
             <div class="project-image" data-img="pr3-1"></div>
@@ -1194,7 +1267,14 @@ a:active {
             <div class="project-number">Project 04</div>
             <h3 class="project-title">Travion</h3>
             <p class="project-description">
-              A hub solution for Izmir/Kemeraltı residents that serves as both a resting place and a passageway, seamlessly integrating modern amenities with the rich history of the area. Travion includes a public square, a bazaar area, and an auction house, all infused with historical elements that pay homage to Kemeraltı's vibrant trading tradition. By modernizing these existing trade functions, the project creates a dynamic and versatile space that caters to contemporary needs while preserving cultural heritage. The hub serves as a gateway to the historic market, providing both entrance and exit points, making it a central and functional part of the community where people can pause, interact, and engage with their surroundings.
+              A hub solution for Izmir/Kemeraltı residents that serves as both a resting place and a passageway,
+              seamlessly integrating modern amenities with the rich history of the area. Travion includes a public
+              square, a bazaar area, and an auction house, all infused with historical elements that pay homage to
+              Kemeraltı's vibrant trading tradition. By modernizing these existing trade functions, the project creates
+              a dynamic and versatile space that caters to contemporary needs while preserving cultural heritage. The
+              hub serves as a gateway to the historic market, providing both entrance and exit points, making it a
+              central and functional part of the community where people can pause, interact, and engage with their
+              surroundings.
             </p>
           </div>
           <div class="project-images">
@@ -1235,7 +1315,7 @@ a:active {
       sections.forEach(section => {
         const sectionTop = section.offsetTop;
         const sectionHeight = section.offsetHeight;
-        
+
         if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
           current = section.getAttribute('id');
         }
@@ -1255,7 +1335,7 @@ a:active {
         e.preventDefault();
         const targetId = link.getAttribute('href').substring(1);
         const targetSection = document.getElementById(targetId);
-        
+
         if (targetSection) {
           const offsetTop = targetSection.offsetTop - 70;
           window.scrollTo({
@@ -1277,7 +1357,7 @@ a:active {
         const scrollTop = window.pageYOffset;
         const docHeight = document.documentElement.scrollHeight - window.innerHeight;
         const scrollPercent = (scrollTop / docHeight) * 100;
-        
+
         scrollBar.style.width = Math.min(scrollPercent, 100) + '%';
       }
     }
@@ -1320,7 +1400,7 @@ a:active {
         lightboxImg.style.transform = 'scale(0.9)';
         lightboxImg.style.transition = 'all 0.3s ease';
         lightboxImg.style.border = '1px solid var(--border-color)';
-        
+
         lightboxContent.innerHTML = '';
         lightboxContent.appendChild(lightboxImg);
         lightbox.classList.add('active');
@@ -1352,9 +1432,9 @@ a:active {
 
     // Close mobile menu when clicking outside
     document.addEventListener('click', (e) => {
-      if (sidebar.classList.contains('active') && 
-          !sidebar.contains(e.target) && 
-          !mobileMenuBtn.contains(e.target)) {
+      if (sidebar.classList.contains('active') &&
+        !sidebar.contains(e.target) &&
+        !mobileMenuBtn.contains(e.target)) {
         sidebar.classList.remove('active');
         mobileMenuBtn.textContent = '☰';
       }
@@ -1395,4 +1475,5 @@ a:active {
     });
   </script>
 </body>
+
 </html>
