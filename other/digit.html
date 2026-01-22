@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="tr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -7,10 +8,11 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
-        
+
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #000000; /* Pure Black */
+            background-color: #000000;
+            /* Pure Black */
             color: #e5e7eb;
             user-select: none;
             -webkit-user-select: none;
@@ -22,8 +24,10 @@
         .number-circle {
             width: 180px;
             height: 180px;
-            background: linear-gradient(135deg, #ea580c, #9a3412); /* Daha derin turuncu */
-            border: 4px solid #27272a; /* Zinc-800 */
+            background: linear-gradient(135deg, #ea580c, #9a3412);
+            /* Daha derin turuncu */
+            border: 4px solid #27272a;
+            /* Zinc-800 */
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -31,7 +35,8 @@
             font-size: 6rem;
             color: #ffffff;
             font-weight: 800;
-            box-shadow: 0 0 60px rgba(234, 88, 12, 0.25); /* Daha soft glow */
+            box-shadow: 0 0 60px rgba(234, 88, 12, 0.25);
+            /* Daha soft glow */
             will-change: contents;
         }
 
@@ -45,8 +50,10 @@
         }
 
         .numpad-btn {
-            background-color: #18181b; /* Zinc-950 */
-            border: 1px solid #27272a; /* Zinc-800 */
+            background-color: #18181b;
+            /* Zinc-950 */
+            border: 1px solid #27272a;
+            /* Zinc-800 */
             border-radius: 16px;
             font-size: 2rem;
             color: #f4f4f5;
@@ -68,7 +75,8 @@
 
         /* --- INPUT ALANI --- */
         .input-display {
-            border-bottom: 2px solid #dc2626; /* Red-600 */
+            border-bottom: 2px solid #dc2626;
+            /* Red-600 */
             min-height: 60px;
             display: flex;
             align-items: flex-end;
@@ -81,9 +89,17 @@
             text-shadow: 0 0 10px rgba(220, 38, 38, 0.5);
         }
 
-        .hidden { display: none !important; }
-        .flex-center { display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        
+        .hidden {
+            display: none !important;
+        }
+
+        .flex-center {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
         /* Overlay Backdrop */
         .backdrop {
             background-color: rgba(0, 0, 0, 0.95);
@@ -99,7 +115,7 @@
             margin-bottom: 2rem;
             overflow: hidden;
         }
-        
+
         .timer-fill {
             height: 100%;
             background: linear-gradient(90deg, #dc2626, #991b1b);
@@ -111,11 +127,13 @@
         /* --- LOVE BOX --- */
         .love-box {
             background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(244, 114, 182, 0.3); /* Soft pink border */
+            border: 1px solid rgba(244, 114, 182, 0.3);
+            /* Soft pink border */
             border-radius: 16px;
             padding: 2rem;
             margin: 2rem 0;
-            color: #f472b6; /* Pink-400 */
+            color: #f472b6;
+            /* Pink-400 */
             font-weight: 600;
             font-size: 1.1rem;
             letter-spacing: 0.05em;
@@ -124,8 +142,17 @@
         }
 
         @keyframes pulse-glow {
-            0%, 100% { box-shadow: 0 0 15px rgba(244, 114, 182, 0.05); border-color: rgba(244, 114, 182, 0.2); }
-            50% { box-shadow: 0 0 25px rgba(244, 114, 182, 0.2); border-color: rgba(244, 114, 182, 0.5); }
+
+            0%,
+            100% {
+                box-shadow: 0 0 15px rgba(244, 114, 182, 0.05);
+                border-color: rgba(244, 114, 182, 0.2);
+            }
+
+            50% {
+                box-shadow: 0 0 25px rgba(244, 114, 182, 0.2);
+                border-color: rgba(244, 114, 182, 0.5);
+            }
         }
 
         /* Pause Button Area */
@@ -135,10 +162,10 @@
             right: 24px;
             z-index: 60;
         }
-        
+
         .btn-pause {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             color: #a1a1aa;
             padding: 8px 16px;
             border-radius: 99px;
@@ -148,22 +175,25 @@
             transition: all 0.2s;
             backdrop-filter: blur(4px);
         }
-        
-        .btn-pause:hover { background: rgba(255,255,255,0.1); color: white; border-color: rgba(255,255,255,0.3); }
+
+        .btn-pause:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-color: rgba(255, 255, 255, 0.3);
+        }
 
         /* Panel Style */
         .dark-panel {
-            background-color: #09090b; /* Zinc-950 */
-            border: 1px solid #27272a; /* Zinc-800 */
+            background-color: #09090b;
+            /* Zinc-950 */
+            border: 1px solid #27272a;
+            /* Zinc-800 */
         }
     </style>
 
-    <!-- Vercel Web Analytics -->
-    <script>
-      window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
-    </script>
-    <script defer src="/_vercel/insights/script.js"></script>
+
 </head>
+
 <body class="h-screen w-screen flex-center bg-black relative">
 
     <!-- GLOBAL PAUSE BUTTON -->
@@ -175,431 +205,451 @@
 
     <!-- 1. MENÜ EKRANI -->
     <div id="screen-menu" class="w-full max-w-md p-8 rounded-3xl text-center mx-4 dark-panel shadow-2xl">
-        <h1 class="text-4xl font-black mb-1 text-white tracking-tighter" style="text-shadow: 0 0 30px rgba(255,255,255,0.1);">DIGIT SPAN</h1>
-        
+        <h1 class="text-4xl font-black mb-1 text-white tracking-tighter"
+            style="text-shadow: 0 0 30px rgba(255,255,255,0.1);">DIGIT SPAN</h1>
+
         <!-- LOVE BOX -->
         <div class="love-box">
-            Seni çok seviyorum <3
+            Seni çok seviyorum <3 </div>
+
+                <div class="grid grid-cols-3 gap-3">
+                    <button onclick="App.startGame('easy')"
+                        class="py-4 bg-emerald-900/40 hover:bg-emerald-800/60 border border-emerald-800/50 text-emerald-400 rounded-xl font-bold transition duration-300">KOLAY</button>
+                    <button onclick="App.startGame('medium')"
+                        class="py-4 bg-amber-900/40 hover:bg-amber-800/60 border border-amber-800/50 text-amber-400 rounded-xl font-bold transition duration-300">ORTA</button>
+                    <button onclick="App.startGame('hard')"
+                        class="py-4 bg-rose-900/40 hover:bg-rose-800/60 border border-rose-800/50 text-rose-400 rounded-xl font-bold transition duration-300">ZOR</button>
+                </div>
         </div>
 
-        <div class="grid grid-cols-3 gap-3">
-            <button onclick="App.startGame('easy')" class="py-4 bg-emerald-900/40 hover:bg-emerald-800/60 border border-emerald-800/50 text-emerald-400 rounded-xl font-bold transition duration-300">KOLAY</button>
-            <button onclick="App.startGame('medium')" class="py-4 bg-amber-900/40 hover:bg-amber-800/60 border border-amber-800/50 text-amber-400 rounded-xl font-bold transition duration-300">ORTA</button>
-            <button onclick="App.startGame('hard')" class="py-4 bg-rose-900/40 hover:bg-rose-800/60 border border-rose-800/50 text-rose-400 rounded-xl font-bold transition duration-300">ZOR</button>
-        </div>
-    </div>
-
-    <!-- 2. GÖSTERİM EKRANI -->
-    <div id="screen-display" class="hidden fixed inset-0 z-40 flex-center bg-black">
-        <div id="number-container" class="number-circle mb-10"></div>
-        <p class="text-zinc-500 text-sm font-bold tracking-[0.4em] uppercase animate-pulse">
-            Odaklan
-        </p>
-    </div>
-
-    <!-- 3. GİRİŞ EKRANI -->
-    <div id="screen-input" class="hidden w-full max-w-md p-4 flex-center z-40 relative">
-        <div class="w-full flex justify-between items-end mb-6 px-2">
-            <div class="text-zinc-500 font-medium text-xs tracking-wider">SORU <span id="lbl-level" class="text-white font-bold text-lg ml-1">1</span>/10</div>
-            <div id="lbl-info" class="text-[10px] font-bold bg-zinc-900 px-3 py-1 rounded-full text-zinc-400 uppercase border border-zinc-800"></div>
+        <!-- 2. GÖSTERİM EKRANI -->
+        <div id="screen-display" class="hidden fixed inset-0 z-40 flex-center bg-black">
+            <div id="number-container" class="number-circle mb-10"></div>
+            <p class="text-zinc-500 text-sm font-bold tracking-[0.4em] uppercase animate-pulse">
+                Odaklan
+            </p>
         </div>
 
-        <div class="timer-track">
-            <div id="timer-bar" class="timer-fill" style="width: 100%;"></div>
+        <!-- 3. GİRİŞ EKRANI -->
+        <div id="screen-input" class="hidden w-full max-w-md p-4 flex-center z-40 relative">
+            <div class="w-full flex justify-between items-end mb-6 px-2">
+                <div class="text-zinc-500 font-medium text-xs tracking-wider">SORU <span id="lbl-level"
+                        class="text-white font-bold text-lg ml-1">1</span>/10</div>
+                <div id="lbl-info"
+                    class="text-[10px] font-bold bg-zinc-900 px-3 py-1 rounded-full text-zinc-400 uppercase border border-zinc-800">
+                </div>
+            </div>
+
+            <div class="timer-track">
+                <div id="timer-bar" class="timer-fill" style="width: 100%;"></div>
+            </div>
+
+            <div class="w-full text-center">
+                <div id="input-display" class="input-display"></div>
+                <p class="text-zinc-600 text-[10px] uppercase tracking-[0.3em] font-bold mb-6">Sırayı Giriniz</p>
+            </div>
+
+            <div class="numpad-grid">
+                <button class="numpad-btn" onclick="App.addInput(1)">1</button>
+                <button class="numpad-btn" onclick="App.addInput(2)">2</button>
+                <button class="numpad-btn" onclick="App.addInput(3)">3</button>
+                <button class="numpad-btn" onclick="App.addInput(4)">4</button>
+                <button class="numpad-btn" onclick="App.addInput(5)">5</button>
+                <button class="numpad-btn" onclick="App.addInput(6)">6</button>
+                <button class="numpad-btn" onclick="App.addInput(7)">7</button>
+                <button class="numpad-btn" onclick="App.addInput(8)">8</button>
+                <button class="numpad-btn" onclick="App.addInput(9)">9</button>
+                <div class="numpad-btn opacity-0 pointer-events-none"></div>
+                <button class="numpad-btn" onclick="App.addInput(0)">0</button>
+                <button class="numpad-btn text-rose-500 border-rose-900/30 bg-rose-900/10 hover:bg-rose-900/20"
+                    onclick="App.removeInput()">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"></path>
+                        <line x1="18" y1="9" x2="12" y2="15"></line>
+                        <line x1="12" y1="9" x2="18" y2="15"></line>
+                    </svg>
+                </button>
+            </div>
         </div>
 
-        <div class="w-full text-center">
-            <div id="input-display" class="input-display"></div>
-            <p class="text-zinc-600 text-[10px] uppercase tracking-[0.3em] font-bold mb-6">Sırayı Giriniz</p>
+        <!-- 4. ARA SONUÇ (FEEDBACK) EKRANI -->
+        <div id="screen-feedback"
+            class="hidden w-full max-w-md p-8 dark-panel rounded-3xl text-center mx-4 z-50 shadow-2xl">
+            <div id="fb-icon" class="text-6xl mb-6 scale-110"></div>
+            <h2 id="fb-title" class="text-3xl font-black mb-2 text-white tracking-tight"></h2>
+            <p id="fb-msg" class="text-zinc-400 mb-8 text-sm font-medium"></p>
+
+            <div class="text-left bg-black border border-zinc-800 p-5 rounded-2xl mb-8">
+                <div class="grid grid-cols-1 gap-4">
+                    <div>
+                        <span class="text-zinc-600 text-[10px] uppercase font-bold tracking-widest">Tam Dizi</span>
+                        <p id="fb-shown" class="font-mono text-base text-zinc-400 mt-1 break-all"></p>
+                    </div>
+                    <div>
+                        <span class="text-zinc-600 text-[10px] uppercase font-bold tracking-widest">Doğru Cevap</span>
+                        <p id="fb-correct" class="font-mono text-base text-emerald-500 font-bold mt-1 break-all"></p>
+                    </div>
+                    <div>
+                        <span class="text-zinc-600 text-[10px] uppercase font-bold tracking-widest">Senin Girişin</span>
+                        <p id="fb-user" class="font-mono text-base text-rose-500 font-bold mt-1 break-all"></p>
+                    </div>
+                </div>
+            </div>
+
+            <button id="btn-next" onclick="App.nextStep()"
+                class="w-full py-4 bg-white text-black hover:bg-zinc-200 rounded-xl font-bold text-lg shadow-lg transition transform active:scale-95">Sıradaki
+                Soru</button>
         </div>
 
-        <div class="numpad-grid">
-            <button class="numpad-btn" onclick="App.addInput(1)">1</button>
-            <button class="numpad-btn" onclick="App.addInput(2)">2</button>
-            <button class="numpad-btn" onclick="App.addInput(3)">3</button>
-            <button class="numpad-btn" onclick="App.addInput(4)">4</button>
-            <button class="numpad-btn" onclick="App.addInput(5)">5</button>
-            <button class="numpad-btn" onclick="App.addInput(6)">6</button>
-            <button class="numpad-btn" onclick="App.addInput(7)">7</button>
-            <button class="numpad-btn" onclick="App.addInput(8)">8</button>
-            <button class="numpad-btn" onclick="App.addInput(9)">9</button>
-            <div class="numpad-btn opacity-0 pointer-events-none"></div>
-            <button class="numpad-btn" onclick="App.addInput(0)">0</button>
-            <button class="numpad-btn text-rose-500 border-rose-900/30 bg-rose-900/10 hover:bg-rose-900/20" onclick="App.removeInput()">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"></path><line x1="18" y1="9" x2="12" y2="15"></line><line x1="12" y1="9" x2="18" y2="15"></line></svg>
+        <!-- 5. DURAKLATMA EKRANI -->
+        <div id="screen-pause" class="hidden fixed inset-0 z-[100] flex-center backdrop">
+            <div class="w-full max-w-sm p-8 dark-panel rounded-3xl text-center mx-4 border border-zinc-700">
+                <h2 class="text-2xl font-black text-white mb-8 tracking-wide">DURAKLATILDI</h2>
+
+                <div class="space-y-3">
+                    <button onclick="App.togglePause()"
+                        class="w-full py-4 bg-white text-black hover:bg-zinc-200 rounded-xl font-bold shadow-lg">
+                        DEVAM ET
+                    </button>
+                    <button onclick="location.reload()"
+                        class="w-full py-4 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 rounded-xl font-bold shadow-lg">
+                        ANA MENÜ
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 6. FINAL SKOR EKRANI -->
+        <div id="screen-result"
+            class="hidden w-full max-w-md p-8 dark-panel rounded-3xl text-center mx-4 z-50 shadow-2xl">
+            <div class="text-7xl mb-6">👑</div>
+            <h2 class="text-3xl font-black text-white mb-2 tracking-tight">OYUN BİTTİ</h2>
+            <p class="text-zinc-500 mb-8 font-medium">Bütün sorular tamamlandı.</p>
+
+            <div class="bg-black rounded-2xl p-8 mb-8 border border-zinc-800 relative overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-br from-emerald-900/20 to-transparent"></div>
+                <div class="relative z-10">
+                    <div class="text-zinc-500 text-xs font-bold uppercase tracking-[0.2em] mb-2">TOPLAM SKOR</div>
+                    <div class="text-6xl font-black text-white tracking-tighter">
+                        <span id="res-score">0</span><span class="text-3xl text-zinc-600 font-normal">/10</span>
+                    </div>
+                </div>
+            </div>
+
+            <button onclick="location.reload()"
+                class="w-full py-4 bg-white text-black hover:bg-zinc-200 rounded-xl font-bold text-lg shadow-lg transition">
+                ANA MENÜYE DÖN
             </button>
         </div>
-    </div>
 
-    <!-- 4. ARA SONUÇ (FEEDBACK) EKRANI -->
-    <div id="screen-feedback" class="hidden w-full max-w-md p-8 dark-panel rounded-3xl text-center mx-4 z-50 shadow-2xl">
-        <div id="fb-icon" class="text-6xl mb-6 scale-110"></div>
-        <h2 id="fb-title" class="text-3xl font-black mb-2 text-white tracking-tight"></h2>
-        <p id="fb-msg" class="text-zinc-400 mb-8 text-sm font-medium"></p>
-        
-        <div class="text-left bg-black border border-zinc-800 p-5 rounded-2xl mb-8">
-            <div class="grid grid-cols-1 gap-4">
-                <div>
-                    <span class="text-zinc-600 text-[10px] uppercase font-bold tracking-widest">Tam Dizi</span>
-                    <p id="fb-shown" class="font-mono text-base text-zinc-400 mt-1 break-all"></p>
-                </div>
-                <div>
-                    <span class="text-zinc-600 text-[10px] uppercase font-bold tracking-widest">Doğru Cevap</span>
-                    <p id="fb-correct" class="font-mono text-base text-emerald-500 font-bold mt-1 break-all"></p>
-                </div>
-                <div>
-                    <span class="text-zinc-600 text-[10px] uppercase font-bold tracking-widest">Senin Girişin</span>
-                    <p id="fb-user" class="font-mono text-base text-rose-500 font-bold mt-1 break-all"></p>
-                </div>
-            </div>
-        </div>
-
-        <button id="btn-next" onclick="App.nextStep()" class="w-full py-4 bg-white text-black hover:bg-zinc-200 rounded-xl font-bold text-lg shadow-lg transition transform active:scale-95">Sıradaki Soru</button>
-    </div>
-
-    <!-- 5. DURAKLATMA EKRANI -->
-    <div id="screen-pause" class="hidden fixed inset-0 z-[100] flex-center backdrop">
-        <div class="w-full max-w-sm p-8 dark-panel rounded-3xl text-center mx-4 border border-zinc-700">
-            <h2 class="text-2xl font-black text-white mb-8 tracking-wide">DURAKLATILDI</h2>
-            
-            <div class="space-y-3">
-                <button onclick="App.togglePause()" class="w-full py-4 bg-white text-black hover:bg-zinc-200 rounded-xl font-bold shadow-lg">
-                    DEVAM ET
-                </button>
-                <button onclick="location.reload()" class="w-full py-4 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 rounded-xl font-bold shadow-lg">
-                    ANA MENÜ
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- 6. FINAL SKOR EKRANI -->
-    <div id="screen-result" class="hidden w-full max-w-md p-8 dark-panel rounded-3xl text-center mx-4 z-50 shadow-2xl">
-        <div class="text-7xl mb-6">👑</div>
-        <h2 class="text-3xl font-black text-white mb-2 tracking-tight">OYUN BİTTİ</h2>
-        <p class="text-zinc-500 mb-8 font-medium">Bütün sorular tamamlandı.</p>
-        
-        <div class="bg-black rounded-2xl p-8 mb-8 border border-zinc-800 relative overflow-hidden">
-            <div class="absolute inset-0 bg-gradient-to-br from-emerald-900/20 to-transparent"></div>
-            <div class="relative z-10">
-                <div class="text-zinc-500 text-xs font-bold uppercase tracking-[0.2em] mb-2">TOPLAM SKOR</div>
-                <div class="text-6xl font-black text-white tracking-tighter">
-                    <span id="res-score">0</span><span class="text-3xl text-zinc-600 font-normal">/10</span>
-                </div>
-            </div>
-        </div>
-
-        <button onclick="location.reload()" class="w-full py-4 bg-white text-black hover:bg-zinc-200 rounded-xl font-bold text-lg shadow-lg transition">
-            ANA MENÜYE DÖN
-        </button>
-    </div>
-
-    <script>
-        const App = {
-            config: {
-                easy: { startAnswerLen: 4, maxAnswerLen: 10, timePerDigit: 2500 },
-                medium: { startAnswerLen: 6, maxAnswerLen: 10, timePerDigit: 2000 },
-                hard: { startAnswerLen: 8, maxAnswerLen: 12, timePerDigit: 1500 }
-            },
-
-            state: {
-                activeProcessId: 0,
-                isPaused: false,
-                difficulty: 'medium',
-                level: 1,
-                maxLevels: 10,
-                score: 0,
-                targetAnswerCount: 0,
-                fullSequence: [],
-                correctAnswer: [],
-                userInputs: [],
-                timerId: null,
-                timerStartTime: 0,
-                timerRemaining: 0
-            },
-
-            dom: {
-                controls: document.getElementById('controls-area'),
-                screens: {
-                    menu: document.getElementById('screen-menu'),
-                    display: document.getElementById('screen-display'),
-                    input: document.getElementById('screen-input'),
-                    feedback: document.getElementById('screen-feedback'),
-                    pause: document.getElementById('screen-pause'),
-                    result: document.getElementById('screen-result')
+        <script>
+            const App = {
+                config: {
+                    easy: { startAnswerLen: 4, maxAnswerLen: 10, timePerDigit: 2500 },
+                    medium: { startAnswerLen: 6, maxAnswerLen: 10, timePerDigit: 2000 },
+                    hard: { startAnswerLen: 8, maxAnswerLen: 12, timePerDigit: 1500 }
                 },
-                numberBox: document.getElementById('number-container'),
-                inputBox: document.getElementById('input-display'),
-                timerBar: document.getElementById('timer-bar'),
-                labels: {
-                    level: document.getElementById('lbl-level'),
-                    info: document.getElementById('lbl-info'),
-                    fbTitle: document.getElementById('fb-title'),
-                    fbMsg: document.getElementById('fb-msg'),
-                    fbIcon: document.getElementById('fb-icon'),
-                    shown: document.getElementById('fb-shown'),
-                    correct: document.getElementById('fb-correct'),
-                    user: document.getElementById('fb-user'),
-                    finalScore: document.getElementById('res-score')
+
+                state: {
+                    activeProcessId: 0,
+                    isPaused: false,
+                    difficulty: 'medium',
+                    level: 1,
+                    maxLevels: 10,
+                    score: 0,
+                    targetAnswerCount: 0,
+                    fullSequence: [],
+                    correctAnswer: [],
+                    userInputs: [],
+                    timerId: null,
+                    timerStartTime: 0,
+                    timerRemaining: 0
                 },
-                btns: {
-                    next: document.getElementById('btn-next')
-                }
-            },
 
-            sleep: (ms) => new Promise(r => setTimeout(r, ms)),
-
-            showScreen: function(name) {
-                ['menu', 'display', 'input', 'feedback', 'result'].forEach(key => {
-                    this.dom.screens[key].classList.add('hidden');
-                });
-                
-                const target = this.dom.screens[name];
-                target.classList.remove('hidden');
-                
-                if (name === 'display' || name === 'input') {
-                    target.classList.add('flex-center');
-                    if(name === 'input') target.style.display = 'flex'; 
-                    this.dom.controls.classList.remove('hidden');
-                } else {
-                    this.dom.controls.classList.add('hidden');
-                }
-            },
-
-            togglePause: function() {
-                this.state.isPaused = !this.state.isPaused;
-                
-                if (this.state.isPaused) {
-                    this.dom.screens.pause.classList.remove('hidden');
-                    this.dom.screens.pause.classList.add('flex-center');
-                    
-                    if (this.state.timerId) {
-                        clearTimeout(this.state.timerId);
-                        const elapsed = Date.now() - this.state.timerStartTime;
-                        this.state.timerRemaining -= elapsed;
-                        const computedStyle = window.getComputedStyle(this.dom.timerBar);
-                        const width = computedStyle.getPropertyValue('width');
-                        this.dom.timerBar.style.transition = 'none';
-                        this.dom.timerBar.style.width = width;
+                dom: {
+                    controls: document.getElementById('controls-area'),
+                    screens: {
+                        menu: document.getElementById('screen-menu'),
+                        display: document.getElementById('screen-display'),
+                        input: document.getElementById('screen-input'),
+                        feedback: document.getElementById('screen-feedback'),
+                        pause: document.getElementById('screen-pause'),
+                        result: document.getElementById('screen-result')
+                    },
+                    numberBox: document.getElementById('number-container'),
+                    inputBox: document.getElementById('input-display'),
+                    timerBar: document.getElementById('timer-bar'),
+                    labels: {
+                        level: document.getElementById('lbl-level'),
+                        info: document.getElementById('lbl-info'),
+                        fbTitle: document.getElementById('fb-title'),
+                        fbMsg: document.getElementById('fb-msg'),
+                        fbIcon: document.getElementById('fb-icon'),
+                        shown: document.getElementById('fb-shown'),
+                        correct: document.getElementById('fb-correct'),
+                        user: document.getElementById('fb-user'),
+                        finalScore: document.getElementById('res-score')
+                    },
+                    btns: {
+                        next: document.getElementById('btn-next')
                     }
+                },
 
-                } else {
-                    this.dom.screens.pause.classList.add('hidden');
-                    if (!this.dom.screens.input.classList.contains('hidden')) {
-                        this.resumeTimer();
-                    }
-                }
-            },
+                sleep: (ms) => new Promise(r => setTimeout(r, ms)),
 
-            waitWhilePaused: async function() {
-                while(this.state.isPaused) {
-                    await this.sleep(100);
-                }
-            },
+                showScreen: function (name) {
+                    ['menu', 'display', 'input', 'feedback', 'result'].forEach(key => {
+                        this.dom.screens[key].classList.add('hidden');
+                    });
 
-            startGame: function(difficulty) {
-                this.state.activeProcessId++;
-                this.state.difficulty = difficulty;
-                this.state.level = 1;
-                this.state.score = 0;
-                this.state.isPaused = false;
-                this.state.targetAnswerCount = this.config[difficulty].startAnswerLen;
-                
-                this.playRound();
-            },
+                    const target = this.dom.screens[name];
+                    target.classList.remove('hidden');
 
-            playRound: async function() {
-                this.state.userInputs = [];
-                this.state.fullSequence = this.generateSmartSequence(this.state.targetAnswerCount);
-                this.state.correctAnswer = this.calculateLogic(this.state.fullSequence);
-                
-                this.dom.inputBox.innerText = "";
-                this.dom.labels.level.innerText = this.state.level;
-                this.dom.labels.info.innerText = `${this.state.difficulty}`;
-                
-                this.showScreen('display');
-                await this.runDisplayLoop(this.state.activeProcessId);
-            },
-
-            generateSmartSequence: function(targetAnswerCount) {
-                let seq = [];
-                let currentAnswerCount = 0;
-                let lastNum = Math.floor(Math.random() * 10);
-                seq.push(lastNum);
-                currentAnswerCount++;
-
-                while (currentAnswerCount < targetAnswerCount) {
-                    let canGoUp = lastNum < 9;
-                    let canGoDown = lastNum > 0;
-                    let wantTarget = Math.random() > 0.4;
-
-                    if (canGoUp && (wantTarget || !canGoDown)) {
-                        let min = lastNum + 1;
-                        let max = 9;
-                        let nextNum = Math.floor(Math.random() * (max - min + 1)) + min;
-                        seq.push(nextNum);
-                        lastNum = nextNum;
-                        currentAnswerCount++;
+                    if (name === 'display' || name === 'input') {
+                        target.classList.add('flex-center');
+                        if (name === 'input') target.style.display = 'flex';
+                        this.dom.controls.classList.remove('hidden');
                     } else {
-                        let min = 0;
-                        let max = lastNum - 1;
-                        let nextNum = Math.floor(Math.random() * (max - min + 1)) + min;
-                        seq.push(nextNum);
-                        lastNum = nextNum;
+                        this.dom.controls.classList.add('hidden');
                     }
-                }
-                return seq;
-            },
+                },
 
-            calculateLogic: function(seq) {
-                if (!seq.length) return [];
-                const ans = [seq[0]];
-                for (let i = 1; i < seq.length; i++) {
-                    if (seq[i] > seq[i-1]) ans.push(seq[i]);
-                }
-                return ans;
-            },
+                togglePause: function () {
+                    this.state.isPaused = !this.state.isPaused;
 
-            runDisplayLoop: async function(processId) {
-                const seq = this.state.fullSequence;
-                const box = this.dom.numberBox;
+                    if (this.state.isPaused) {
+                        this.dom.screens.pause.classList.remove('hidden');
+                        this.dom.screens.pause.classList.add('flex-center');
 
-                box.innerText = "";
-                await this.sleep(1000);
-                await this.waitWhilePaused();
+                        if (this.state.timerId) {
+                            clearTimeout(this.state.timerId);
+                            const elapsed = Date.now() - this.state.timerStartTime;
+                            this.state.timerRemaining -= elapsed;
+                            const computedStyle = window.getComputedStyle(this.dom.timerBar);
+                            const width = computedStyle.getPropertyValue('width');
+                            this.dom.timerBar.style.transition = 'none';
+                            this.dom.timerBar.style.width = width;
+                        }
 
-                for (let i = 0; i < seq.length; i++) {
-                    if (processId !== this.state.activeProcessId) return;
-                    await this.waitWhilePaused();
+                    } else {
+                        this.dom.screens.pause.classList.add('hidden');
+                        if (!this.dom.screens.input.classList.contains('hidden')) {
+                            this.resumeTimer();
+                        }
+                    }
+                },
 
-                    box.innerText = seq[i];
-                    await this.sleep(1000);
-                    
-                    if (processId !== this.state.activeProcessId) return;
-                    await this.waitWhilePaused();
+                waitWhilePaused: async function () {
+                    while (this.state.isPaused) {
+                        await this.sleep(100);
+                    }
+                },
+
+                startGame: function (difficulty) {
+                    this.state.activeProcessId++;
+                    this.state.difficulty = difficulty;
+                    this.state.level = 1;
+                    this.state.score = 0;
+                    this.state.isPaused = false;
+                    this.state.targetAnswerCount = this.config[difficulty].startAnswerLen;
+
+                    this.playRound();
+                },
+
+                playRound: async function () {
+                    this.state.userInputs = [];
+                    this.state.fullSequence = this.generateSmartSequence(this.state.targetAnswerCount);
+                    this.state.correctAnswer = this.calculateLogic(this.state.fullSequence);
+
+                    this.dom.inputBox.innerText = "";
+                    this.dom.labels.level.innerText = this.state.level;
+                    this.dom.labels.info.innerText = `${this.state.difficulty}`;
+
+                    this.showScreen('display');
+                    await this.runDisplayLoop(this.state.activeProcessId);
+                },
+
+                generateSmartSequence: function (targetAnswerCount) {
+                    let seq = [];
+                    let currentAnswerCount = 0;
+                    let lastNum = Math.floor(Math.random() * 10);
+                    seq.push(lastNum);
+                    currentAnswerCount++;
+
+                    while (currentAnswerCount < targetAnswerCount) {
+                        let canGoUp = lastNum < 9;
+                        let canGoDown = lastNum > 0;
+                        let wantTarget = Math.random() > 0.4;
+
+                        if (canGoUp && (wantTarget || !canGoDown)) {
+                            let min = lastNum + 1;
+                            let max = 9;
+                            let nextNum = Math.floor(Math.random() * (max - min + 1)) + min;
+                            seq.push(nextNum);
+                            lastNum = nextNum;
+                            currentAnswerCount++;
+                        } else {
+                            let min = 0;
+                            let max = lastNum - 1;
+                            let nextNum = Math.floor(Math.random() * (max - min + 1)) + min;
+                            seq.push(nextNum);
+                            lastNum = nextNum;
+                        }
+                    }
+                    return seq;
+                },
+
+                calculateLogic: function (seq) {
+                    if (!seq.length) return [];
+                    const ans = [seq[0]];
+                    for (let i = 1; i < seq.length; i++) {
+                        if (seq[i] > seq[i - 1]) ans.push(seq[i]);
+                    }
+                    return ans;
+                },
+
+                runDisplayLoop: async function (processId) {
+                    const seq = this.state.fullSequence;
+                    const box = this.dom.numberBox;
 
                     box.innerText = "";
-                    await this.sleep(200);
-                }
+                    await this.sleep(1000);
+                    await this.waitWhilePaused();
 
-                if (processId !== this.state.activeProcessId) return;
-                this.startInputPhase();
-            },
+                    for (let i = 0; i < seq.length; i++) {
+                        if (processId !== this.state.activeProcessId) return;
+                        await this.waitWhilePaused();
 
-            startInputPhase: function() {
-                this.showScreen('input');
-                
-                const ansLen = this.state.correctAnswer.length;
-                const msPerDigit = this.config[this.state.difficulty].timePerDigit;
-                const timeAllowed = Math.max(4000, ansLen * msPerDigit); 
-                
-                this.state.timerRemaining = timeAllowed;
-                this.state.timerStartTime = Date.now();
+                        box.innerText = seq[i];
+                        await this.sleep(1000);
 
-                const bar = this.dom.timerBar;
-                bar.style.transition = 'none';
-                bar.style.width = '100%';
-                void bar.offsetWidth;
-                
-                bar.style.transition = `width ${timeAllowed}ms linear`;
-                bar.style.width = '0%';
+                        if (processId !== this.state.activeProcessId) return;
+                        await this.waitWhilePaused();
 
-                if (this.state.timerId) clearTimeout(this.state.timerId);
-                this.state.timerId = setTimeout(() => {
-                    this.finalize(false);
-                }, timeAllowed);
-            },
-
-            resumeTimer: function() {
-                const timeAllowed = this.state.timerRemaining;
-                this.state.timerStartTime = Date.now();
-
-                const bar = this.dom.timerBar;
-                bar.style.transition = `width ${timeAllowed}ms linear`;
-                bar.style.width = '0%';
-
-                this.state.timerId = setTimeout(() => {
-                    this.finalize(false);
-                }, timeAllowed);
-            },
-
-            addInput: function(num) {
-                if (this.dom.screens.input.classList.contains('hidden') || this.state.isPaused) return;
-                
-                this.state.userInputs.push(num);
-                this.dom.inputBox.innerText = this.state.userInputs.join(' - ');
-
-                if (this.state.userInputs.length >= this.state.correctAnswer.length) {
-                    if (this.state.timerId) clearTimeout(this.state.timerId);
-                    this.state.timerId = null;
-                    setTimeout(() => this.finalize(true), 250);
-                }
-            },
-
-            removeInput: function() {
-                if (!this.state.userInputs.length || this.state.isPaused) return;
-                this.state.userInputs.pop();
-                this.dom.inputBox.innerText = this.state.userInputs.join(' - ');
-            },
-
-            finalize: function(triggeredByUser) {
-                if (this.state.timerId) clearTimeout(this.state.timerId);
-                
-                const isCorrect = JSON.stringify(this.state.userInputs) === JSON.stringify(this.state.correctAnswer);
-                
-                if (isCorrect) {
-                    this.state.score++;
-                }
-
-                this.showFeedback(isCorrect);
-            },
-
-            showFeedback: function(isCorrect) {
-                this.showScreen('feedback');
-                const l = this.dom.labels;
-                const btn = this.dom.btns.next;
-                
-                l.shown.innerText = this.state.fullSequence.join('-');
-                l.correct.innerText = this.state.correctAnswer.join('-');
-                l.user.innerText = this.state.userInputs.length ? this.state.userInputs.join('-') : "(Boş)";
-
-                if (this.state.level >= this.state.maxLevels) {
-                    btn.innerText = "SONUÇLARI GÖR";
-                    btn.onclick = () => App.showFinalResults();
-                } else {
-                    btn.innerText = "SIRADAKİ SORU";
-                    btn.onclick = () => App.nextStep();
-                }
-
-                if (isCorrect) {
-                    l.fbIcon.innerText = "✨";
-                    l.fbTitle.innerText = "MÜKEMMEL";
-                    l.fbTitle.className = "text-4xl font-black mb-2 text-white tracking-tight";
-                    l.fbMsg.innerText = "Doğru bildin! Puan eklendi.";
-                    
-                    const maxLen = this.config[this.state.difficulty].maxAnswerLen;
-                    if (this.state.targetAnswerCount < maxLen) {
-                         this.state.targetAnswerCount++;
+                        box.innerText = "";
+                        await this.sleep(200);
                     }
 
-                } else {
-                    l.fbIcon.innerText = "💔";
-                    l.fbTitle.innerText = "OLMADI";
-                    l.fbTitle.className = "text-4xl font-black mb-2 text-white tracking-tight";
-                    l.fbMsg.innerText = "Bu seferlik kaçtı, moral bozmak yok.";
+                    if (processId !== this.state.activeProcessId) return;
+                    this.startInputPhase();
+                },
+
+                startInputPhase: function () {
+                    this.showScreen('input');
+
+                    const ansLen = this.state.correctAnswer.length;
+                    const msPerDigit = this.config[this.state.difficulty].timePerDigit;
+                    const timeAllowed = Math.max(4000, ansLen * msPerDigit);
+
+                    this.state.timerRemaining = timeAllowed;
+                    this.state.timerStartTime = Date.now();
+
+                    const bar = this.dom.timerBar;
+                    bar.style.transition = 'none';
+                    bar.style.width = '100%';
+                    void bar.offsetWidth;
+
+                    bar.style.transition = `width ${timeAllowed}ms linear`;
+                    bar.style.width = '0%';
+
+                    if (this.state.timerId) clearTimeout(this.state.timerId);
+                    this.state.timerId = setTimeout(() => {
+                        this.finalize(false);
+                    }, timeAllowed);
+                },
+
+                resumeTimer: function () {
+                    const timeAllowed = this.state.timerRemaining;
+                    this.state.timerStartTime = Date.now();
+
+                    const bar = this.dom.timerBar;
+                    bar.style.transition = `width ${timeAllowed}ms linear`;
+                    bar.style.width = '0%';
+
+                    this.state.timerId = setTimeout(() => {
+                        this.finalize(false);
+                    }, timeAllowed);
+                },
+
+                addInput: function (num) {
+                    if (this.dom.screens.input.classList.contains('hidden') || this.state.isPaused) return;
+
+                    this.state.userInputs.push(num);
+                    this.dom.inputBox.innerText = this.state.userInputs.join(' - ');
+
+                    if (this.state.userInputs.length >= this.state.correctAnswer.length) {
+                        if (this.state.timerId) clearTimeout(this.state.timerId);
+                        this.state.timerId = null;
+                        setTimeout(() => this.finalize(true), 250);
+                    }
+                },
+
+                removeInput: function () {
+                    if (!this.state.userInputs.length || this.state.isPaused) return;
+                    this.state.userInputs.pop();
+                    this.dom.inputBox.innerText = this.state.userInputs.join(' - ');
+                },
+
+                finalize: function (triggeredByUser) {
+                    if (this.state.timerId) clearTimeout(this.state.timerId);
+
+                    const isCorrect = JSON.stringify(this.state.userInputs) === JSON.stringify(this.state.correctAnswer);
+
+                    if (isCorrect) {
+                        this.state.score++;
+                    }
+
+                    this.showFeedback(isCorrect);
+                },
+
+                showFeedback: function (isCorrect) {
+                    this.showScreen('feedback');
+                    const l = this.dom.labels;
+                    const btn = this.dom.btns.next;
+
+                    l.shown.innerText = this.state.fullSequence.join('-');
+                    l.correct.innerText = this.state.correctAnswer.join('-');
+                    l.user.innerText = this.state.userInputs.length ? this.state.userInputs.join('-') : "(Boş)";
+
+                    if (this.state.level >= this.state.maxLevels) {
+                        btn.innerText = "SONUÇLARI GÖR";
+                        btn.onclick = () => App.showFinalResults();
+                    } else {
+                        btn.innerText = "SIRADAKİ SORU";
+                        btn.onclick = () => App.nextStep();
+                    }
+
+                    if (isCorrect) {
+                        l.fbIcon.innerText = "✨";
+                        l.fbTitle.innerText = "MÜKEMMEL";
+                        l.fbTitle.className = "text-4xl font-black mb-2 text-white tracking-tight";
+                        l.fbMsg.innerText = "Doğru bildin! Puan eklendi.";
+
+                        const maxLen = this.config[this.state.difficulty].maxAnswerLen;
+                        if (this.state.targetAnswerCount < maxLen) {
+                            this.state.targetAnswerCount++;
+                        }
+
+                    } else {
+                        l.fbIcon.innerText = "💔";
+                        l.fbTitle.innerText = "OLMADI";
+                        l.fbTitle.className = "text-4xl font-black mb-2 text-white tracking-tight";
+                        l.fbMsg.innerText = "Bu seferlik kaçtı, moral bozmak yok.";
+                    }
+                },
+
+                nextStep: function () {
+                    this.state.level++;
+                    this.playRound();
+                },
+
+                showFinalResults: function () {
+                    this.showScreen('result');
+                    this.dom.labels.finalScore.innerText = this.state.score;
                 }
-            },
-
-            nextStep: function() {
-                this.state.level++;
-                this.playRound();
-            },
-
-            showFinalResults: function() {
-                this.showScreen('result');
-                this.dom.labels.finalScore.innerText = this.state.score;
-            }
-        };
-    </script>
+            };
+        </script>
 </body>
+
 </html>
