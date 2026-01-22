@@ -52,14 +52,13 @@
     <section id="home">
         <div class="viewport-label">PERSPECTIVE</div>
         <div class="hero-content hidden">
-            <img src="src/profile.jpg" alt="Atacan Küçüksarı" class="profile-img"
-                onclick="window.location.href='other/game.html'" style="cursor: crosshair;">
+            <img src="src/profile.jpg" alt="Atacan Küçüksarı" class="profile-img cursor-crosshair"
+                onclick="window.location.href='other/game.html'">
             <h1>Atacan Küçüksarı</h1>
-            <p style="color: var(--rhino-cyan); margin-bottom: 20px; font-weight: 600; letter-spacing: 1px;">
+            <p class="role-text">
                 Architect / 3D Visualizer
             </p>
-            <div
-                style="border-left: 2px solid var(--rhino-accent); padding-left: 15px; margin: 20px 0; text-align: left; font-style: italic; color: #ccc;">
+            <div class="bio-quote">
                 <p style="margin-bottom: 10px;">
                     "M.Arch Candidate at <span style="color: white; font-weight: bold;">Politecnico Di Milano</span>.
                 </p>
@@ -87,7 +86,7 @@
                 <span class="year">2021 - 2025</span>
                 <h3>Bachelor of Architecture | BArch</h3>
                 <p>Istanbul Technical University (İTÜ)</p>
-                <p style="font-size:0.9rem; opacity:0.7; color: var(--rhino-cyan); margin-top:5px;">GPA: 3.19</p>
+                <p class="gpa-text">GPA: 3.19</p>
             </div>
         </div>
     </section>
@@ -100,7 +99,7 @@
                 <span class="year">Jan 2025 - Feb 2025</span>
                 <h3>Architectural Intern | Summa Turizm Yatırımcılığı A.Ş.</h3>
                 <p>Istanbul, Turkey (On-site)</p>
-                <p style="margin-top:10px; border-top: 1px dashed #555; padding-top: 10px;">
+                <p class="job-details">
                     <em>Tasks:</em> Served as a <strong>Construction Site Examiner</strong>; monitored construction
                     progress, inspected on-site tasks for quality control.
                 </p>
@@ -115,13 +114,13 @@
                 </p>
             </div>
             <div class="timeline-item research-item">
-                <span class="year" style="color: var(--rhino-magenta);">2025</span>
+                <span class="year text-magenta">2025</span>
                 <h3>Academic Researcher | GAIA (ITU)</h3>
                 <p>Istanbul Technical University</p>
                 <p style="margin-top:10px; border-top: 1px dashed #555; padding-top: 10px;">
                     <em>Focus:</em> <strong>GAIA (Generative Architecture & Intelligence Agency)</strong> Project.
                 </p>
-                <p style="margin-top:5px; font-size: 0.9rem;">
+                <p style="margin-top:5px;" class="text-small">
                     Contributed to the development of a custom <strong>AI Interface</strong> designed to integrate
                     artificial intelligence into architectural workflows.
                 </p>
@@ -294,8 +293,8 @@
         <div class="viewport-label">PROJECT_VIEW_TREMORA</div>
         <div class="container hidden">
             <div class="project-header">
-                <h2 style="border-color: #ff0055;">Tremora</h2>
-                <h3 style="opacity: 0.7;">"A Safe Haven"</h3>
+                <h2 class="border-pink">Tremora</h2>
+                <h3 class="opacity-70">"A Safe Haven"</h3>
             </div>
             <div class="project-details">
                 <div class="detail-list">
@@ -326,8 +325,8 @@
         <div class="viewport-label">PROJECT_VIEW_TRAVION</div>
         <div class="container hidden">
             <div class="project-header">
-                <h2 style="border-color: #00ff00;">Travion</h2>
-                <h3 style="opacity: 0.7;">"Trade, Travel & Transform"</h3>
+                <h2 class="border-green">Travion</h2>
+                <h3 class="opacity-70">"Trade, Travel & Transform"</h3>
             </div>
             <div class="project-details">
                 <div class="detail-list">
@@ -355,8 +354,8 @@
         <div class="viewport-label">PROJECT_VIEW_APOLLO</div>
         <div class="container hidden">
             <div class="project-header">
-                <h2 style="border-color: #ff9900;">Apollo</h2>
-                <h3 style="opacity: 0.7;">"Create and Exhibit"</h3>
+                <h2 class="border-orange">Apollo</h2>
+                <h3 class="opacity-70">"Create and Exhibit"</h3>
             </div>
             <div class="project-details">
                 <div class="detail-list">
@@ -389,8 +388,8 @@
         <div class="viewport-label">PROJECT_VIEW_HERMES</div>
         <div class="container hidden">
             <div class="project-header">
-                <h2 style="border-color: #aa00ff;">Hermes</h2>
-                <h3 style="opacity: 0.7;">"Move, Play, Thrive!"</h3>
+                <h2 class="border-purple">Hermes</h2>
+                <h3 class="opacity-70">"Move, Play, Thrive!"</h3>
             </div>
             <div class="project-details">
                 <div class="detail-list">
@@ -400,7 +399,7 @@
                     <button class="mockup-button" onclick="openHermesMockupGallery()">
                         <i class="fas fa-cube"></i> View Model Photos
                     </button>
-                    <div class="sidebar-video-container" style="margin-top: 20px;">
+                    <div class="sidebar-video-container mt-20">
                         <iframe src="https://www.youtube-nocookie.com/embed/SxEzgLZ7ucI?rel=0&modestbranding=1"
                             title="Hermes Project Video" frameborder="0"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -495,11 +494,10 @@
     <div id="panorama-gallery-modal" onclick="closePanoramaGalleryOnBackground(event)">
         <span id="panorama-close-btn" onclick="closePanoramaGallery()">&times;</span>
         <div style="text-align: center; max-width: 1000px; width: 90%; height: 90%; overflow-y: auto;">
-            <h3
-                style="color: var(--rhino-magenta); margin-bottom: 20px; text-transform: uppercase; background: #000; display: inline-block; padding: 5px 15px; border: 1px solid var(--rhino-magenta);">
+            <h3 class="bg-black-labeled">
                 Tremora 360° Panoramas
             </h3>
-            <div class="mockup-gallery-grid" style="border-color: var(--rhino-magenta);">
+            <div class="mockup-gallery-grid border-magenta">
                 <div class="panorama-item" onclick="openPanoramaViewer('src/ITU-7/panoramas/p1.jpg')"><i
                         class="fas fa-vr-cardboard fa-3x" style="color:#888;"></i>
                     <p>Corner of Commercial</p>
@@ -571,7 +569,7 @@
 
         function updateCommandLine(sectionId) {
             let formattedText = sectionId.charAt(0).toUpperCase() + sectionId.slice(1);
-            document.getElementById('typing-text').innerHTML = `_SetView_${formattedText} <span style="animation: blink 1s infinite">|</span>`;
+            document.getElementById('typing-text').innerHTML = `_SetView_${formattedText} <span class="blink-cursor">|</span>`;
         }
 
         // --- LIGHTBOX (MOUSE-CENTRIC ZOOM) ---
