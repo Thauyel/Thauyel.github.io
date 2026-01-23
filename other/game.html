@@ -328,21 +328,37 @@
         }
 
         // --- VISUALS ---
-        let gridOffset = 0;
-        function drawGrid() {
-            gridOffset = (gridOffset + 0.5) % 40;
-            ctx.strokeStyle = 'rgba(0, 243, 255, 0.1)';
+        function drawBackground() {
+            // Deep Space Gradient
+            let grd = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            grd.addColorStop(0, "#080810");
+            grd.addColorStop(1, "#151020");
+            ctx.fillStyle = grd;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Static Grid
             ctx.lineWidth = 1;
+            ctx.strokeStyle = 'rgba(0, 243, 255, 0.08)';
+            const sz = 60; // Larger cells
+
             ctx.beginPath();
-            // Vertical lines
-            for (let x = gridOffset; x < canvas.width; x += 40) {
+            // Vertical
+            for (let x = 0; x <= canvas.width; x += sz) {
                 ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height);
             }
-            // Horizontal lines
-            for (let y = gridOffset; y < canvas.height; y += 40) {
+            // Horizontal
+            for (let y = 0; y <= canvas.height; y += sz) {
                 ctx.moveTo(0, y); ctx.lineTo(canvas.width, y);
             }
             ctx.stroke();
+
+            // Grid Intersections (Nice detail)
+            ctx.fillStyle = 'rgba(0, 243, 255, 0.3)';
+            for (let x = 0; x <= canvas.width; x += sz) {
+                for (let y = 0; y <= canvas.height; y += sz) {
+                    ctx.fillRect(x - 1, y - 1, 3, 3);
+                }
+            }
         }
 
         // Player
@@ -873,7 +889,27 @@
 
                 // Refresh shop to update levels and costs
                 game.renShop();
+            },
+
+            activatePower: (key) => {
+                const p = POWERUPS[key];
+                if (!p) return;
+
+                showNotif(p.n, p.c);
+                Sound.play('pickup');
+
+                if (p.t === 'instant') {
+                    if (key === 'medkit') { player.hp = Math.min(player.hp + 1, player.maxHp); updateHP(); }
+                    if (key === 'nuke') { document.getElementById('flash-screen').style.opacity = 1; setTimeout(() => document.getElementById('flash-screen').style.opacity = 0, 150); for (let i = enemies.length - 1; i >= 0; i--)killEnemy(enemies[i], false); shakeAmount = 50; Sound.play('explosion'); }
+                    if (key === 'magnet') { items.forEach(i => i.magnetized = true); }
+                } else {
+                    game.activePowerup = key; game.powerupMax = p.d; game.powerupTimer = p.d;
+                    const ui = document.getElementById('powerup-ui'); ui.style.opacity = 1;
+                    document.getElementById('powerup-name').innerText = p.n; document.getElementById('powerup-name').style.color = p.c;
+                    document.getElementById('powerup-bar-fill').style.backgroundColor = p.c;
+                }
             }
+
         };
 
         function showNotif(t, c) {
@@ -1010,6 +1046,19 @@
             if (player.dashCooldown > 0) player.dashCooldown--;
             document.getElementById('dash-bar-fill').style.width = (1 - (player.dashCooldown / player.dashMax)) * 100 + "%";
 
+            // Trigger Dash
+            if (keys.space && player.dashCooldown <= 0) {
+                player.isDashing = true;
+                player.dashCooldown = player.dashMax;
+                player.invulnerable = 20; // Dash gives 20 frames of invuln
+
+                // Create Dash effect
+                for (let i = 0; i < 5; i++) {
+                    particles.push(new Particle(player.x, player.y, 'trail', player.color));
+                }
+                Sound.play('shoot'); // Reuse shoot sound or add new one if possible, but shoot works for now
+            }
+
             let moveSpeed = player.speed;
             if (player.invulnerable > 10 && player.isDashing) moveSpeed *= 3;
             else player.isDashing = false;
@@ -1082,7 +1131,10 @@
                     it.y += (player.y - it.y) * 0.1 * (s / 5);
                 }
                 if (getDistSq(it.x, it.y, player.x, player.y) < 900) { // 30px radius sq
-                    if (typeof it.type === 'string') game.activatePower(it.type);
+                    if (typeof it.type === 'string') {
+                        // Check if method exists, otherwise use fallback or ignore to prevent crash
+                        if (game.activatePower) game.activatePower(it.type);
+                    }
                     else {
                         let v = it.type === 1 ? 5 : (it.type === 2 ? 15 : 50); player.xp += v;
                         if (player.xp >= player.xpNeeded) {
@@ -1109,9 +1161,8 @@
             if (shakeAmount > 0) { ctx.save(); ctx.translate((Math.random() - .5) * shakeAmount, (Math.random() - .5) * shakeAmount); shakeAmount *= .9; if (shakeAmount < 0.5) shakeAmount = 0; }
 
             // Clear and Draw Grid
-            ctx.fillStyle = 'rgba(5,5,5,0.4)';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            drawGrid();
+            // Clear and Draw Background
+            drawBackground();
 
             if (player.isDashing || player.invulnerable > 10) {
                 ctx.globalAlpha = 0.5;
