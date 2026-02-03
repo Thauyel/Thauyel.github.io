@@ -763,6 +763,92 @@ h2 {
     }
 }
 
+
 .blink-cursor {
     animation: blink 1s infinite;
+}
+
+/* --- Floating Flipbook Button --- */
+#pflip-container {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 1500;
+    pointer-events: none;
+    /* Let drag logic handle interaction or pass through */
+    /* We'll use JS to animate the container for the drag effect */
+    transition: transform 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.pflip-btn {
+    pointer-events: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    background: var(--rhino-bg);
+    border: 1px solid var(--rhino-accent);
+    /* thinner border */
+    border-radius: 50%;
+    color: var(--rhino-accent);
+    text-decoration: none;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    /* reduced shadow */
+    transition: all 0.3s ease;
+    animation: floatingBounce 3s ease-in-out infinite;
+    position: relative;
+    overflow: hidden;
+    opacity: 0.8;
+    /* slightly transparent for subtlety */
+}
+
+.pflip-btn i {
+    font-size: 1.4rem;
+    z-index: 2;
+}
+
+.pflip-btn:hover {
+    opacity: 1;
+    background: rgba(252, 238, 10, 0.1);
+    /* transparent yellow bg instead of solid */
+    color: var(--rhino-accent);
+    box-shadow: 0 0 10px rgba(252, 238, 10, 0.3);
+    /* subtle glow */
+    transform: scale(1.05);
+    border-color: var(--rhino-accent);
+}
+
+/* Optional tooltip or text */
+.pflip-btn::after {
+    content: "FLIPBOOK";
+    position: absolute;
+    bottom: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #000;
+    color: var(--rhino-accent);
+    font-size: 0.7rem;
+    padding: 2px 5px;
+    border: 1px solid var(--rhino-accent);
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+    white-space: nowrap;
+}
+
+.pflip-btn:hover::after {
+    opacity: 1;
+}
+
+@keyframes floatingBounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-8px);
+    }
 }
