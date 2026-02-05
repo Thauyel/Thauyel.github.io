@@ -358,9 +358,22 @@
         // MULTI-LAYER PROXY SYSTEM
         // 6 Different proxies for maximum reliability
         // ============================================
-        // IMPORTANT: These proxies are PUBLIC and may be unreliable or blocked.
-        // If all fail, try opening the site directly with "Open Site" button.
+        // ============================================
+        // ⚠️ SETUP REQUIRED: Deploy cors-worker.js to Cloudflare Workers
+        // Then replace YOUR_WORKER_NAME below with your worker subdomain
+        // Example: if your worker URL is https://perm-proxy.username.workers.dev
+        // Then set: CUSTOM_WORKER_URL = "https://perm-proxy.username.workers.dev"
+        // ============================================
+        const CUSTOM_WORKER_URL = "https://cors-proxy.atacan-k03.workers.dev"; // Your Cloudflare Worker
+
         const PROXY_CONFIGS = [
+            // Your own Cloudflare Worker (MOST RELIABLE - set CUSTOM_WORKER_URL above!)
+            ...(CUSTOM_WORKER_URL ? [{
+                name: "custom-worker",
+                build: (url) => `${CUSTOM_WORKER_URL}?url=${encodeURIComponent(url)}`,
+                timeout: 10000
+            }] : []),
+            // Public fallbacks (unreliable from GitHub Pages)
             {
                 name: "corsproxy.io",
                 build: (url) => `https://corsproxy.io/?${encodeURIComponent(url)}`,
@@ -375,7 +388,7 @@
                 name: "allorigins-get",
                 build: (url) => `https://api.allorigins.win/get?url=${encodeURIComponent(url)}&t=${Date.now()}`,
                 timeout: 15000,
-                parseJSON: true  // This endpoint returns JSON with contents field
+                parseJSON: true
             },
             {
                 name: "thingproxy",
@@ -385,11 +398,6 @@
             {
                 name: "codetabs",
                 build: (url) => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`,
-                timeout: 12000
-            },
-            {
-                name: "corsproxy-org",
-                build: (url) => `https://corsproxy.org/?${encodeURIComponent(url)}`,
                 timeout: 12000
             }
         ];
