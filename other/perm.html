@@ -1,179 +1,724 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tremora | Permit Tracker</title>
+    <title>Permesso Status Tracker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #ffffff;
-            --sidebar-bg: #f5f5f7;
-            --text-main: #1d1d1f;
-            --text-dim: #86868b;
-            --accent: #0071e3;
-            --border: #d2d2d7;
-            --hover: #f2f2f7;
-            --transition: 0.15s ease;
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent-color: #3b82f6;
+            --accent-hover: #2563eb;
+            --success: #22c55e;
+            --warning: #eab308;
+            --danger: #ef4444;
+            --info: #3b82f6;
         }
 
-        [data-theme="dark"] {
-            --bg: #1c1c1e;
-            --sidebar-bg: #2c2c2e;
-            --text-main: #f5f5f7;
-            --text-dim: #a1a1a6;
-            --accent: #0a84ff;
-            --border: #3a3a3c;
-            --hover: #3a3a3c;
+        * {
+            box-sizing: border-box;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
-            font-family: -apple-system, system-ui, sans-serif;
-            background-color: var(--bg);
-            color: var(--text-main);
-            height: 100vh;
-            display: grid;
-            grid-template-columns: 280px 1fr;
-            overflow: hidden;
-        }
-
-        /* Headlines Sidebar */
-        .headlines {
-            background: var(--sidebar-bg);
-            border-right: 1px solid var(--border);
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            margin: 0;
+            padding: 40px 20px;
             display: flex;
             flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            background: linear-gradient(135deg, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+            font-size: 0.9rem;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+            gap: 24px;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .status-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 28px;
+            border-radius: 20px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
         }
 
-        .header-box { padding: 20px; border-bottom: 1px solid var(--border); }
-        .header-box h2 { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-dim); }
+        .status-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
 
-        #article-list { overflow-y: auto; flex-grow: 1; }
-        .article-card {
-            padding: 16px 20px;
-            border-bottom: 1px solid var(--border);
+        .status-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .avatar {
+            width: 52px;
+            height: 52px;
+            background: linear-gradient(135deg, var(--accent-color), #8b5cf6);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: white;
+            font-size: 1.1rem;
+        }
+
+        .user-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .user-id {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            font-family: 'Monaco', 'Consolas', monospace;
+            margin-top: 4px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 4px 10px;
+            border-radius: 6px;
+        }
+
+        .status-display {
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 14px;
+            padding: 24px 16px;
+            margin-bottom: 16px;
+            min-height: 100px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .status-main {
+            font-size: 1.6rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            transition: color 0.3s;
+        }
+
+        .status-sub {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        .status-sub small {
+            display: block;
+            margin-top: 8px;
+            opacity: 0.6;
+            font-size: 0.75rem;
+        }
+
+        /* Log Area */
+        .log-area {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 10px 12px;
+            margin-bottom: 16px;
+            font-size: 0.75rem;
+            font-family: 'Monaco', 'Consolas', monospace;
+            color: var(--text-secondary);
+            text-align: left;
+            max-height: 80px;
+            overflow-y: auto;
+            display: none;
+        }
+
+        .log-area.active {
+            display: block;
+        }
+
+        .log-area .log-line {
+            margin: 2px 0;
+        }
+
+        .log-area .log-line.success {
+            color: var(--success);
+        }
+
+        .log-area .log-line.error {
+            color: var(--danger);
+        }
+
+        .log-area .log-line.warn {
+            color: var(--warning);
+        }
+
+        .actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: auto;
+        }
+
+        .btn {
+            border: none;
+            padding: 14px 16px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.9rem;
             cursor: pointer;
-            transition: background var(--transition);
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
-        .article-card:hover { background: var(--hover); }
-        .article-card.active { background: var(--bg); border-left: 4px solid var(--accent); }
-        .article-card h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 4px; line-height: 1.3; }
-        .article-meta { font-size: 0.8rem; color: var(--text-dim); display: flex; justify-content: space-between; }
 
-        /* Reading Pane */
-        .reader { overflow-y: auto; padding: 60px 40px; display: flex; justify-content: center; }
-        .content-wrap { max-width: 650px; width: 100%; }
-        .status-badge { 
-            display: inline-block; padding: 4px 12px; border-radius: 20px; 
-            background: var(--accent); color: white; font-size: 0.85rem; font-weight: 600; margin-bottom: 20px;
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-color), #6366f1);
+            color: white;
+            box-shadow: 0 4px 15px -3px rgba(59, 130, 246, 0.4);
         }
-        .content-body { font-size: 1.2rem; line-height: 1.6; }
 
-        .theme-btn { position: fixed; bottom: 20px; left: 20px; padding: 8px 12px; cursor: pointer; border-radius: 6px; border: 1px solid var(--border); background: var(--bg); color: var(--text-main); }
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px -3px rgba(59, 130, 246, 0.5);
+        }
+
+        .btn-primary:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--text-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--text-secondary);
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Status Colors */
+        .is-ready .status-display {
+            background: rgba(34, 197, 94, 0.1);
+            border-color: rgba(34, 197, 94, 0.3);
+        }
+
+        .is-ready .status-main {
+            color: var(--success);
+        }
+
+        .is-waiting .status-display {
+            background: rgba(234, 179, 8, 0.1);
+            border-color: rgba(234, 179, 8, 0.3);
+        }
+
+        .is-waiting .status-main {
+            color: var(--warning);
+        }
+
+        .is-error .status-display {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: rgba(239, 68, 68, 0.3);
+        }
+
+        .is-error .status-main {
+            color: var(--danger);
+        }
+
+        .is-info .status-display {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: rgba(59, 130, 246, 0.3);
+        }
+
+        .is-info .status-main {
+            color: var(--info);
+        }
+
+        .is-idle .status-main {
+            color: var(--text-secondary);
+            opacity: 0.6;
+        }
+
+        /* Spinner */
+        .spinner {
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 0.8s linear infinite;
+            display: none;
+        }
+
+        .btn.loading .spinner {
+            display: block;
+        }
+
+        .btn.loading .btn-text {
+            display: none;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Pulse effect for checking */
+        @keyframes pulse-border {
+
+            0%,
+            100% {
+                border-color: rgba(59, 130, 246, 0.3);
+            }
+
+            50% {
+                border-color: rgba(59, 130, 246, 0.6);
+            }
+        }
+
+        .is-checking .status-display {
+            animation: pulse-border 1.5s ease-in-out infinite;
+            border-color: rgba(59, 130, 246, 0.3);
+        }
+
+        .is-checking .status-main {
+            color: var(--accent-color);
+        }
     </style>
 </head>
-<body data-theme="light">
 
-    <section class="headlines">
-        <div class="header-box">
-            <h2>Residence Permit</h2>
-            <p style="font-size: 0.8rem; margin-top: 5px; color: var(--text-dim);">File: 059556843707</p>
-        </div>
-        <div id="article-list"></div>
-    </section>
+<body>
 
-    <main class="reader">
-        <div class="content-wrap" id="reader-pane">
-            <div style="color: var(--text-dim); text-align: center; margin-top: 100px;">
-                Checking latest status...
-            </div>
-        </div>
-    </main>
-
-    <button class="theme-btn" onclick="toggleTheme()">🌓 Theme</button>
+    <h1>🛂 Permesso Status Tracker</h1>
+    <p class="subtitle">Multi-proxy redundant checking system</p>
+    <div class="grid-container" id="cards-container"></div>
 
     <script>
-        // Directly using your XML data
-        const xmlString = `<?xml version="1.0" encoding="UTF-8" ?>
-        <rss version="2.0">
-            <channel>
-            <title>Residence permit</title> 
-            <link>https://questure.poliziadistato.it/stranieri/</link> 
-            <description>Polizia di Stato</description> 
-            <item>
-                <title>File: 059556843707</title> 
-                <link>https://questure.poliziadistato.it/servizio/servizio/stranieri/?lang=english&amp;pratica=059556843707</link>
-                <description><![CDATA[Residence permit position: residence permit is being processed.]]></description>
-                <pubDate>Thu, 05 Feb 26 10:33:18 +0100</pubDate>
-            </item>
-            </channel>
-        </rss>`;
+        // ============================================
+        // CONFIGURATION
+        // ============================================
+        const PROFILES = [
+            { name: "Thau", id: "059556843707" },
+            { name: "Cungo", id: "059553166163" },
+            { name: "EJR", id: "059556843718" }
+        ];
 
-        function parseData(xml) {
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(xml, "text/xml");
-            const items = Array.from(doc.querySelectorAll("item")).map(item => ({
-                title: item.querySelector("title")?.textContent,
-                desc: item.querySelector("description")?.textContent.trim(),
-                date: item.querySelector("pubDate")?.textContent,
-                link: item.querySelector("link")?.textContent
-            }));
-            return items;
+        const TARGET_BASE = "https://questure.poliziadistato.it/stranieri/?mime=1&lang=english&pratica=";
+
+        // ============================================
+        // MULTI-LAYER PROXY SYSTEM
+        // 6 Different proxies for maximum reliability
+        // ============================================
+        const PROXY_CONFIGS = [
+            {
+                name: "corsproxy.io",
+                build: (url) => `https://corsproxy.io/?${encodeURIComponent(url)}`,
+                timeout: 15000
+            },
+            {
+                name: "allorigins",
+                build: (url) => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}&t=${Date.now()}`,
+                timeout: 15000
+            },
+            {
+                name: "cors-anywhere-demo",
+                build: (url) => `https://cors-anywhere.herokuapp.com/${url}`,
+                timeout: 12000
+            },
+            {
+                name: "thingproxy",
+                build: (url) => `https://thingproxy.freeboard.io/fetch/${url}`,
+                timeout: 12000
+            },
+            {
+                name: "codetabs",
+                build: (url) => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`,
+                timeout: 12000
+            },
+            {
+                name: "cors.sh",
+                build: (url) => `https://proxy.cors.sh/${url}`,
+                timeout: 12000
+            }
+        ];
+
+        // ============================================
+        // ULTRA-ROBUST STATUS CHECKER CLASS
+        // ============================================
+        class UltraStatusChecker {
+            constructor() {
+                this.abortControllers = new Map();
+            }
+
+            // Cancel any ongoing request for a profile
+            cancelPending(index) {
+                if (this.abortControllers.has(index)) {
+                    this.abortControllers.get(index).abort();
+                    this.abortControllers.delete(index);
+                }
+            }
+
+            // Main check function - tries all proxies
+            async checkStatus(practiceId, index, logCallback) {
+                const targetUrl = TARGET_BASE + practiceId;
+
+                // Cancel any pending request
+                this.cancelPending(index);
+
+                let lastError = null;
+                let proxyIndex = 0;
+
+                for (const proxy of PROXY_CONFIGS) {
+                    proxyIndex++;
+                    logCallback(`[${proxyIndex}/${PROXY_CONFIGS.length}] Trying ${proxy.name}...`, 'info');
+
+                    try {
+                        const html = await this.fetchWithProxy(proxy, targetUrl, index);
+
+                        // Validate we got actual HTML content
+                        if (!html || html.length < 100) {
+                            logCallback(`${proxy.name}: Empty response`, 'warn');
+                            continue;
+                        }
+
+                        // Try to parse the response
+                        const result = this.parseResponse(html);
+
+                        if (result) {
+                            logCallback(`✓ Success via ${proxy.name}`, 'success');
+                            return result;
+                        } else {
+                            logCallback(`${proxy.name}: Could not parse response`, 'warn');
+                        }
+                    } catch (err) {
+                        const errorMsg = err.name === 'AbortError' ? 'Timeout' : err.message || 'Failed';
+                        logCallback(`${proxy.name}: ${errorMsg}`, 'error');
+                        lastError = err;
+                    }
+
+                    // Small delay between proxy attempts to avoid rate limiting
+                    await this.sleep(300);
+                }
+
+                // All proxies failed
+                throw new Error(lastError?.message || "All proxies failed to connect");
+            }
+
+            async fetchWithProxy(proxyConfig, targetUrl, index) {
+                const controller = new AbortController();
+                this.abortControllers.set(index, controller);
+
+                const timeoutId = setTimeout(() => controller.abort(), proxyConfig.timeout);
+
+                try {
+                    const proxyUrl = proxyConfig.build(targetUrl);
+
+                    const response = await fetch(proxyUrl, {
+                        method: 'GET',
+                        signal: controller.signal,
+                        headers: {
+                            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+                            'Cache-Control': 'no-cache, no-store, must-revalidate',
+                            'Pragma': 'no-cache'
+                        }
+                    });
+
+                    clearTimeout(timeoutId);
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}`);
+                    }
+
+                    const text = await response.text();
+                    return text;
+
+                } catch (err) {
+                    clearTimeout(timeoutId);
+                    throw err;
+                } finally {
+                    this.abortControllers.delete(index);
+                }
+            }
+
+            parseResponse(html) {
+                try {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, "text/html");
+
+                    // Get all text content, normalized
+                    const bodyText = (doc.body?.innerText || doc.body?.textContent || "")
+                        .toLowerCase()
+                        .replace(/\s+/g, ' ')
+                        .trim();
+
+                    // Debug log
+                    console.log("Parsed text (first 200 chars):", bodyText.substring(0, 200));
+
+                    // Check if this is actually the Italian police site response
+                    const isValidResponse = bodyText.includes("polizia") ||
+                        bodyText.includes("stranieri") ||
+                        bodyText.includes("permesso") ||
+                        bodyText.includes("permit");
+
+                    if (!isValidResponse && bodyText.length < 500) {
+                        // Might be a proxy error page
+                        return null;
+                    }
+
+                    // --- STATUS DETECTION ---
+
+                    // READY - Document ready for pickup
+                    if (bodyText.includes("ready") ||
+                        bodyText.includes("pronto") ||
+                        bodyText.includes("ritirare") ||
+                        bodyText.includes("collect")) {
+                        return {
+                            status: "READY",
+                            details: "🎉 Document is ready for collection!",
+                            type: "is-ready"
+                        };
+                    }
+
+                    // DELIVERED - Already picked up
+                    if (bodyText.includes("delivered") ||
+                        bodyText.includes("consegnato") ||
+                        bodyText.includes("rilasciato")) {
+                        return {
+                            status: "DELIVERED",
+                            details: "Document has been collected",
+                            type: "is-info"
+                        };
+                    }
+
+                    // PROCESSING - Still being processed
+                    if (bodyText.includes("under discussion") ||
+                        bodyText.includes("trattazione") ||
+                        bodyText.includes("being processed") ||
+                        bodyText.includes("processing") ||
+                        bodyText.includes("attendere") ||
+                        bodyText.includes("in lavorazione") ||
+                        bodyText.includes("esame")) {
+                        return {
+                            status: "PROCESSING",
+                            details: "Application is being processed",
+                            type: "is-waiting"
+                        };
+                    }
+
+                    // NOT FOUND / INVALID
+                    if (bodyText.includes("invalid") ||
+                        bodyText.includes("not present") ||
+                        bodyText.includes("non presente") ||
+                        bodyText.includes("does not exist") ||
+                        bodyText.includes("non trovato") ||
+                        bodyText.includes("non esiste")) {
+                        return {
+                            status: "NOT FOUND",
+                            details: "Practice ID not found in system",
+                            type: "is-error"
+                        };
+                    }
+
+                    // If we loaded a valid page but couldn't determine status
+                    if (isValidResponse) {
+                        return {
+                            status: "UNKNOWN",
+                            details: "Status could not be determined",
+                            type: "is-waiting"
+                        };
+                    }
+
+                    return null;
+
+                } catch (err) {
+                    console.error("Parse error:", err);
+                    return null;
+                }
+            }
+
+            sleep(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
         }
 
-        function timeAgo(dateStr) {
+        // ============================================
+        // UI MANAGER
+        // ============================================
+        const checker = new UltraStatusChecker();
+
+        function createCard(profile, index) {
+            const initials = profile.name.substring(0, 2).toUpperCase();
+
+            return `
+            <div class="status-card" id="card-${index}">
+                <div class="status-header">
+                    <div class="avatar">${initials}</div>
+                    <div class="user-name">${profile.name}</div>
+                    <div class="user-id">${profile.id}</div>
+                </div>
+
+                <div class="status-display" id="display-${index}">
+                    <div class="status-main is-idle" id="status-${index}">IDLE</div>
+                    <div class="status-sub" id="detail-${index}">Click "Check" to verify status</div>
+                </div>
+
+                <div class="log-area" id="log-${index}"></div>
+
+                <div class="actions">
+                    <button class="btn btn-primary" id="btn-${index}" onclick="handleCheck(${index})">
+                        <div class="spinner"></div>
+                        <span class="btn-text">✓ Check</span>
+                    </button>
+                    <a href="${TARGET_BASE}${profile.id}" 
+                       target="_blank" 
+                       class="btn btn-secondary">
+                       ↗ Open Site
+                    </a>
+                </div>
+            </div>`;
+        }
+
+        function init() {
+            const container = document.getElementById('cards-container');
+            container.innerHTML = PROFILES.map((p, i) => createCard(p, i)).join('');
+        }
+
+        function updateCardState(index, state, statusText, detailText) {
+            const card = document.getElementById(`card-${index}`);
+            const display = document.getElementById(`display-${index}`);
+            const statusEl = document.getElementById(`status-${index}`);
+            const detailEl = document.getElementById(`detail-${index}`);
+
+            // Remove all state classes
+            card.classList.remove('is-idle', 'is-checking', 'is-ready', 'is-waiting', 'is-error', 'is-info');
+
+            // Add new state
+            card.classList.add(state);
+
+            statusEl.textContent = statusText;
+            detailEl.innerHTML = detailText;
+        }
+
+        function addLog(index, message, type = 'info') {
+            const logArea = document.getElementById(`log-${index}`);
+            logArea.classList.add('active');
+
+            const line = document.createElement('div');
+            line.className = `log-line ${type}`;
+            line.textContent = message;
+            logArea.appendChild(line);
+
+            // Auto-scroll
+            logArea.scrollTop = logArea.scrollHeight;
+        }
+
+        function clearLog(index) {
+            const logArea = document.getElementById(`log-${index}`);
+            logArea.innerHTML = '';
+            logArea.classList.remove('active');
+        }
+
+        async function handleCheck(index) {
+            const btn = document.getElementById(`btn-${index}`);
+            const profile = PROFILES[index];
+
+            // Disable button & show loading
+            btn.disabled = true;
+            btn.classList.add('loading');
+
+            // Clear previous logs
+            clearLog(index);
+
+            // Update UI to checking state
+            updateCardState(index, 'is-checking', 'CHECKING...', 'Connecting to servers...');
+
             try {
-                const date = new Date(dateStr);
-                const seconds = Math.floor((new Date() - date) / 1000);
-                if (seconds < 60) return "Just now";
-                const mins = Math.floor(seconds / 60);
-                if (mins < 60) return `${mins}m ago`;
-                return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            } catch (e) { return "Recent"; }
+                // Perform the check with logging
+                const result = await checker.checkStatus(profile.id, index, (msg, type) => {
+                    addLog(index, msg, type);
+                });
+
+                // Success - update UI
+                const timestamp = new Date().toLocaleTimeString();
+                updateCardState(
+                    index,
+                    result.type,
+                    result.status,
+                    `${result.details}<small>Last checked: ${timestamp}</small>`
+                );
+
+            } catch (error) {
+                console.error("Check failed:", error);
+
+                // Error - update UI
+                addLog(index, `✗ ${error.message}`, 'error');
+                updateCardState(
+                    index,
+                    'is-error',
+                    'CONNECTION FAILED',
+                    'All proxies failed. Try again or use "Open Site" button.'
+                );
+            } finally {
+                // Re-enable button
+                btn.disabled = false;
+                btn.classList.remove('loading');
+            }
         }
 
-        function render() {
-            const items = parseData(xmlString);
-            const listEl = document.getElementById('article-list');
-            
-            listEl.innerHTML = items.map((item, idx) => `
-                <div class="article-card ${idx === 0 ? 'active' : ''}" onclick="show(${idx})">
-                    <div class="article-meta">
-                        <span>Polizia di Stato</span>
-                        <span>${timeAgo(item.date)}</span>
-                    </div>
-                    <h3>Update for ${item.title.split(':').pop()}</h3>
-                    <p style="font-size:0.85rem; color:var(--accent)">Status Update Available</p>
-                </div>
-            `).join('');
+        // ============================================
+        // INITIALIZE
+        // ============================================
+        init();
 
-            show(0); // Auto-load first item
-        }
-
-        function show(idx) {
-            const item = parseData(xmlString)[idx];
-            const reader = document.getElementById('reader-pane');
-            reader.innerHTML = `
-                <span class="status-badge">Official Status</span>
-                <h1 style="margin-bottom: 10px;">${item.title}</h1>
-                <p style="color: var(--text-dim); margin-bottom: 40px;">Last checked: ${item.date}</p>
-                <div class="content-body">
-                    <strong>Current Progress:</strong><br>
-                    <p style="margin-top:10px; font-size: 1.4rem;">${item.desc}</p>
-                </div>
-                <div style="margin-top: 50px; padding-top: 20px; border-top: 1px solid var(--border);">
-                    <a href="${item.link}" target="_blank" style="color: var(--accent); text-decoration: none; font-weight: 500;">Open Official Portal ↗</a>
-                </div>
-            `;
-        }
-
-        function toggleTheme() {
-            const body = document.body;
-            body.setAttribute('data-theme', body.getAttribute('data-theme') === 'light' ? 'dark' : 'light');
-        }
-
-        render();
     </script>
 </body>
+
 </html>
