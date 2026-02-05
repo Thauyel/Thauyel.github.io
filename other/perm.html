@@ -44,6 +44,7 @@
             letter-spacing: -1px;
             background: linear-gradient(135deg, #fff, #94a3b8);
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
             text-align: center;
         }
@@ -357,6 +358,8 @@
         // MULTI-LAYER PROXY SYSTEM
         // 6 Different proxies for maximum reliability
         // ============================================
+        // IMPORTANT: These proxies are PUBLIC and may be unreliable or blocked.
+        // If all fail, try opening the site directly with "Open Site" button.
         const PROXY_CONFIGS = [
             {
                 name: "corsproxy.io",
@@ -364,14 +367,15 @@
                 timeout: 15000
             },
             {
-                name: "allorigins",
+                name: "allorigins-raw",
                 build: (url) => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}&t=${Date.now()}`,
                 timeout: 15000
             },
             {
-                name: "cors-anywhere-demo",
-                build: (url) => `https://cors-anywhere.herokuapp.com/${url}`,
-                timeout: 12000
+                name: "allorigins-get",
+                build: (url) => `https://api.allorigins.win/get?url=${encodeURIComponent(url)}&t=${Date.now()}`,
+                timeout: 15000,
+                parseJSON: true  // This endpoint returns JSON with contents field
             },
             {
                 name: "thingproxy",
@@ -384,8 +388,8 @@
                 timeout: 12000
             },
             {
-                name: "cors.sh",
-                build: (url) => `https://proxy.cors.sh/${url}`,
+                name: "corsproxy-org",
+                build: (url) => `https://corsproxy.org/?${encodeURIComponent(url)}`,
                 timeout: 12000
             }
         ];
@@ -477,7 +481,18 @@
                         throw new Error(`HTTP ${response.status}`);
                     }
 
-                    const text = await response.text();
+                    let text = await response.text();
+
+                    // Some proxies return JSON with contents field (e.g., allorigins /get)
+                    if (proxyConfig.parseJSON) {
+                        try {
+                            const json = JSON.parse(text);
+                            text = json.contents || text;
+                        } catch (e) {
+                            // If parsing fails, use the raw text
+                        }
+                    }
+
                     return text;
 
                 } catch (err) {
