@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tremora | Permit Tracker</title>
+    <style>
+        :root {
+            --bg: #ffffff;
+            --sidebar-bg: #f5f5f7;
+            --text-main: #1d1d1f;
+            --text-dim: #86868b;
+            --accent: #0071e3;
+            --border: #d2d2d7;
+            --hover: #f2f2f7;
+            --transition: 0.15s ease;
+        }
+
+        [data-theme="dark"] {
+            --bg: #1c1c1e;
+            --sidebar-bg: #2c2c2e;
+            --text-main: #f5f5f7;
+            --text-dim: #a1a1a6;
+            --accent: #0a84ff;
+            --border: #3a3a3c;
+            --hover: #3a3a3c;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, system-ui, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            height: 100vh;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            overflow: hidden;
+        }
+
+        /* Headlines Sidebar */
+        .headlines {
+            background: var(--sidebar-bg);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .header-box { padding: 20px; border-bottom: 1px solid var(--border); }
+        .header-box h2 { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-dim); }
+
+        #article-list { overflow-y: auto; flex-grow: 1; }
+        .article-card {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+            cursor: pointer;
+            transition: background var(--transition);
+        }
+        .article-card:hover { background: var(--hover); }
+        .article-card.active { background: var(--bg); border-left: 4px solid var(--accent); }
+        .article-card h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 4px; line-height: 1.3; }
+        .article-meta { font-size: 0.8rem; color: var(--text-dim); display: flex; justify-content: space-between; }
+
+        /* Reading Pane */
+        .reader { overflow-y: auto; padding: 60px 40px; display: flex; justify-content: center; }
+        .content-wrap { max-width: 650px; width: 100%; }
+        .status-badge { 
+            display: inline-block; padding: 4px 12px; border-radius: 20px; 
+            background: var(--accent); color: white; font-size: 0.85rem; font-weight: 600; margin-bottom: 20px;
+        }
+        .content-body { font-size: 1.2rem; line-height: 1.6; }
+
+        .theme-btn { position: fixed; bottom: 20px; left: 20px; padding: 8px 12px; cursor: pointer; border-radius: 6px; border: 1px solid var(--border); background: var(--bg); color: var(--text-main); }
+    </style>
+</head>
+<body data-theme="light">
+
+    <section class="headlines">
+        <div class="header-box">
+            <h2>Residence Permit</h2>
+            <p style="font-size: 0.8rem; margin-top: 5px; color: var(--text-dim);">File: 059556843707</p>
+        </div>
+        <div id="article-list"></div>
+    </section>
+
+    <main class="reader">
+        <div class="content-wrap" id="reader-pane">
+            <div style="color: var(--text-dim); text-align: center; margin-top: 100px;">
+                Checking latest status...
+            </div>
+        </div>
+    </main>
+
+    <button class="theme-btn" onclick="toggleTheme()">🌓 Theme</button>
+
+    <script>
+        // Directly using your XML data
+        const xmlString = `<?xml version="1.0" encoding="UTF-8" ?>
+        <rss version="2.0">
+            <channel>
+            <title>Residence permit</title> 
+            <link>https://questure.poliziadistato.it/stranieri/</link> 
+            <description>Polizia di Stato</description> 
+            <item>
+                <title>File: 059556843707</title> 
+                <link>https://questure.poliziadistato.it/servizio/servizio/stranieri/?lang=english&amp;pratica=059556843707</link>
+                <description><![CDATA[Residence permit position: residence permit is being processed.]]></description>
+                <pubDate>Thu, 05 Feb 26 10:33:18 +0100</pubDate>
+            </item>
+            </channel>
+        </rss>`;
+
+        function parseData(xml) {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(xml, "text/xml");
+            const items = Array.from(doc.querySelectorAll("item")).map(item => ({
+                title: item.querySelector("title")?.textContent,
+                desc: item.querySelector("description")?.textContent.trim(),
+                date: item.querySelector("pubDate")?.textContent,
+                link: item.querySelector("link")?.textContent
+            }));
+            return items;
+        }
+
+        function timeAgo(dateStr) {
+            try {
+                const date = new Date(dateStr);
+                const seconds = Math.floor((new Date() - date) / 1000);
+                if (seconds < 60) return "Just now";
+                const mins = Math.floor(seconds / 60);
+                if (mins < 60) return `${mins}m ago`;
+                return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            } catch (e) { return "Recent"; }
+        }
+
+        function render() {
+            const items = parseData(xmlString);
+            const listEl = document.getElementById('article-list');
+            
+            listEl.innerHTML = items.map((item, idx) => `
+                <div class="article-card ${idx === 0 ? 'active' : ''}" onclick="show(${idx})">
+                    <div class="article-meta">
+                        <span>Polizia di Stato</span>
+                        <span>${timeAgo(item.date)}</span>
+                    </div>
+                    <h3>Update for ${item.title.split(':').pop()}</h3>
+                    <p style="font-size:0.85rem; color:var(--accent)">Status Update Available</p>
+                </div>
+            `).join('');
+
+            show(0); // Auto-load first item
+        }
+
+        function show(idx) {
+            const item = parseData(xmlString)[idx];
+            const reader = document.getElementById('reader-pane');
+            reader.innerHTML = `
+                <span class="status-badge">Official Status</span>
+                <h1 style="margin-bottom: 10px;">${item.title}</h1>
+                <p style="color: var(--text-dim); margin-bottom: 40px;">Last checked: ${item.date}</p>
+                <div class="content-body">
+                    <strong>Current Progress:</strong><br>
+                    <p style="margin-top:10px; font-size: 1.4rem;">${item.desc}</p>
+                </div>
+                <div style="margin-top: 50px; padding-top: 20px; border-top: 1px solid var(--border);">
+                    <a href="${item.link}" target="_blank" style="color: var(--accent); text-decoration: none; font-weight: 500;">Open Official Portal ↗</a>
+                </div>
+            `;
+        }
+
+        function toggleTheme() {
+            const body = document.body;
+            body.setAttribute('data-theme', body.getAttribute('data-theme') === 'light' ? 'dark' : 'light');
+        }
+
+        render();
+    </script>
+</body>
+</html>
