@@ -47,6 +47,9 @@
         <a href="#travion" class="nav-btn">TRAVION</a>
         <a href="#apollo" class="nav-btn">APOLLO</a>
         <a href="#hermes" class="nav-btn">HERMES</a>
+        <div class="nav-spacer"></div>
+        <a href="other/pflip.html" target="_blank" class="nav-btn nav-btn-flipbook"><i class="fas fa-book-open"></i>
+            PORTFOLIO</a>
     </nav>
 
     <section id="home">
@@ -555,11 +558,7 @@
         <div id="panorama-360-view"></div>
     </div>
 
-    <div id="pflip-container">
-        <a href="other/pflip.html" target="_blank" class="pflip-btn">
-            <i class="fas fa-book-open"></i>
-        </a>
-    </div>
+
 
     <script>
         // --- GENERAL ---
@@ -793,33 +792,7 @@
             if (viewer) { viewer.destroy(); viewer = null; }
         }
 
-        // --- FLOATING BUTTON DRAG PHYSICS ---
-        const pFlipContainer = document.getElementById('pflip-container');
-        if (pFlipContainer) pFlipContainer.style.transition = 'none'; // distinct physics control
 
-        let pLastY = window.scrollY;
-        let pOffY = 0;
-
-        function loopPFlip() {
-            if (!pFlipContainer) return;
-            const currY = window.scrollY;
-            const diff = currY - pLastY;
-            pLastY = currY;
-
-            // "Drag" effect: Pull button in opposite direction of scroll (or with it?)
-            // If we scroll down (diff > 0), content moves up.
-            // If we subtract diff, button moves up.
-            // This creates a "heavy" feel attached to the document.
-            pOffY -= diff * 0.2;
-
-            // Damping / Spring to 0
-            pOffY *= 0.92;
-
-            // Apply
-            pFlipContainer.style.transform = `translateY(${pOffY}px)`;
-            requestAnimationFrame(loopPFlip);
-        }
-        requestAnimationFrame(loopPFlip);
     </script>
 </body>
 
