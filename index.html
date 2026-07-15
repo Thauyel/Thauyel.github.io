@@ -694,7 +694,7 @@
             img.style.transform = 'translate(' + translateX + 'px, ' + translateY + 'px) scale(' + scale + ')';
         }
 
-        // Drag
+        // Drag (Mouse)
         img.addEventListener('mousedown', function (e) {
             if (scale <= 1) return;
             isDragging = true;
@@ -716,6 +716,65 @@
             translateX = e.clientX - startX;
             translateY = e.clientY - startY;
             updateTransform();
+        });
+
+        // Touch Events for Mobile (Pinch-to-zoom, Swipe, Pan)
+        let initialDistance = null;
+        let initialScale = 1;
+        let touchStartX = 0;
+        
+        img.addEventListener('touchstart', function(e) {
+            if (e.touches.length === 2) {
+                initialDistance = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+                initialScale = scale;
+                isDragging = false;
+            } else if (e.touches.length === 1) {
+                isDragging = true;
+                isDragAction = false;
+                touchStartX = e.touches[0].clientX;
+                if (scale > 1) {
+                    startX = e.touches[0].clientX - translateX;
+                    startY = e.touches[0].clientY - translateY;
+                }
+            }
+        }, { passive: false });
+
+        img.addEventListener('touchmove', function(e) {
+            if (e.touches.length === 2) {
+                e.preventDefault(); 
+                const currentDistance = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+                if (initialDistance) {
+                    let newScale = initialScale * (currentDistance / initialDistance);
+                    scale = Math.min(Math.max(1, newScale), 5);
+                    if (scale === 1) {
+                        translateX = 0;
+                        translateY = 0;
+                    }
+                    updateTransform();
+                }
+            } else if (e.touches.length === 1 && isDragging) {
+                if (scale > 1) {
+                    e.preventDefault();
+                    isDragAction = true;
+                    translateX = e.touches[0].clientX - startX;
+                    translateY = e.touches[0].clientY - startY;
+                    updateTransform();
+                }
+            }
+        }, { passive: false });
+
+        img.addEventListener('touchend', function(e) {
+            if (e.touches.length < 2) {
+                initialDistance = null;
+            }
+            if (e.changedTouches.length === 1 && isDragging && scale === 1) {
+                const diffX = e.changedTouches[0].clientX - touchStartX;
+                if (Math.abs(diffX) > 50) {
+                    if (diffX > 0) navigateGallery(-1);
+                    else navigateGallery(1);
+                }
+            }
+            isDragging = false;
         });
 
         // ==============================================
