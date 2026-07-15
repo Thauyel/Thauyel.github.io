@@ -4,7 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Atacan Küçüksarı | Architect & 3D Visualizer</title>
+    <title>Atacan Küçüksarı | Architect</title>
+    <meta name="description"
+        content="M.Arch Candidate at Politecnico Di Milano. Computational Design & 3D Visualization Portfolio.">
 
     <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
@@ -20,455 +22,374 @@
     <meta name="twitter:card" content="summary_large_image">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css" />
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
 
     <link rel="stylesheet" href="style.css">
-
-
 </head>
 
 <body>
 
-    <div class="command-line">
-        <span>Command:</span>
-        <div id="typing-text">_System_Ready...</div>
-    </div>
+    <!-- ====== HEADER & NAV ====== -->
+    <header class="site-header">
+        <div class="nav-inner">
+            <a href="#home" class="nav-logo">Atacan Küçüksarı</a>
+            <nav class="nav-links" id="nav-links">
+                <a href="#home">About</a>
+                <a href="#education">Education</a>
+                <a href="#experience">Experience</a>
+                <a href="#skills">Skills</a>
+                <a href="#projects">Projects</a>
+                <a href="other/pflip.html" target="_blank">Portfolio Book</a>
+            </nav>
+            <div class="nav-actions">
+                <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+                    <i class="fas fa-sun"></i>
+                </button>
+                <button class="hamburger" id="hamburger" aria-label="Open menu">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
+        </div>
+    </header>
 
-    <nav class="rhino-toolbar">
-        <a href="#home" class="nav-btn"><i class="fas fa-home"></i> Home</a>
-        <a href="#education" class="nav-btn"><i class="fas fa-graduation-cap"></i> Education</a>
-        <a href="#experience" class="nav-btn"><i class="fas fa-briefcase"></i> Experience</a>
-        <a href="#skills" class="nav-btn"><i class="fas fa-tools"></i> Skills</a>
-        <div class="nav-separator"></div>
-        <a href="#tremora" class="nav-btn">TREMORA</a>
-        <a href="#travion" class="nav-btn">TRAVION</a>
-        <a href="#apollo" class="nav-btn">APOLLO</a>
-        <a href="#hermes" class="nav-btn">HERMES</a>
-        <div class="nav-spacer"></div>
-        <a href="other/pflip.html" target="_blank" class="nav-btn nav-btn-flipbook"><i class="fas fa-book-open"></i>
-            PORTFOLIO</a>
-    </nav>
+    <div class="mobile-overlay" id="mobile-overlay"></div>
 
-    <section id="home">
-        <div class="viewport-label">PERSPECTIVE</div>
-        <div class="hero-content hidden">
-            <img src="src/profile.jpg" alt="Atacan Küçüksarı" class="profile-img cursor-crosshair"
+    <!-- ====== HERO ====== -->
+    <section id="home" class="hero">
+        <div class="hero-content reveal">
+            <img src="src/profile.jpg" alt="Atacan Küçüksarı" class="profile-img"
                 onclick="window.location.href='other/game.html'">
             <h1>Atacan Küçüksarı</h1>
-            <p class="role-text">
-                Architect / 3D Visualizer
+            <p class="subtitle">Architect</p>
+            <p class="bio">
+                M.Arch Candidate at <strong>Politecnico Di Milano</strong>.<br>
+                I don't just design; I tinker with tools to create 3D realities.
             </p>
-            <div class="bio-quote">
-                <p style="margin-bottom: 10px;">
-                    "M.Arch Candidate at <span style="color: white; font-weight: bold;">Politecnico Di Milano</span>.
-                </p>
-                <p>I don't just design houses; I tinker with tools to create 3D realities."</p>
-            </div>
-            <div class="contact-links">
-                <a href="https://www.linkedin.com/in/atacanks/" target="_blank">LINKEDIN</a>
-                <a href="mailto:atacan.k03@gmail.com">E-MAIL</a>
-                <a href="pdf/resume.pdf" target="_blank">RESUME_PDF</a>
-                <a href="pdf/portfolio.pdf" target="_blank">PORTFOLIO_PDF</a>
+            <div class="contact-row">
+                <a href="https://www.linkedin.com/in/atacanks/" target="_blank" class="contact-pill">
+                    <i class="fab fa-linkedin"></i> LinkedIn
+                </a>
+                <a href="mailto:atacan.k03@gmail.com" class="contact-pill">
+                    <i class="fas fa-envelope"></i> Email
+                </a>
+                <a href="pdf/resume.pdf" target="_blank" class="contact-pill">
+                    <i class="fas fa-file-pdf"></i> Resume
+                </a>
+                <a href="pdf/portfolio.pdf" target="_blank" class="contact-pill">
+                    <i class="fas fa-book-open"></i> Portfolio
+                </a>
             </div>
         </div>
     </section>
 
+    <!-- ====== EDUCATION ====== -->
     <section id="education">
-        <div class="viewport-label">FRONT_VIEW</div>
-        <div class="container hidden">
+        <div class="section-container reveal">
             <h2>Education</h2>
-            <div class="timeline-item">
-                <span class="year">2025 - Present</span>
-                <h3>Master's Degree | Architectural Engineering</h3>
-                <p>Politecnico di Milano</p>
-            </div>
-            <div class="timeline-item">
-                <span class="year">2021 - 2025</span>
-                <h3>Bachelor of Architecture | BArch</h3>
-                <p>Istanbul Technical University (İTÜ)</p>
-                <p class="gpa-text">GPA: 3.19</p>
+            <div class="timeline">
+                <div class="timeline-card">
+                    <span class="date">2025 — Present</span>
+                    <h3>Master's Degree · Architectural Engineering</h3>
+                    <p>Politecnico di Milano</p>
+                </div>
+                <div class="timeline-card">
+                    <span class="date">2021 — 2025</span>
+                    <h3>Bachelor of Architecture · BArch</h3>
+                    <p>Istanbul Technical University (İTÜ)</p>
+                    <span class="gpa">GPA: 3.19</span>
+                </div>
             </div>
         </div>
     </section>
 
+    <!-- ====== EXPERIENCE ====== -->
     <section id="experience">
-        <div class="viewport-label">RIGHT_VIEW</div>
-        <div class="container hidden">
+        <div class="section-container reveal">
             <h2>Professional Experience</h2>
-            <div class="timeline-item">
-                <span class="year">Jan 2025 - Feb 2025</span>
-                <h3>Architectural Intern | Summa Turizm Yatırımcılığı A.Ş.</h3>
-                <p>Istanbul, Turkey (On-site)</p>
-                <p class="job-details">
-                    <em>Tasks:</em> Served as a <strong>Construction Site Examiner</strong>; monitored construction
-                    progress, inspected on-site tasks for quality control.
-                </p>
-            </div>
-            <div class="timeline-item">
-                <span class="year">Jul 2024 - Aug 2024</span>
-                <h3>Architectural Intern | Megaron Proje</h3>
-                <p>Istanbul, Turkey (On-site)</p>
-                <p style="margin-top:10px; border-top: 1px dashed #555; padding-top: 10px;">
-                    <em>Tasks:</em> Managed municipal project approval processes and produced high-quality <strong>3D
-                        visualizations</strong>.
-                </p>
-            </div>
-            <div class="timeline-item research-item">
-                <span class="year text-magenta">2025</span>
-                <h3>Academic Researcher | GAIA (ITU)</h3>
-                <p>Istanbul Technical University</p>
-                <p style="margin-top:10px; border-top: 1px dashed #555; padding-top: 10px;">
-                    <em>Focus:</em> <strong>GAIA (Generative Architecture & Intelligence Agency)</strong> Project.
-                </p>
-                <p style="margin-top:5px;" class="text-small">
-                    Contributed to the development of a custom <strong>AI Interface</strong> designed to integrate
-                    artificial intelligence into architectural workflows.
-                </p>
+            <div class="timeline">
+                <div class="timeline-card research">
+                    <span class="date">2025</span>
+                    <h3>Academic Researcher · GAIA (ITU)</h3>
+                    <p class="location">Istanbul Technical University</p>
+                    <p class="description"><strong>GAIA (Generative Architecture & Intelligence Agency)</strong>
+                        Project. Contributed to the development of a custom <strong>AI Interface</strong> designed to
+                        integrate artificial intelligence into architectural workflows.</p>
+                </div>
+                <div class="timeline-card">
+                    <span class="date">Jan 2025 — Feb 2025</span>
+                    <h3>Architectural Intern · Summa Turizm Yatırımcılığı A.Ş.</h3>
+                    <p class="location">Istanbul, Turkey · On-site</p>
+                    <p class="description">Served as a <strong>Construction Site Examiner</strong>; monitored
+                        construction progress, inspected on-site tasks for quality control.</p>
+                </div>
+                <div class="timeline-card">
+                    <span class="date">Jul 2024 — Aug 2024</span>
+                    <h3>Architectural Intern · Megaron Proje</h3>
+                    <p class="location">Istanbul, Turkey · On-site</p>
+                    <p class="description">Managed municipal project approval processes and produced
+                        <strong>3D visualizations</strong>.</p>
+                </div>
             </div>
         </div>
     </section>
 
+    <!-- ====== SKILLS ====== -->
     <section id="skills">
-        <div class="viewport-label">TOP_VIEW</div>
-        <div class="container hidden">
+        <div class="section-container reveal">
             <h2>Technical Skills</h2>
-            <div class="skills-grid">
-                <div class="skill-row"><span class="skill-name">Adobe Photoshop</span>
-                    <div class="skill-dots">
-                        <div class="dot filled"></div>
-                        <div class="dot filled"></div>
-                        <div class="dot filled"></div>
-                        <div class="dot filled"></div>
-                        <div class="dot filled"></div>
-                    </div>
-                </div>
-                <div class="skill-row"><span class="skill-name">Adobe Illustrator</span>
-                    <div class="skill-dots">
-                        <div class="dot filled"></div>
-                        <div class="dot filled"></div>
-                        <div class="dot filled"></div>
-                        <div class="dot"></div>
-                        <div class="dot"></div>
-                    </div>
-                </div>
-                <div class="skill-row"><span class="skill-name">Adobe After Effects</span>
-                    <div class="skill-dots">
-                        <div class="dot filled"></div>
-                        <div class="dot filled"></div>
-                        <div class="dot filled"></div>
-                        <div class="dot filled"></div>
-                        <div class="dot filled"></div>
-                    </div>
-                </div>
-                <div class="skill-row"><span class="skill-name">Adobe Premiere Pro</span>
-                    <div class="skill-dots">
-                        <div class="dot filled"></div>
-                        <div class="dot filled"></div>
-                        <div class="dot filled"></div>
-                        <div class="dot"></div>
-                        <div class="dot"></div>
-                    </div>
-                </div>
-                <div class="skill-row"><span class="skill-name">Affinity</span>
-                    <div class="skill-dots">
-                        <div class="dot filled"></div>
-                        <div class="dot filled"></div>
-                        <div class="dot filled"></div>
-                        <div class="dot filled"></div>
-                        <div class="dot filled"></div>
-                    </div>
-                </div>
-                <div class="skill-row"><span class="skill-name">Canva</span>
-                    <div class="skill-dots">
-                        <div class="dot filled"></div>
-                        <div class="dot filled"></div>
-                        <div class="dot filled"></div>
-                        <div class="dot filled"></div>
-                        <div class="dot filled"></div>
-                    </div>
-                </div>
-                <div class="skill-row"><span class="skill-name">Capcut</span>
-                    <div class="skill-dots">
-                        <div class="dot filled"></div>
-                        <div class="dot filled"></div>
-                        <div class="dot filled"></div>
-                        <div class="dot filled"></div>
-                        <div class="dot filled"></div>
-                    </div>
-                </div>
-                <div class="skill-row"><span class="skill-name">ArchiCAD</span>
-                    <div class="skill-dots">
-                        <div class="dot filled"></div>
-                        <div class="dot filled"></div>
-                        <div class="dot filled"></div>
-                        <div class="dot filled"></div>
-                        <div class="dot"></div>
-                    </div>
-                </div>
-                <div class="skill-row"><span class="skill-name">Autodesk AutoCAD</span>
-                    <div class="skill-dots">
-                        <div class="dot filled"></div>
-                        <div class="dot filled"></div>
-                        <div class="dot filled"></div>
-                        <div class="dot filled"></div>
-                        <div class="dot"></div>
-                    </div>
-                </div>
-                <div class="skill-row"><span class="skill-name">Rhinoceros</span>
-                    <div class="skill-dots">
-                        <div class="dot filled"></div>
-                        <div class="dot filled"></div>
-                        <div class="dot filled"></div>
-                        <div class="dot filled"></div>
-                        <div class="dot filled"></div>
-                    </div>
-                </div>
-                <div class="skill-row"><span class="skill-name">Twinmotion</span>
-                    <div class="skill-dots">
-                        <div class="dot filled"></div>
-                        <div class="dot filled"></div>
-                        <div class="dot filled"></div>
-                        <div class="dot filled"></div>
-                        <div class="dot filled"></div>
-                    </div>
-                </div>
-                <div class="skill-row"><span class="skill-name">Blender</span>
-                    <div class="skill-dots">
-                        <div class="dot filled"></div>
-                        <div class="dot filled"></div>
-                        <div class="dot filled"></div>
-                        <div class="dot filled"></div>
-                        <div class="dot"></div>
-                    </div>
-                </div>
-                <div class="skill-row"><span class="skill-name">SketchUp</span>
-                    <div class="skill-dots">
-                        <div class="dot filled"></div>
-                        <div class="dot filled"></div>
-                        <div class="dot"></div>
-                        <div class="dot"></div>
-                        <div class="dot"></div>
-                    </div>
-                </div>
-                <div class="skill-row"><span class="skill-name">MS Office Suite</span>
-                    <div class="skill-dots">
-                        <div class="dot filled"></div>
-                        <div class="dot filled"></div>
-                        <div class="dot filled"></div>
-                        <div class="dot filled"></div>
-                        <div class="dot"></div>
-                    </div>
-                </div>
-                <div class="skill-row"><span class="skill-name">Unreal Engine</span>
-                    <div class="skill-dots">
-                        <div class="dot filled"></div>
-                        <div class="dot"></div>
-                        <div class="dot"></div>
-                        <div class="dot"></div>
-                        <div class="dot"></div>
-                    </div>
-                </div>
-                <div class="skill-row"><span class="skill-name">D5 Render</span>
-                    <div class="skill-dots">
-                        <div class="dot filled"></div>
-                        <div class="dot filled"></div>
-                        <div class="dot"></div>
-                        <div class="dot"></div>
-                        <div class="dot"></div>
-                    </div>
+
+            <div class="skill-group">
+                <h3>Design & Graphics</h3>
+                <div class="skill-tags">
+                    <span class="skill-tag">Adobe Photoshop</span>
+                    <span class="skill-tag">Adobe Illustrator</span>
+                    <span class="skill-tag">Adobe InDesign</span>
+                    <span class="skill-tag">Adobe After Effects</span>
+                    <span class="skill-tag">Adobe Premiere Pro</span>
+                    <span class="skill-tag">Affinity</span>
+                    <span class="skill-tag">Canva</span>
+                    <span class="skill-tag">CapCut</span>
+                    <span class="skill-tag">Procreate</span>
                 </div>
             </div>
 
-            <h2>Languages</h2>
-            <div class="skills-grid">
-                <div class="skill-row"><span class="skill-name">Turkish</span><span class="skill-value">Native</span>
+            <div class="skill-group">
+                <h3>3D Modeling & CAD</h3>
+                <div class="skill-tags">
+                    <span class="skill-tag">Rhinoceros</span>
+                    <span class="skill-tag">Grasshopper</span>
+                    <span class="skill-tag">Blender</span>
+                    <span class="skill-tag">ArchiCAD</span>
+                    <span class="skill-tag">Autodesk Revit</span>
+                    <span class="skill-tag">Autodesk AutoCAD</span>
+                    <span class="skill-tag">SketchUp</span>
                 </div>
-                <div class="skill-row"><span class="skill-name">English</span><span class="skill-value">Fluent
-                        (C1)</span></div>
             </div>
-        </div>
-    </section>
 
-    <section id="tremora">
-        <div class="viewport-label">PROJECT_VIEW_TREMORA</div>
-        <div class="container hidden">
-            <div class="project-header">
-                <h2 class="border-pink">Tremora</h2>
-                <h3 class="opacity-70">"A Safe Haven"</h3>
-            </div>
-            <div class="project-details">
-                <div class="detail-list">
-                    <p><strong>Location:</strong> Şişli, Istanbul</p>
-                    <p><strong>Type:</strong> Emergency Response / Modular</p>
-                    <p><strong>Year:</strong> 2024</p>
-                    <p><strong>Role:</strong> Concept & System Design</p>
-                    <button class="panorama-button" onclick="openPanoramaGallery()">
-                        <i class="fas fa-vr-cardboard"></i> View 360° Panoramas
-                    </button>
+            <div class="skill-group">
+                <h3>Visualization & Rendering</h3>
+                <div class="skill-tags">
+                    <span class="skill-tag">Twinmotion</span>
+                    <span class="skill-tag">Unreal Engine</span>
+                    <span class="skill-tag">D5 Render</span>
+                    <span class="skill-tag">Lumion</span>
+                    <span class="skill-tag">Enscape</span>
+                    <span class="skill-tag">V-Ray</span>
                 </div>
-                <div class="summary">
-                    <p>A safe haven in times of need, a community hub every day. This project aims to deliver a relief
-                        home structure to support a modular assembly system. The building's core components are designed
-                        for rapid assembly and disassembly.</p>
-                    <div class="poster-gallery">
-                        <img src="src/ITU-7/ITU-7_Poster1.jpg" loading="lazy" decoding="async"
-                            onclick="openLightbox(this)">
-                        <img src="src/ITU-7/ITU-7_Poster2.jpg" loading="lazy" decoding="async"
-                            onclick="openLightbox(this)">
+            </div>
+
+            <div class="skill-group">
+                <h3>Office & Productivity</h3>
+                <div class="skill-tags">
+                    <span class="skill-tag">Microsoft 365</span>
+                    <span class="skill-tag">Google Workspace</span>
+                    <span class="skill-tag">Notion</span>
+                    <span class="skill-tag">Trello</span>
+                    <span class="skill-tag">Miro</span>
+                    <span class="skill-tag">Google Earth Pro</span>
+                </div>
+            </div>
+
+            <div class="skill-group">
+                <h3>Languages</h3>
+                <div class="language-list">
+                    <div class="language-item">
+                        <span>Turkish</span>
+                        <span class="language-level">Native</span>
+                    </div>
+                    <div class="language-item">
+                        <span>English</span>
+                        <span class="language-level">Fluent (C1)</span>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="travion">
-        <div class="viewport-label">PROJECT_VIEW_TRAVION</div>
-        <div class="container hidden">
-            <div class="project-header">
-                <h2 class="border-green">Travion</h2>
-                <h3 class="opacity-70">"Trade, Travel & Transform"</h3>
-            </div>
-            <div class="project-details">
-                <div class="detail-list">
-                    <p><strong>Location:</strong> Kemeraltı, Konak, Izmir</p>
-                    <p><strong>Type:</strong> Public Hub / Historical Bazaar</p>
-                    <p><strong>Year:</strong> 2023</p>
-                </div>
-                <div class="summary">
-                    <p>A hub solution for Izmir/Kemeraltı residents that serves as both a resting place and a
-                        passageway.</p>
-                    <div class="horizontal-gallery">
-                        <img src="src/ITU-5/ITU-5_Poster1.jpg" loading="lazy" decoding="async"
-                            onclick="openLightbox(this)">
-                        <img src="src/ITU-5/ITU-5_Poster2.jpg" loading="lazy" decoding="async"
-                            onclick="openLightbox(this)">
-                        <img src="src/ITU-5/ITU-5_Poster3.jpg" loading="lazy" decoding="async"
-                            onclick="openLightbox(this)">
+    <!-- ====== PROJECTS ====== -->
+    <section id="projects">
+        <div class="section-container reveal">
+            <h2>Selected Projects</h2>
+
+            <!-- TREMORA -->
+            <article id="tremora" class="project-card">
+                <div class="project-card-inner">
+                    <div class="project-info">
+                        <h3>Tremora</h3>
+                        <p class="project-tagline">"A Safe Haven"</p>
+                        <div class="project-meta">
+                            <span><strong>Location:</strong> Şişli, Istanbul</span>
+                            <span><strong>Type:</strong> Emergency Response / Modular</span>
+                            <span><strong>Year:</strong> 2024</span>
+                            <span><strong>Role:</strong> Concept & System Design</span>
+                        </div>
+                        <p class="project-description">A safe haven in times of need, a community hub every day. This
+                            project aims to deliver a relief home structure to support a modular assembly system. The
+                            building's core components are designed for rapid assembly and disassembly.</p>
+                        <button class="btn-secondary" onclick="openPanoramaGallery()">
+                            <i class="fas fa-vr-cardboard"></i> View 360° Panoramas
+                        </button>
+                    </div>
+                    <div class="project-gallery-area">
+                        <div class="poster-gallery">
+                            <img src="src/ITU-7/ITU-7_Poster1.jpg" loading="lazy" decoding="async"
+                                onclick="openLightbox(this)">
+                            <img src="src/ITU-7/ITU-7_Poster2.jpg" loading="lazy" decoding="async"
+                                onclick="openLightbox(this)">
+                        </div>
                     </div>
                 </div>
-            </div>
+            </article>
+
+            <!-- TRAVION -->
+            <article id="travion" class="project-card">
+                <div class="project-card-inner">
+                    <div class="project-info">
+                        <h3>Travion</h3>
+                        <p class="project-tagline">"Trade, Travel & Transform"</p>
+                        <div class="project-meta">
+                            <span><strong>Location:</strong> Kemeraltı, Konak, Izmir</span>
+                            <span><strong>Type:</strong> Public Hub / Historical Bazaar</span>
+                            <span><strong>Year:</strong> 2023</span>
+                        </div>
+                        <p class="project-description">A hub solution for Izmir/Kemeraltı residents that serves as both
+                            a resting place and a passageway.</p>
+                    </div>
+                    <div class="project-gallery-area">
+                        <div class="horizontal-gallery">
+                            <img src="src/ITU-5/ITU-5_Poster1.jpg" loading="lazy" decoding="async"
+                                onclick="openLightbox(this)">
+                            <img src="src/ITU-5/ITU-5_Poster2.jpg" loading="lazy" decoding="async"
+                                onclick="openLightbox(this)">
+                            <img src="src/ITU-5/ITU-5_Poster3.jpg" loading="lazy" decoding="async"
+                                onclick="openLightbox(this)">
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- APOLLO -->
+            <article id="apollo" class="project-card">
+                <div class="project-card-inner">
+                    <div class="project-info">
+                        <h3>Apollo</h3>
+                        <p class="project-tagline">"Create and Exhibit"</p>
+                        <div class="project-meta">
+                            <span><strong>Location:</strong> Bagdat Street, Istanbul</span>
+                            <span><strong>Type:</strong> Cultural Arts Center</span>
+                            <span><strong>Year:</strong> 2024</span>
+                        </div>
+                        <p class="project-description">A comprehensive cultural arts center designed for Bagdat Street,
+                            serving as a community hub for artistic expression.</p>
+                        <button class="btn-secondary" onclick="openMockupGallery()">
+                            <i class="fas fa-cube"></i> View Model Photos
+                        </button>
+                    </div>
+                    <div class="project-gallery-area">
+                        <div class="poster-gallery">
+                            <img src="src/ITU-6/ITU-6_Poster1.jpg" loading="lazy" decoding="async"
+                                onclick="openLightbox(this)">
+                            <img src="src/ITU-6/ITU-6_Poster2.jpg" loading="lazy" decoding="async"
+                                onclick="openLightbox(this)">
+                            <img src="src/ITU-6/ITU-6_Poster3.jpg" loading="lazy" decoding="async"
+                                onclick="openLightbox(this)">
+                            <img src="src/ITU-6/ITU-6_Poster4.jpg" loading="lazy" decoding="async"
+                                onclick="openLightbox(this)">
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- HERMES -->
+            <article id="hermes" class="project-card">
+                <div class="project-card-inner">
+                    <div class="project-info">
+                        <h3>Hermes</h3>
+                        <p class="project-tagline">"Move, Play, Thrive!"</p>
+                        <div class="project-meta">
+                            <span><strong>Location:</strong> Gebze, Kocaeli</span>
+                            <span><strong>Type:</strong> Recreational Hub</span>
+                            <span><strong>Year:</strong> 2025</span>
+                        </div>
+                        <p class="project-description">Located within the confines of a former quarry, Hermes
+                            reinterprets an artificial landscape through deliberate architectural intervention.</p>
+                        <button class="btn-secondary" onclick="openHermesMockupGallery()">
+                            <i class="fas fa-cube"></i> View Model Photos
+                        </button>
+                        <div class="video-container">
+                            <iframe
+                                src="https://www.youtube-nocookie.com/embed/SxEzgLZ7ucI?rel=0&modestbranding=1"
+                                title="Hermes Project Video" frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                allowfullscreen></iframe>
+                        </div>
+                    </div>
+                    <div class="project-gallery-area">
+                        <div class="hermes-gallery">
+                            <img src="src/ITU-8/ITU-8_Poster-1.jpg" loading="lazy" decoding="async"
+                                onclick="openLightbox(this)">
+                            <img src="src/ITU-8/ITU-8_Poster-2.jpg" loading="lazy" decoding="async"
+                                onclick="openLightbox(this)">
+                            <img src="src/ITU-8/ITU-8_Poster-3.jpg" loading="lazy" decoding="async"
+                                onclick="openLightbox(this)">
+                            <img src="src/ITU-8/ITU-8_Poster-4.jpg" loading="lazy" decoding="async"
+                                onclick="openLightbox(this)">
+                            <img src="src/ITU-8/ITU-8_Poster-5.jpg" loading="lazy" decoding="async"
+                                onclick="openLightbox(this)">
+                            <img src="src/ITU-8/ITU-8_Poster-6.jpg" loading="lazy" decoding="async"
+                                onclick="openLightbox(this)">
+                            <img src="src/ITU-8/ITU-8_Poster-7.jpg" loading="lazy" decoding="async"
+                                onclick="openLightbox(this)">
+                            <img src="src/ITU-8/ITU-8_Poster-8.jpg" loading="lazy" decoding="async"
+                                onclick="openLightbox(this)">
+                            <img src="src/ITU-8/ITU-8_Poster-9.jpg" loading="lazy" decoding="async"
+                                onclick="openLightbox(this)">
+                            <img src="src/ITU-8/ITU-8_Poster-10.jpg" loading="lazy" decoding="async"
+                                onclick="openLightbox(this)">
+                            <img src="src/ITU-8/ITU-8_Poster-11.jpg" loading="lazy" decoding="async"
+                                onclick="openLightbox(this)">
+                            <img src="src/ITU-8/ITU-8_Poster-12.jpg" loading="lazy" decoding="async"
+                                onclick="openLightbox(this)">
+                            <img src="src/ITU-8/ITU-8_Poster-13.jpg" loading="lazy" decoding="async"
+                                onclick="openLightbox(this)">
+                            <img src="src/ITU-8/ITU-8_Poster-14.jpg" loading="lazy" decoding="async"
+                                onclick="openLightbox(this)">
+                            <img src="src/ITU-8/ITU-8_Poster-15.jpg" loading="lazy" decoding="async"
+                                onclick="openLightbox(this)">
+                            <img src="src/ITU-8/ITU-8_Poster-16.jpg" loading="lazy" decoding="async"
+                                onclick="openLightbox(this)">
+                            <img src="src/ITU-8/ITU-8_Poster-17.jpg" loading="lazy" decoding="async"
+                                onclick="openLightbox(this)">
+                            <img src="src/ITU-8/ITU-8_Poster-18.jpg" loading="lazy" decoding="async"
+                                onclick="openLightbox(this)">
+                            <img src="src/ITU-8/ITU-8_Poster-19.jpg" loading="lazy" decoding="async"
+                                onclick="openLightbox(this)">
+                        </div>
+                    </div>
+                </div>
+            </article>
+
         </div>
     </section>
 
-    <section id="apollo">
-        <div class="viewport-label">PROJECT_VIEW_APOLLO</div>
-        <div class="container hidden">
-            <div class="project-header">
-                <h2 class="border-orange">Apollo</h2>
-                <h3 class="opacity-70">"Create and Exhibit"</h3>
-            </div>
-            <div class="project-details">
-                <div class="detail-list">
-                    <p><strong>Location:</strong> Bagdat Street, Istanbul</p>
-                    <p><strong>Type:</strong> Cultural Arts Center</p>
-                    <p><strong>Year:</strong> 2024</p>
-                    <button class="mockup-button" onclick="openMockupGallery()">
-                        <i class="fas fa-cube"></i> View Model Photos
-                    </button>
-                </div>
-                <div class="summary">
-                    <p>A comprehensive cultural arts center designed for Bagdat Street, serving as a community hub for
-                        artistic expression.</p>
-                    <div class="poster-gallery">
-                        <img src="src/ITU-6/ITU-6_Poster1.jpg" loading="lazy" decoding="async"
-                            onclick="openLightbox(this)">
-                        <img src="src/ITU-6/ITU-6_Poster2.jpg" loading="lazy" decoding="async"
-                            onclick="openLightbox(this)">
-                        <img src="src/ITU-6/ITU-6_Poster3.jpg" loading="lazy" decoding="async"
-                            onclick="openLightbox(this)">
-                        <img src="src/ITU-6/ITU-6_Poster4.jpg" loading="lazy" decoding="async"
-                            onclick="openLightbox(this)">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <section id="hermes">
-        <div class="viewport-label">PROJECT_VIEW_HERMES</div>
-        <div class="container hidden">
-            <div class="project-header">
-                <h2 class="border-purple">Hermes</h2>
-                <h3 class="opacity-70">"Move, Play, Thrive!"</h3>
-            </div>
-            <div class="project-details">
-                <div class="detail-list">
-                    <p><strong>Location:</strong> Gebze, Kocaeli</p>
-                    <p><strong>Type:</strong> Recreational Hub</p>
-                    <p><strong>Year:</strong> 2025</p>
-                    <button class="mockup-button" onclick="openHermesMockupGallery()">
-                        <i class="fas fa-cube"></i> View Model Photos
-                    </button>
-                    <div class="sidebar-video-container mt-20">
-                        <iframe src="https://www.youtube-nocookie.com/embed/SxEzgLZ7ucI?rel=0&modestbranding=1"
-                            title="Hermes Project Video" frameborder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            allowfullscreen>
-                        </iframe>
-                    </div>
-                </div>
-                <div class="summary">
-                    <p>Located within the confines of a former quarry, Hermes reinterprets an artificial landscape
-                        through deliberate architectural intervention.</p>
-                    <div class="hermes-gallery">
-                        <img src="src/ITU-8/ITU-8_Poster-1.jpg" loading="lazy" decoding="async"
-                            onclick="openLightbox(this)">
-                        <img src="src/ITU-8/ITU-8_Poster-2.jpg" loading="lazy" decoding="async"
-                            onclick="openLightbox(this)">
-                        <img src="src/ITU-8/ITU-8_Poster-3.jpg" loading="lazy" decoding="async"
-                            onclick="openLightbox(this)">
-                        <img src="src/ITU-8/ITU-8_Poster-4.jpg" loading="lazy" decoding="async"
-                            onclick="openLightbox(this)">
-                        <img src="src/ITU-8/ITU-8_Poster-5.jpg" loading="lazy" decoding="async"
-                            onclick="openLightbox(this)">
-                        <img src="src/ITU-8/ITU-8_Poster-6.jpg" loading="lazy" decoding="async"
-                            onclick="openLightbox(this)">
-                        <img src="src/ITU-8/ITU-8_Poster-7.jpg" loading="lazy" decoding="async"
-                            onclick="openLightbox(this)">
-                        <img src="src/ITU-8/ITU-8_Poster-8.jpg" loading="lazy" decoding="async"
-                            onclick="openLightbox(this)">
-                        <img src="src/ITU-8/ITU-8_Poster-9.jpg" loading="lazy" decoding="async"
-                            onclick="openLightbox(this)">
-                        <img src="src/ITU-8/ITU-8_Poster-10.jpg" loading="lazy" decoding="async"
-                            onclick="openLightbox(this)">
-                        <img src="src/ITU-8/ITU-8_Poster-11.jpg" loading="lazy" decoding="async"
-                            onclick="openLightbox(this)">
-                        <img src="src/ITU-8/ITU-8_Poster-12.jpg" loading="lazy" decoding="async"
-                            onclick="openLightbox(this)">
-                        <img src="src/ITU-8/ITU-8_Poster-13.jpg" loading="lazy" decoding="async"
-                            onclick="openLightbox(this)">
-                        <img src="src/ITU-8/ITU-8_Poster-14.jpg" loading="lazy" decoding="async"
-                            onclick="openLightbox(this)">
-                        <img src="src/ITU-8/ITU-8_Poster-15.jpg" loading="lazy" decoding="async"
-                            onclick="openLightbox(this)">
-                        <img src="src/ITU-8/ITU-8_Poster-16.jpg" loading="lazy" decoding="async"
-                            onclick="openLightbox(this)">
-                        <img src="src/ITU-8/ITU-8_Poster-17.jpg" loading="lazy" decoding="async"
-                            onclick="openLightbox(this)">
-                        <img src="src/ITU-8/ITU-8_Poster-18.jpg" loading="lazy" decoding="async"
-                            onclick="openLightbox(this)">
-                        <img src="src/ITU-8/ITU-8_Poster-19.jpg" loading="lazy" decoding="async"
-                            onclick="openLightbox(this)">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
+    <!-- ====== LIGHTBOX MODAL ====== -->
     <div id="lightbox" onclick="closeLightbox(event)">
         <span id="close-btn" onclick="closeLightbox(event, true)">&times;</span>
-        <div id="lightbox-nav-left" class="nav-arrow" onclick="navigateGallery(-1)"><i class="fas fa-chevron-left"></i>
-        </div>
-        <div id="lightbox-nav-right" class="nav-arrow" onclick="navigateGallery(1)"><i class="fas fa-chevron-right"></i>
-        </div>
+        <div id="lightbox-nav-left" class="nav-arrow" onclick="navigateGallery(-1)"><i
+                class="fas fa-chevron-left"></i></div>
+        <div id="lightbox-nav-right" class="nav-arrow" onclick="navigateGallery(1)"><i
+                class="fas fa-chevron-right"></i></div>
         <div id="lightbox-content">
             <img id="lightbox-img" src="" alt="Full View">
         </div>
     </div>
 
+    <!-- ====== MOCKUP GALLERY — APOLLO ====== -->
     <div id="mockup-lightbox" onclick="closeMockupOnBackground(event)">
         <span id="mockup-close-btn" onclick="closeMockupGallery()">&times;</span>
         <div class="mockup-gallery-grid">
@@ -486,6 +407,7 @@
         </div>
     </div>
 
+    <!-- ====== MOCKUP GALLERY — HERMES ====== -->
     <div id="hermes-mockup-lightbox" onclick="closeHermesMockupOnBackground(event)">
         <span id="hermes-mockup-close-btn" onclick="closeHermesMockupGallery()">&times;</span>
         <div class="mockup-gallery-grid">
@@ -494,90 +416,173 @@
         </div>
     </div>
 
+    <!-- ====== PANORAMA GALLERY ====== -->
     <div id="panorama-gallery-modal" onclick="closePanoramaGalleryOnBackground(event)">
         <span id="panorama-close-btn" onclick="closePanoramaGallery()">&times;</span>
-        <div style="text-align: center; max-width: 1000px; width: 90%; height: 90%; overflow-y: auto;">
-            <h3 class="bg-black-labeled">
-                Tremora 360° Panoramas
-            </h3>
-            <div class="mockup-gallery-grid border-magenta">
-                <div class="panorama-item" onclick="openPanoramaViewer('src/ITU-7/panoramas/p1.jpg')"><i
-                        class="fas fa-vr-cardboard fa-3x" style="color:#888;"></i>
+        <div class="panorama-modal-inner">
+            <h3 class="panorama-modal-title">Tremora — 360° Panoramas</h3>
+            <div class="panorama-items-grid">
+                <div class="panorama-item" onclick="openPanoramaViewer('src/ITU-7/panoramas/p1.jpg')">
+                    <i class="fas fa-vr-cardboard"></i>
                     <p>Corner of Commercial</p>
                 </div>
-                <div class="panorama-item" onclick="openPanoramaViewer('src/ITU-7/panoramas/p2.jpg')"><i
-                        class="fas fa-vr-cardboard fa-3x" style="color:#888;"></i>
+                <div class="panorama-item" onclick="openPanoramaViewer('src/ITU-7/panoramas/p2.jpg')">
+                    <i class="fas fa-vr-cardboard"></i>
                     <p>Main Entrance</p>
                 </div>
-                <div class="panorama-item" onclick="openPanoramaViewer('src/ITU-7/panoramas/p3.jpg')"><i
-                        class="fas fa-vr-cardboard fa-3x" style="color:#888;"></i>
+                <div class="panorama-item" onclick="openPanoramaViewer('src/ITU-7/panoramas/p3.jpg')">
+                    <i class="fas fa-vr-cardboard"></i>
                     <p>Kindergarten & Garden</p>
                 </div>
-                <div class="panorama-item" onclick="openPanoramaViewer('src/ITU-7/panoramas/p4.jpg')"><i
-                        class="fas fa-vr-cardboard fa-3x" style="color:#888;"></i>
+                <div class="panorama-item" onclick="openPanoramaViewer('src/ITU-7/panoramas/p4.jpg')">
+                    <i class="fas fa-vr-cardboard"></i>
                     <p>Upper Parking</p>
                 </div>
-                <div class="panorama-item" onclick="openPanoramaViewer('src/ITU-7/panoramas/p5.jpg')"><i
-                        class="fas fa-vr-cardboard fa-3x" style="color:#888;"></i>
+                <div class="panorama-item" onclick="openPanoramaViewer('src/ITU-7/panoramas/p5.jpg')">
+                    <i class="fas fa-vr-cardboard"></i>
                     <p>Parking Facade</p>
                 </div>
-                <div class="panorama-item" onclick="openPanoramaViewer('src/ITU-7/panoramas/p6.jpg')"><i
-                        class="fas fa-vr-cardboard fa-3x" style="color:#888;"></i>
+                <div class="panorama-item" onclick="openPanoramaViewer('src/ITU-7/panoramas/p6.jpg')">
+                    <i class="fas fa-vr-cardboard"></i>
                     <p>Side Facade</p>
                 </div>
-                <div class="panorama-item" onclick="openPanoramaViewer('src/ITU-7/panoramas/p7.jpg')"><i
-                        class="fas fa-vr-cardboard fa-3x" style="color:#888;"></i>
+                <div class="panorama-item" onclick="openPanoramaViewer('src/ITU-7/panoramas/p7.jpg')">
+                    <i class="fas fa-vr-cardboard"></i>
                     <p>Soup Kitchen</p>
                 </div>
-                <div class="panorama-item" onclick="openPanoramaViewer('src/ITU-7/panoramas/p8.jpg')"><i
-                        class="fas fa-vr-cardboard fa-3x" style="color:#888;"></i>
+                <div class="panorama-item" onclick="openPanoramaViewer('src/ITU-7/panoramas/p8.jpg')">
+                    <i class="fas fa-vr-cardboard"></i>
                     <p>Commercial Facade</p>
                 </div>
-                <div class="panorama-item" onclick="openPanoramaViewer('src/ITU-7/panoramas/p9.jpg')"><i
-                        class="fas fa-vr-cardboard fa-3x" style="color:#888;"></i>
+                <div class="panorama-item" onclick="openPanoramaViewer('src/ITU-7/panoramas/p9.jpg')">
+                    <i class="fas fa-vr-cardboard"></i>
                     <p>Commercial Facade 2</p>
                 </div>
-                <div class="panorama-item" onclick="openPanoramaViewer('src/ITU-7/panoramas/p10.jpg')"><i
-                        class="fas fa-vr-cardboard fa-3x" style="color:#888;"></i>
+                <div class="panorama-item" onclick="openPanoramaViewer('src/ITU-7/panoramas/p10.jpg')">
+                    <i class="fas fa-vr-cardboard"></i>
                     <p>Commercial Facade 3</p>
                 </div>
-                <div class="panorama-item" onclick="openPanoramaViewer('src/ITU-7/panoramas/p11.jpg')"><i
-                        class="fas fa-vr-cardboard fa-3x" style="color:#888;"></i>
+                <div class="panorama-item" onclick="openPanoramaViewer('src/ITU-7/panoramas/p11.jpg')">
+                    <i class="fas fa-vr-cardboard"></i>
                     <p>Thrift Shop</p>
                 </div>
-                <div class="panorama-item" onclick="openPanoramaViewer('src/ITU-7/panoramas/p12.jpg')"><i
-                        class="fas fa-vr-cardboard fa-3x" style="color:#888;"></i>
+                <div class="panorama-item" onclick="openPanoramaViewer('src/ITU-7/panoramas/p12.jpg')">
+                    <i class="fas fa-vr-cardboard"></i>
                     <p>Closer Entrance</p>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- ====== PANORAMA VIEWER ====== -->
     <div id="panorama-viewer-modal">
         <span id="panorama-viewer-close-btn" onclick="closePanoramaViewer()"><i class="fas fa-times"></i></span>
         <div id="panorama-360-view"></div>
     </div>
 
 
-
     <script>
-        // --- GENERAL ---
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach((entry) => {
+        // ==============================================
+        //  THEME TOGGLE
+        // ==============================================
+        (function () {
+            const toggle = document.getElementById('theme-toggle');
+            const icon = toggle.querySelector('i');
+            const html = document.documentElement;
+
+            // Load saved preference (default = dark, no attribute)
+            const saved = localStorage.getItem('theme');
+            if (saved === 'light') {
+                html.setAttribute('data-theme', 'light');
+                icon.className = 'fas fa-moon';
+            }
+
+            toggle.addEventListener('click', function () {
+                const isLight = html.getAttribute('data-theme') === 'light';
+                if (isLight) {
+                    html.removeAttribute('data-theme');
+                    localStorage.setItem('theme', 'dark');
+                    icon.className = 'fas fa-sun';
+                } else {
+                    html.setAttribute('data-theme', 'light');
+                    localStorage.setItem('theme', 'light');
+                    icon.className = 'fas fa-moon';
+                }
+            });
+        })();
+
+        // ==============================================
+        //  MOBILE NAVIGATION
+        // ==============================================
+        (function () {
+            const hamburger = document.getElementById('hamburger');
+            const navLinks = document.getElementById('nav-links');
+            const overlay = document.getElementById('mobile-overlay');
+
+            function closeMenu() {
+                navLinks.classList.remove('open');
+                overlay.classList.remove('active');
+            }
+
+            hamburger.addEventListener('click', function () {
+                const isOpen = navLinks.classList.contains('open');
+                if (isOpen) {
+                    closeMenu();
+                } else {
+                    navLinks.classList.add('open');
+                    overlay.classList.add('active');
+                }
+            });
+
+            overlay.addEventListener('click', closeMenu);
+
+            navLinks.querySelectorAll('a').forEach(function (link) {
+                link.addEventListener('click', closeMenu);
+            });
+        })();
+
+        // ==============================================
+        //  SCROLL REVEAL & ACTIVE NAV
+        // ==============================================
+        const revealObserver = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('show');
-                    updateCommandLine(entry.target.closest('section').id);
                 }
             });
         }, { threshold: 0.1 });
-        document.querySelectorAll('.hidden').forEach((el) => observer.observe(el));
 
-        function updateCommandLine(sectionId) {
-            let formattedText = sectionId.charAt(0).toUpperCase() + sectionId.slice(1);
-            document.getElementById('typing-text').innerHTML = `_SetView_${formattedText} <span class="blink-cursor">|</span>`;
+        document.querySelectorAll('.reveal').forEach(function (el) {
+            revealObserver.observe(el);
+        });
+
+        // Active nav highlighting (scroll-based, single winner)
+        const navAnchors = document.querySelectorAll('.nav-links a[href^="#"]');
+        const sectionEls = document.querySelectorAll('section[id]');
+
+        function updateActiveNav() {
+            var scrollY = window.scrollY + 120;
+            var current = '';
+            sectionEls.forEach(function (section) {
+                if (section.offsetTop <= scrollY) {
+                    current = section.id;
+                }
+            });
+            navAnchors.forEach(function (a) {
+                if (a.getAttribute('href') === '#' + current) {
+                    a.classList.add('active');
+                } else {
+                    a.classList.remove('active');
+                }
+            });
         }
 
-        // --- LIGHTBOX (MOUSE-CENTRIC ZOOM) ---
+        window.addEventListener('scroll', updateActiveNav, { passive: true });
+        updateActiveNav();
+
+        // ==============================================
+        //  LIGHTBOX (Full zoom/drag preserved)
+        // ==============================================
         let currentImages = [];
         let currentIndex = 0;
         let isZoomed = false;
@@ -599,14 +604,13 @@
                 currentIndex = 0;
             }
             updateLightboxImage();
-
             lightbox.style.display = 'flex';
-            document.body.style.overflow = 'hidden'; // Disable scroll
+            document.body.style.overflow = 'hidden';
             resetZoom();
         }
 
         function updateLightboxImage() {
-            const targetSrc = currentImages[currentIndex].getAttribute('data-full') || currentImages[currentIndex].src;
+            var targetSrc = currentImages[currentIndex].getAttribute('data-full') || currentImages[currentIndex].src;
             img.src = targetSrc;
         }
 
@@ -615,7 +619,7 @@
             if (currentIndex < 0) currentIndex = currentImages.length - 1;
             if (currentIndex >= currentImages.length) currentIndex = 0;
             img.style.opacity = 0.5;
-            setTimeout(() => { updateLightboxImage(); img.style.opacity = 1; resetZoom(); }, 150);
+            setTimeout(function () { updateLightboxImage(); img.style.opacity = 1; resetZoom(); }, 150);
         }
 
         document.addEventListener('keydown', function (e) {
@@ -626,74 +630,48 @@
             }
         });
 
-        function closeLightbox(e, force = false) {
-            if (force || e.target.id === 'lightbox' || e.target.id === 'lightbox-content') {
+        function closeLightbox(e, force) {
+            if (force || (e && (e.target.id === 'lightbox' || e.target.id === 'lightbox-content'))) {
                 lightbox.style.display = 'none';
-                document.body.style.overflow = ''; // Re-enable scroll
+                document.body.style.overflow = '';
                 resetZoom();
             }
         }
 
-        // --- MOUSE-AWARE ZOOM LOGIC ---
-
+        // Mouse-aware zoom
         img.addEventListener('wheel', function (e) {
-            e.preventDefault(); // Prevent page scroll
-
-            // 1. Calculate Scale Change
-            const delta = e.deltaY * -0.005;
-            let newScale = scale + delta;
-            newScale = Math.min(Math.max(1, newScale), 5); // Clamp scale (1x to 5x)
-
+            e.preventDefault();
+            var delta = e.deltaY * -0.005;
+            var newScale = scale + delta;
+            newScale = Math.min(Math.max(1, newScale), 5);
             if (newScale === scale) return;
 
-            // 2. Calculate Position Adjustment (Zoom to Mouse)
-            const rect = img.getBoundingClientRect();
+            var viewCenterX = window.innerWidth / 2;
+            var viewCenterY = window.innerHeight / 2;
+            var mouseX = e.clientX;
+            var mouseY = e.clientY;
+            var mouseOffsetFromCenterX = mouseX - viewCenterX - translateX;
+            var mouseOffsetFromCenterY = mouseY - viewCenterY - translateY;
+            var ratio = newScale / scale;
 
-            // We use the window center because the image is centered in the flex container
-            const viewCenterX = window.innerWidth / 2;
-            const viewCenterY = window.innerHeight / 2;
-
-            // Mouse position relative to the viewport
-            const mouseX = e.clientX;
-            const mouseY = e.clientY;
-
-            // Math to keep the point under the mouse stationary:
-            // Calculate the mouse's offset from the *current* image center
-            const mouseOffsetFromCenterX = mouseX - viewCenterX - translateX;
-            const mouseOffsetFromCenterY = mouseY - viewCenterY - translateY;
-
-            // Calculate the ratio of growth
-            const ratio = newScale / scale;
-
-            // Shift translateX/Y in the opposite direction of the growth
             translateX -= mouseOffsetFromCenterX * (ratio - 1);
             translateY -= mouseOffsetFromCenterY * (ratio - 1);
-
-            // 3. Apply
             scale = newScale;
 
             if (scale > 1) {
                 isZoomed = true;
                 img.style.cursor = 'grab';
             } else {
-                // If we zoom back out to 100%, reset everything to perfect center
                 resetZoom();
                 return;
             }
-
             updateTransform();
         }, { passive: false });
 
         img.addEventListener('click', function (e) {
             e.stopPropagation();
             if (isDragAction) { isDragAction = false; return; }
-
-            // Click toggles zoom (Standard Center Zoom for click, Mouse zoom for wheel)
-            if (scale > 1) {
-                resetZoom();
-            } else {
-                toggleZoomCenter();
-            }
+            if (scale > 1) { resetZoom(); } else { toggleZoomCenter(); }
         });
 
         function toggleZoomCenter() {
@@ -709,15 +687,15 @@
             translateX = 0;
             translateY = 0;
             img.style.cursor = 'zoom-in';
-            img.style.transform = `translate(0px, 0px) scale(1)`;
+            img.style.transform = 'translate(0px, 0px) scale(1)';
         }
 
         function updateTransform() {
-            img.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+            img.style.transform = 'translate(' + translateX + 'px, ' + translateY + 'px) scale(' + scale + ')';
         }
 
-        // DRAG LOGIC
-        img.addEventListener('mousedown', (e) => {
+        // Drag
+        img.addEventListener('mousedown', function (e) {
             if (scale <= 1) return;
             isDragging = true;
             isDragAction = false;
@@ -727,14 +705,11 @@
             e.preventDefault();
         });
 
-        window.addEventListener('mouseup', () => {
-            if (isDragging) {
-                isDragging = false;
-                img.style.cursor = 'grab';
-            }
+        window.addEventListener('mouseup', function () {
+            if (isDragging) { isDragging = false; img.style.cursor = 'grab'; }
         });
 
-        window.addEventListener('mousemove', (e) => {
+        window.addEventListener('mousemove', function (e) {
             if (!isDragging || scale <= 1) return;
             e.preventDefault();
             isDragAction = true;
@@ -743,8 +718,9 @@
             updateTransform();
         });
 
-
-        // --- MOCKUP GALLERIES ---
+        // ==============================================
+        //  MOCKUP GALLERIES
+        // ==============================================
         function openMockupGallery() {
             document.getElementById('mockup-lightbox').style.display = 'flex';
             document.body.style.overflow = 'hidden';
@@ -753,7 +729,9 @@
             document.getElementById('mockup-lightbox').style.display = 'none';
             document.body.style.overflow = '';
         }
-        function closeMockupOnBackground(e) { if (e.target.id === 'mockup-lightbox') closeMockupGallery(); }
+        function closeMockupOnBackground(e) {
+            if (e.target.id === 'mockup-lightbox') closeMockupGallery();
+        }
 
         function openHermesMockupGallery() {
             document.getElementById('hermes-mockup-lightbox').style.display = 'flex';
@@ -763,12 +741,17 @@
             document.getElementById('hermes-mockup-lightbox').style.display = 'none';
             document.body.style.overflow = '';
         }
-        function closeHermesMockupOnBackground(e) { if (e.target.id === 'hermes-mockup-lightbox') closeHermesMockupGallery(); }
+        function closeHermesMockupOnBackground(e) {
+            if (e.target.id === 'hermes-mockup-lightbox') closeHermesMockupGallery();
+        }
 
         function viewMockupSingle(el) { openLightbox(el); }
 
-        // --- PANORAMA ---
+        // ==============================================
+        //  PANORAMA
+        // ==============================================
         let viewer;
+
         function openPanoramaGallery() {
             document.getElementById('panorama-gallery-modal').style.display = 'flex';
             document.body.style.overflow = 'hidden';
@@ -777,13 +760,21 @@
             document.getElementById('panorama-gallery-modal').style.display = 'none';
             document.body.style.overflow = '';
         }
-        function closePanoramaGalleryOnBackground(e) { if (e.target.id === 'panorama-gallery-modal') closePanoramaGallery(); }
+        function closePanoramaGalleryOnBackground(e) {
+            if (e.target.id === 'panorama-gallery-modal') closePanoramaGallery();
+        }
 
         function openPanoramaViewer(imagePath) {
             document.getElementById('panorama-gallery-modal').style.display = 'none';
             document.getElementById('panorama-viewer-modal').style.display = 'block';
             if (viewer) viewer.destroy();
-            viewer = pannellum.viewer('panorama-360-view', { "type": "equirectangular", "panorama": imagePath, "autoLoad": true, "compass": false, "showControls": true });
+            viewer = pannellum.viewer('panorama-360-view', {
+                "type": "equirectangular",
+                "panorama": imagePath,
+                "autoLoad": true,
+                "compass": false,
+                "showControls": true
+            });
         }
 
         function closePanoramaViewer() {
@@ -791,8 +782,6 @@
             document.getElementById('panorama-gallery-modal').style.display = 'flex';
             if (viewer) { viewer.destroy(); viewer = null; }
         }
-
-
     </script>
 </body>
 
