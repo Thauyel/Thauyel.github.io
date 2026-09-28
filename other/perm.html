@@ -87,8 +87,19 @@ const MESSAGES = {
 function parseResponse(html) {
   const doc = new DOMParser().parseFromString(html, "text/html");
   doc.querySelectorAll("script,style,noscript,nav,header,footer,form,select,template,[hidden],[aria-hidden='true']").forEach(node => node.remove());
-  doc.querySelectorAll("br,p,div,li,td,h1,h2,h3,section,article").forEach(node => { node.append(doc.createTextNode("\n")); });
-  const text = (doc.body.textContent || "").toLowerCase().replace(/[’‘]/g,"'");
+  // Source formatting is not a sentence boundary. Preserve visual block/BR
+  // boundaries instead, including when the status contains inline <strong> text.
+  const walker = doc.createTreeWalker(doc.body, NodeFilter.SHOW_TEXT);
+  while (walker.nextNode()) walker.currentNode.textContent = walker.currentNode.textContent.replace(/\s+/g, " ");
+  doc.querySelectorAll("br").forEach(node => node.replaceWith(doc.createTextNode("\n")));
+  doc.querySelectorAll("p,div,li,td,h1,h2,h3,section,article").forEach(node => {
+    node.prepend(doc.createTextNode("\n")); node.append(doc.createTextNode("\n"));
+  });
+  // The current official template puts the answer in .stranieri-page .m-ok.
+  // Do not infer status from its icon/class: the same container holds all results.
+  const panels = [...doc.querySelectorAll(".stranieri-page .m-ok")];
+  const content = panels.length ? panels.map(node => node.textContent).join("\n") : doc.body.textContent;
+  const text = (content || "").toLowerCase().replace(/[’‘]/g,"'");
   if (/bad gateway|proxy error|fetch error|access denied|captcha|service unavailable|cloudflare ray|too many requests/.test(text)) return "UNKNOWN";
   const lines = text.split(/[\n.!?;]+/).map(line => line.replace(/\s+/g," ").trim()).filter(Boolean);
   const results = new Set();
@@ -96,7 +107,7 @@ function parseResponse(html) {
     if (/\b(if|when|once|until|may|might|could|will|should|how to|example)\b/.test(line)) continue;
     const subject = "(?:(?:your|the|this) )?(?:residence permit|permit|document|application|practice|application code)";
     const italian = "(?:(?:il|la|suo|sua|il suo|la sua) )?(?:permesso(?: di soggiorno)?|documento|pratica)";
-    const assertion = line.replace(/^(?:status|application status|stato(?: della pratica)?)\s*:\s*/, "");
+    const assertion = line.replace(/^(?:residence permit position|status|application status|stato(?: della pratica| del permesso di soggiorno)?)\s*:\s*/, "");
     const matches = tail => new RegExp(`^(?:${subject}) (?:${tail})$`).test(assertion);
     const matchesIT = tail => new RegExp(`^(?:${italian}) (?:${tail})$`).test(assertion);
     if (matches("(?:is |was )?(?:not found|not present(?: in (?:the )?(?:system|archive))?|invalid)|does not exist") ||
