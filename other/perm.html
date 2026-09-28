@@ -82,8 +82,8 @@ const MESSAGES = {
 };
 
 // ==================== PARSING ====================
-// Conservative, complete assertions only. Navigation, instructions and isolated
-// words (including "ready" and "collect") are never evidence of a status.
+// Match status keywords in the official result panel, with negative phrases first.
+// Outside that panel, require a status label or a permit-related assertion.
 function parseResponse(html) {
   const doc = new DOMParser().parseFromString(html, "text/html");
   doc.querySelectorAll("script,style,noscript,nav,header,footer,form,select,template,[hidden],[aria-hidden='true']").forEach(node => node.remove());
@@ -105,21 +105,22 @@ function parseResponse(html) {
   const results = new Set();
   for (const line of lines) {
     if (/\b(if|when|once|until|may|might|could|will|should|how to|example)\b/.test(line)) continue;
-    const subject = "(?:(?:your|the|this) )?(?:residence permit|permit|document|application|practice|application code)";
-    const italian = "(?:(?:il|la|suo|sua|il suo|la sua) )?(?:permesso(?: di soggiorno)?|documento|pratica)";
-    const assertion = line.replace(/^(?:residence permit position|status|application status|stato(?: della pratica| del permesso di soggiorno)?)\s*:\s*/, "");
-    const matches = tail => new RegExp(`^(?:${subject}) (?:${tail})$`).test(assertion);
-    const matchesIT = tail => new RegExp(`^(?:${italian}) (?:${tail})$`).test(assertion);
-    if (matches("(?:is |was )?(?:not found|not present(?: in (?:the )?(?:system|archive))?|invalid)|does not exist") ||
-        matchesIT("(?:è |e' |risulta )?(?:non presente(?: in archivio)?|non trovat[oa]|inesistente)|non esiste")) results.add("NOT FOUND");
-    else if (matches("(?:is not|isn't|is not yet|isn't yet) ready(?: for (?:collection|pickup|pick-up))?(?: yet)?") ||
-             matchesIT("(?:non è|non e'|non è ancora|non e' ancora) pront[oa](?: per il ritiro)?")) results.add("PROCESSING");
-    else if (matches("(?:has (?:already )?been|was|is) (?:delivered|collected)(?: already)?") ||
-             matchesIT("(?:è stato |è |e' |risulta )(?:già )?(?:consegnato|ritirato)")) results.add("DELIVERED");
-    else if (matches("(?:is |is currently )?(?:being processed|under discussion|under review|in progress|in process|processing)") ||
-             matchesIT("(?:è |e' |risulta )?(?:in trattazione|in lavorazione|in esame)")) results.add("PROCESSING");
-    else if (matches("(?:is |is now )ready(?: for (?:collection|pickup|pick-up))?|can be collected") ||
-             matchesIT("(?:è |e' |risulta )pronto(?: per il ritiro)?")) results.add("READY");
+    // Bare keywords are meaningful inside the official result panel only.
+    // A changed template still works when a sentence identifies its subject.
+    if (!panels.length && !/^(?:residence permit position|(?:application )?status|stato)\s*:|\b(?:permit|document|application|practice|permesso|documento|pratica)\b\s+(?:(?:di soggiorno)\s+)?(?:is|isn't|has|was|can|cannot|does|non|è|e'|risulta)(?=\s|$)/.test(line)) continue;
+    if (/\b(?:not found|not present|does not exist|invalid|non presente|non trovat[oa]|non esiste|inesistente)\b/.test(line)) {
+      results.add("NOT FOUND");
+    } else if (/\b(?:not|isn't|isnt)(?:\s+\w+){0,3}\s+(?:ready|available for (?:collection|pickup|pick-up))\b|\bnot (?:yet )?for collection\b|\b(?:cannot|can't|unable to)\s+(?:be\s+)?collect\w*\b|\bnon\s+(?:(?:è|e'|ancora)\s+)*pront[oa]\b/.test(line)) {
+      results.add("PROCESSING");
+    } else if (/\b(?:not|isn't|hasn't|wasn't|never|non)(?:\s+\w+){0,3}\s+(?:delivered|collected|processing|processed|consegnat[oa]|ritirat[oa])\b|\bnon\s+(?:(?:è|e'|stato|stata|ancora)\s+)*(?:consegnat[oa]|ritirat[oa])\b/.test(line)) {
+      results.add("UNKNOWN");
+    } else if (/\b(?:delivered|collected|consegnat[oa]|ritirat[oa])\b/.test(line) && !/\b(?:can|may|to)\s+be\s+collected\b/.test(line)) {
+      results.add("DELIVERED");
+    } else if (/\b(?:processing|being processed|under discussion|under review|in progress|in process|pending|trattazione|lavorazione|esame|attendere)\b/.test(line)) {
+      results.add("PROCESSING");
+    } else if (/\b(?:ready|collect|collection|pickup|pick-up|pront[oa]|ritirare|ritiro)\b|\bcan be collected\b/.test(line)) {
+      results.add("READY");
+    }
   }
   // Conflicting assertions can be a help page or a changed upstream layout.
   return results.size === 1 ? [...results][0] : "UNKNOWN";
