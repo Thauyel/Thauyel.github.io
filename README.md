@@ -13,3 +13,33 @@ Thanks for stopping by!
 👉 **[Click Here to Enter the Portfolio](https://thauyel.vercel.app)**
 
 A quick tip: There is an easter egg on the website. Just click my face!
+
+
+## Local development
+
+Serve the repository with Python (no application dependencies or build step):
+
+```sh
+python3 -m http.server 8000
+```
+
+Homepage interactions live in `js/portfolio.js`. Gallery previews use committed
+WebP files under `thumbnails/`; each image's `data-full` attribute points to the
+unchanged original under `src/`. The lightbox uses those originals, including
+when navigating between images. Panorama viewing also uses the original files.
+
+To add a gallery image, reference its original in `data-full` and its matching
+WebP preview in `src`, then regenerate thumbnails. The generator preserves
+aspect ratios and applies EXIF orientation. Gallery previews have a maximum
+edge of 640 pixels; the profile preview has a maximum edge of 256 pixels.
+
+```sh
+python3 -m venv /tmp/portfolio-images
+/tmp/portfolio-images/bin/pip install Pillow==12.3.0
+/tmp/portfolio-images/bin/python scripts/generate_thumbnails.py
+```
+
+When adding an image, set its HTML `width` and `height` to the generated preview's
+dimensions and provide descriptive `alt` text. Thumbnail generation is only
+needed when source images change; normal development and deployment need no
+Python packages. Older pages under `other/` retain their existing image paths.

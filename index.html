@@ -21,11 +21,13 @@
     <meta property="og:image" content="favicon/og-image.png">
     <meta name="twitter:card" content="summary_large_image">
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css" />
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
+    <script defer src="js/portfolio.js"></script>
 
     <link rel="stylesheet" href="style.css">
 </head>
@@ -60,7 +62,7 @@
     <!-- ====== HERO ====== -->
     <section id="home" class="hero">
         <div class="hero-content reveal">
-            <img src="src/profile.jpg" alt="Atacan Küçüksarı" class="profile-img"
+            <img src="thumbnails/profile.webp" width="256" height="256" fetchpriority="high" decoding="async" alt="Atacan Küçüksarı" class="profile-img"
                 onclick="window.location.href='other/game.html'">
             <h1>Atacan Küçüksarı</h1>
             <p class="subtitle">Architect</p>
@@ -235,9 +237,9 @@
                     </div>
                     <div class="project-gallery-area">
                         <div class="poster-gallery">
-                            <img src="src/ITU-7/ITU-7_Poster1.jpg" loading="lazy" decoding="async"
+                            <img src="thumbnails/ITU-7/ITU-7_Poster1.webp" width="452" height="640" data-full="src/ITU-7/ITU-7_Poster1.jpg" alt="Tremora project poster ITU-7_Poster1" loading="lazy" decoding="async"
                                 onclick="openLightbox(this)">
-                            <img src="src/ITU-7/ITU-7_Poster2.jpg" loading="lazy" decoding="async"
+                            <img src="thumbnails/ITU-7/ITU-7_Poster2.webp" width="452" height="640" data-full="src/ITU-7/ITU-7_Poster2.jpg" alt="Tremora project poster ITU-7_Poster2" loading="lazy" decoding="async"
                                 onclick="openLightbox(this)">
                         </div>
                     </div>
@@ -260,11 +262,11 @@
                     </div>
                     <div class="project-gallery-area">
                         <div class="horizontal-gallery">
-                            <img src="src/ITU-5/ITU-5_Poster1.jpg" loading="lazy" decoding="async"
+                            <img src="thumbnails/ITU-5/ITU-5_Poster1.webp" width="640" height="452" data-full="src/ITU-5/ITU-5_Poster1.jpg" alt="Travion project poster ITU-5_Poster1" loading="lazy" decoding="async"
                                 onclick="openLightbox(this)">
-                            <img src="src/ITU-5/ITU-5_Poster2.jpg" loading="lazy" decoding="async"
+                            <img src="thumbnails/ITU-5/ITU-5_Poster2.webp" width="640" height="452" data-full="src/ITU-5/ITU-5_Poster2.jpg" alt="Travion project poster ITU-5_Poster2" loading="lazy" decoding="async"
                                 onclick="openLightbox(this)">
-                            <img src="src/ITU-5/ITU-5_Poster3.jpg" loading="lazy" decoding="async"
+                            <img src="thumbnails/ITU-5/ITU-5_Poster3.webp" width="640" height="452" data-full="src/ITU-5/ITU-5_Poster3.jpg" alt="Travion project poster ITU-5_Poster3" loading="lazy" decoding="async"
                                 onclick="openLightbox(this)">
                         </div>
                     </div>
@@ -290,13 +292,13 @@
                     </div>
                     <div class="project-gallery-area">
                         <div class="poster-gallery">
-                            <img src="src/ITU-6/ITU-6_Poster1.jpg" loading="lazy" decoding="async"
+                            <img src="thumbnails/ITU-6/ITU-6_Poster1.webp" width="452" height="640" data-full="src/ITU-6/ITU-6_Poster1.jpg" alt="Apollo project poster ITU-6_Poster1" loading="lazy" decoding="async"
                                 onclick="openLightbox(this)">
-                            <img src="src/ITU-6/ITU-6_Poster2.jpg" loading="lazy" decoding="async"
+                            <img src="thumbnails/ITU-6/ITU-6_Poster2.webp" width="452" height="640" data-full="src/ITU-6/ITU-6_Poster2.jpg" alt="Apollo project poster ITU-6_Poster2" loading="lazy" decoding="async"
                                 onclick="openLightbox(this)">
-                            <img src="src/ITU-6/ITU-6_Poster3.jpg" loading="lazy" decoding="async"
+                            <img src="thumbnails/ITU-6/ITU-6_Poster3.webp" width="452" height="640" data-full="src/ITU-6/ITU-6_Poster3.jpg" alt="Apollo project poster ITU-6_Poster3" loading="lazy" decoding="async"
                                 onclick="openLightbox(this)">
-                            <img src="src/ITU-6/ITU-6_Poster4.jpg" loading="lazy" decoding="async"
+                            <img src="thumbnails/ITU-6/ITU-6_Poster4.webp" width="452" height="640" data-full="src/ITU-6/ITU-6_Poster4.jpg" alt="Apollo project poster ITU-6_Poster4" loading="lazy" decoding="async"
                                 onclick="openLightbox(this)">
                         </div>
                     </div>
@@ -320,7 +322,7 @@
                             <i class="fas fa-cube"></i> View Model Photos
                         </button>
                         <div class="video-container">
-                            <iframe
+                            <iframe loading="lazy"
                                 src="https://www.youtube-nocookie.com/embed/SxEzgLZ7ucI?rel=0&modestbranding=1"
                                 title="Hermes Project Video" frameborder="0"
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -329,43 +331,43 @@
                     </div>
                     <div class="project-gallery-area">
                         <div class="hermes-gallery">
-                            <img src="src/ITU-8/ITU-8_Poster-1.jpg" loading="lazy" decoding="async"
+                            <img src="thumbnails/ITU-8/ITU-8_Poster-1.webp" width="640" height="452" data-full="src/ITU-8/ITU-8_Poster-1.jpg" alt="Hermes project poster ITU-8_Poster-1" loading="lazy" decoding="async"
                                 onclick="openLightbox(this)">
-                            <img src="src/ITU-8/ITU-8_Poster-2.jpg" loading="lazy" decoding="async"
+                            <img src="thumbnails/ITU-8/ITU-8_Poster-2.webp" width="640" height="452" data-full="src/ITU-8/ITU-8_Poster-2.jpg" alt="Hermes project poster ITU-8_Poster-2" loading="lazy" decoding="async"
                                 onclick="openLightbox(this)">
-                            <img src="src/ITU-8/ITU-8_Poster-3.jpg" loading="lazy" decoding="async"
+                            <img src="thumbnails/ITU-8/ITU-8_Poster-3.webp" width="640" height="452" data-full="src/ITU-8/ITU-8_Poster-3.jpg" alt="Hermes project poster ITU-8_Poster-3" loading="lazy" decoding="async"
                                 onclick="openLightbox(this)">
-                            <img src="src/ITU-8/ITU-8_Poster-4.jpg" loading="lazy" decoding="async"
+                            <img src="thumbnails/ITU-8/ITU-8_Poster-4.webp" width="640" height="452" data-full="src/ITU-8/ITU-8_Poster-4.jpg" alt="Hermes project poster ITU-8_Poster-4" loading="lazy" decoding="async"
                                 onclick="openLightbox(this)">
-                            <img src="src/ITU-8/ITU-8_Poster-5.jpg" loading="lazy" decoding="async"
+                            <img src="thumbnails/ITU-8/ITU-8_Poster-5.webp" width="640" height="452" data-full="src/ITU-8/ITU-8_Poster-5.jpg" alt="Hermes project poster ITU-8_Poster-5" loading="lazy" decoding="async"
                                 onclick="openLightbox(this)">
-                            <img src="src/ITU-8/ITU-8_Poster-6.jpg" loading="lazy" decoding="async"
+                            <img src="thumbnails/ITU-8/ITU-8_Poster-6.webp" width="640" height="452" data-full="src/ITU-8/ITU-8_Poster-6.jpg" alt="Hermes project poster ITU-8_Poster-6" loading="lazy" decoding="async"
                                 onclick="openLightbox(this)">
-                            <img src="src/ITU-8/ITU-8_Poster-7.jpg" loading="lazy" decoding="async"
+                            <img src="thumbnails/ITU-8/ITU-8_Poster-7.webp" width="640" height="452" data-full="src/ITU-8/ITU-8_Poster-7.jpg" alt="Hermes project poster ITU-8_Poster-7" loading="lazy" decoding="async"
                                 onclick="openLightbox(this)">
-                            <img src="src/ITU-8/ITU-8_Poster-8.jpg" loading="lazy" decoding="async"
+                            <img src="thumbnails/ITU-8/ITU-8_Poster-8.webp" width="640" height="452" data-full="src/ITU-8/ITU-8_Poster-8.jpg" alt="Hermes project poster ITU-8_Poster-8" loading="lazy" decoding="async"
                                 onclick="openLightbox(this)">
-                            <img src="src/ITU-8/ITU-8_Poster-9.jpg" loading="lazy" decoding="async"
+                            <img src="thumbnails/ITU-8/ITU-8_Poster-9.webp" width="640" height="452" data-full="src/ITU-8/ITU-8_Poster-9.jpg" alt="Hermes project poster ITU-8_Poster-9" loading="lazy" decoding="async"
                                 onclick="openLightbox(this)">
-                            <img src="src/ITU-8/ITU-8_Poster-10.jpg" loading="lazy" decoding="async"
+                            <img src="thumbnails/ITU-8/ITU-8_Poster-10.webp" width="640" height="452" data-full="src/ITU-8/ITU-8_Poster-10.jpg" alt="Hermes project poster ITU-8_Poster-10" loading="lazy" decoding="async"
                                 onclick="openLightbox(this)">
-                            <img src="src/ITU-8/ITU-8_Poster-11.jpg" loading="lazy" decoding="async"
+                            <img src="thumbnails/ITU-8/ITU-8_Poster-11.webp" width="640" height="452" data-full="src/ITU-8/ITU-8_Poster-11.jpg" alt="Hermes project poster ITU-8_Poster-11" loading="lazy" decoding="async"
                                 onclick="openLightbox(this)">
-                            <img src="src/ITU-8/ITU-8_Poster-12.jpg" loading="lazy" decoding="async"
+                            <img src="thumbnails/ITU-8/ITU-8_Poster-12.webp" width="640" height="452" data-full="src/ITU-8/ITU-8_Poster-12.jpg" alt="Hermes project poster ITU-8_Poster-12" loading="lazy" decoding="async"
                                 onclick="openLightbox(this)">
-                            <img src="src/ITU-8/ITU-8_Poster-13.jpg" loading="lazy" decoding="async"
+                            <img src="thumbnails/ITU-8/ITU-8_Poster-13.webp" width="640" height="452" data-full="src/ITU-8/ITU-8_Poster-13.jpg" alt="Hermes project poster ITU-8_Poster-13" loading="lazy" decoding="async"
                                 onclick="openLightbox(this)">
-                            <img src="src/ITU-8/ITU-8_Poster-14.jpg" loading="lazy" decoding="async"
+                            <img src="thumbnails/ITU-8/ITU-8_Poster-14.webp" width="640" height="452" data-full="src/ITU-8/ITU-8_Poster-14.jpg" alt="Hermes project poster ITU-8_Poster-14" loading="lazy" decoding="async"
                                 onclick="openLightbox(this)">
-                            <img src="src/ITU-8/ITU-8_Poster-15.jpg" loading="lazy" decoding="async"
+                            <img src="thumbnails/ITU-8/ITU-8_Poster-15.webp" width="640" height="452" data-full="src/ITU-8/ITU-8_Poster-15.jpg" alt="Hermes project poster ITU-8_Poster-15" loading="lazy" decoding="async"
                                 onclick="openLightbox(this)">
-                            <img src="src/ITU-8/ITU-8_Poster-16.jpg" loading="lazy" decoding="async"
+                            <img src="thumbnails/ITU-8/ITU-8_Poster-16.webp" width="640" height="452" data-full="src/ITU-8/ITU-8_Poster-16.jpg" alt="Hermes project poster ITU-8_Poster-16" loading="lazy" decoding="async"
                                 onclick="openLightbox(this)">
-                            <img src="src/ITU-8/ITU-8_Poster-17.jpg" loading="lazy" decoding="async"
+                            <img src="thumbnails/ITU-8/ITU-8_Poster-17.webp" width="640" height="452" data-full="src/ITU-8/ITU-8_Poster-17.jpg" alt="Hermes project poster ITU-8_Poster-17" loading="lazy" decoding="async"
                                 onclick="openLightbox(this)">
-                            <img src="src/ITU-8/ITU-8_Poster-18.jpg" loading="lazy" decoding="async"
+                            <img src="thumbnails/ITU-8/ITU-8_Poster-18.webp" width="640" height="452" data-full="src/ITU-8/ITU-8_Poster-18.jpg" alt="Hermes project poster ITU-8_Poster-18" loading="lazy" decoding="async"
                                 onclick="openLightbox(this)">
-                            <img src="src/ITU-8/ITU-8_Poster-19.jpg" loading="lazy" decoding="async"
+                            <img src="thumbnails/ITU-8/ITU-8_Poster-19.webp" width="640" height="452" data-full="src/ITU-8/ITU-8_Poster-19.jpg" alt="Hermes project poster ITU-8_Poster-19" loading="lazy" decoding="async"
                                 onclick="openLightbox(this)">
                         </div>
                     </div>
@@ -393,17 +395,17 @@
     <div id="mockup-lightbox" onclick="closeMockupOnBackground(event)">
         <span id="mockup-close-btn" onclick="closeMockupGallery()">&times;</span>
         <div class="mockup-gallery-grid">
-            <img src="src/ITU-6/mockup/1.jpg" loading="lazy" decoding="async" onclick="viewMockupSingle(this)">
-            <img src="src/ITU-6/mockup/2.jpg" loading="lazy" decoding="async" onclick="viewMockupSingle(this)">
-            <img src="src/ITU-6/mockup/3.jpg" loading="lazy" decoding="async" onclick="viewMockupSingle(this)">
-            <img src="src/ITU-6/mockup/4.jpg" loading="lazy" decoding="async" onclick="viewMockupSingle(this)">
-            <img src="src/ITU-6/mockup/5.jpg" loading="lazy" decoding="async" onclick="viewMockupSingle(this)">
-            <img src="src/ITU-6/mockup/6.jpg" loading="lazy" decoding="async" onclick="viewMockupSingle(this)">
-            <img src="src/ITU-6/mockup/7.jpg" loading="lazy" decoding="async" onclick="viewMockupSingle(this)">
-            <img src="src/ITU-6/mockup/8.jpg" loading="lazy" decoding="async" onclick="viewMockupSingle(this)">
-            <img src="src/ITU-6/mockup/9.jpg" loading="lazy" decoding="async" onclick="viewMockupSingle(this)">
-            <img src="src/ITU-6/mockup/10.jpg" loading="lazy" decoding="async" onclick="viewMockupSingle(this)">
-            <img src="src/ITU-6/mockup/11.jpg" loading="lazy" decoding="async" onclick="viewMockupSingle(this)">
+            <img src="thumbnails/ITU-6/mockup/1.webp" width="639" height="640" data-full="src/ITU-6/mockup/1.jpg" alt="Apollo model photo 1" loading="lazy" decoding="async" onclick="viewMockupSingle(this)">
+            <img src="thumbnails/ITU-6/mockup/2.webp" width="640" height="383" data-full="src/ITU-6/mockup/2.jpg" alt="Apollo model photo 2" loading="lazy" decoding="async" onclick="viewMockupSingle(this)">
+            <img src="thumbnails/ITU-6/mockup/3.webp" width="640" height="282" data-full="src/ITU-6/mockup/3.jpg" alt="Apollo model photo 3" loading="lazy" decoding="async" onclick="viewMockupSingle(this)">
+            <img src="thumbnails/ITU-6/mockup/4.webp" width="618" height="640" data-full="src/ITU-6/mockup/4.jpg" alt="Apollo model photo 4" loading="lazy" decoding="async" onclick="viewMockupSingle(this)">
+            <img src="thumbnails/ITU-6/mockup/5.webp" width="640" height="480" data-full="src/ITU-6/mockup/5.jpg" alt="Apollo model photo 5" loading="lazy" decoding="async" onclick="viewMockupSingle(this)">
+            <img src="thumbnails/ITU-6/mockup/6.webp" width="640" height="480" data-full="src/ITU-6/mockup/6.jpg" alt="Apollo model photo 6" loading="lazy" decoding="async" onclick="viewMockupSingle(this)">
+            <img src="thumbnails/ITU-6/mockup/7.webp" width="480" height="640" data-full="src/ITU-6/mockup/7.jpg" alt="Apollo model photo 7" loading="lazy" decoding="async" onclick="viewMockupSingle(this)">
+            <img src="thumbnails/ITU-6/mockup/8.webp" width="640" height="293" data-full="src/ITU-6/mockup/8.jpg" alt="Apollo model photo 8" loading="lazy" decoding="async" onclick="viewMockupSingle(this)">
+            <img src="thumbnails/ITU-6/mockup/9.webp" width="640" height="425" data-full="src/ITU-6/mockup/9.jpg" alt="Apollo model photo 9" loading="lazy" decoding="async" onclick="viewMockupSingle(this)">
+            <img src="thumbnails/ITU-6/mockup/10.webp" width="640" height="480" data-full="src/ITU-6/mockup/10.jpg" alt="Apollo model photo 10" loading="lazy" decoding="async" onclick="viewMockupSingle(this)">
+            <img src="thumbnails/ITU-6/mockup/11.webp" width="640" height="358" data-full="src/ITU-6/mockup/11.jpg" alt="Apollo model photo 11" loading="lazy" decoding="async" onclick="viewMockupSingle(this)">
         </div>
     </div>
 
@@ -411,8 +413,8 @@
     <div id="hermes-mockup-lightbox" onclick="closeHermesMockupOnBackground(event)">
         <span id="hermes-mockup-close-btn" onclick="closeHermesMockupGallery()">&times;</span>
         <div class="mockup-gallery-grid">
-            <img src="src/ITU-8/mockup/1.jpg" loading="lazy" decoding="async" onclick="openLightbox(this)">
-            <img src="src/ITU-8/mockup/2.jpg" loading="lazy" decoding="async" onclick="openLightbox(this)">
+            <img src="thumbnails/ITU-8/mockup/1.webp" width="640" height="452" data-full="src/ITU-8/mockup/1.jpg" alt="Hermes model photo 1" loading="lazy" decoding="async" onclick="openLightbox(this)">
+            <img src="thumbnails/ITU-8/mockup/2.webp" width="640" height="452" data-full="src/ITU-8/mockup/2.jpg" alt="Hermes model photo 2" loading="lazy" decoding="async" onclick="openLightbox(this)">
         </div>
     </div>
 
@@ -421,6 +423,7 @@
         <span id="panorama-close-btn" onclick="closePanoramaGallery()">&times;</span>
         <div class="panorama-modal-inner">
             <h3 class="panorama-modal-title">Tremora — 360° Panoramas</h3>
+            <p id="panorama-status" role="status"></p>
             <div class="panorama-items-grid">
                 <div class="panorama-item" onclick="openPanoramaViewer('src/ITU-7/panoramas/p1.jpg')">
                     <i class="fas fa-vr-cardboard"></i>
@@ -481,367 +484,7 @@
     </div>
 
 
-    <script>
-        // ==============================================
-        //  THEME TOGGLE
-        // ==============================================
-        (function () {
-            const toggle = document.getElementById('theme-toggle');
-            const icon = toggle.querySelector('i');
-            const html = document.documentElement;
 
-            // Load saved preference (default = dark, no attribute)
-            const saved = localStorage.getItem('theme');
-            if (saved === 'light') {
-                html.setAttribute('data-theme', 'light');
-                icon.className = 'fas fa-moon';
-            }
-
-            toggle.addEventListener('click', function () {
-                const isLight = html.getAttribute('data-theme') === 'light';
-                if (isLight) {
-                    html.removeAttribute('data-theme');
-                    localStorage.setItem('theme', 'dark');
-                    icon.className = 'fas fa-sun';
-                } else {
-                    html.setAttribute('data-theme', 'light');
-                    localStorage.setItem('theme', 'light');
-                    icon.className = 'fas fa-moon';
-                }
-            });
-        })();
-
-        // ==============================================
-        //  MOBILE NAVIGATION
-        // ==============================================
-        (function () {
-            const hamburger = document.getElementById('hamburger');
-            const navLinks = document.getElementById('nav-links');
-            const overlay = document.getElementById('mobile-overlay');
-
-            function closeMenu() {
-                navLinks.classList.remove('open');
-                overlay.classList.remove('active');
-            }
-
-            hamburger.addEventListener('click', function () {
-                const isOpen = navLinks.classList.contains('open');
-                if (isOpen) {
-                    closeMenu();
-                } else {
-                    navLinks.classList.add('open');
-                    overlay.classList.add('active');
-                }
-            });
-
-            overlay.addEventListener('click', closeMenu);
-
-            navLinks.querySelectorAll('a').forEach(function (link) {
-                link.addEventListener('click', closeMenu);
-            });
-        })();
-
-        // ==============================================
-        //  SCROLL REVEAL & ACTIVE NAV
-        // ==============================================
-        const revealObserver = new IntersectionObserver(function (entries) {
-            entries.forEach(function (entry) {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('show');
-                }
-            });
-        }, { threshold: 0.1 });
-
-        document.querySelectorAll('.reveal').forEach(function (el) {
-            revealObserver.observe(el);
-        });
-
-        // Active nav highlighting (scroll-based, single winner)
-        const navAnchors = document.querySelectorAll('.nav-links a[href^="#"]');
-        const sectionEls = document.querySelectorAll('section[id]');
-
-        function updateActiveNav() {
-            var scrollY = window.scrollY + 120;
-            var current = '';
-            sectionEls.forEach(function (section) {
-                if (section.offsetTop <= scrollY) {
-                    current = section.id;
-                }
-            });
-            navAnchors.forEach(function (a) {
-                if (a.getAttribute('href') === '#' + current) {
-                    a.classList.add('active');
-                } else {
-                    a.classList.remove('active');
-                }
-            });
-        }
-
-        window.addEventListener('scroll', updateActiveNav, { passive: true });
-        updateActiveNav();
-
-        // ==============================================
-        //  LIGHTBOX (Full zoom/drag preserved)
-        // ==============================================
-        let currentImages = [];
-        let currentIndex = 0;
-        let isZoomed = false;
-        let scale = 1;
-        let isDragging = false;
-        let isDragAction = false;
-        let startX, startY, translateX = 0, translateY = 0;
-
-        const lightbox = document.getElementById('lightbox');
-        const img = document.getElementById('lightbox-img');
-
-        function openLightbox(clickedImg) {
-            const gallery = clickedImg.closest('.gallery, .horizontal-gallery, .poster-gallery, .hermes-gallery, .mockup-gallery-grid');
-            if (gallery) {
-                currentImages = Array.from(gallery.querySelectorAll('img'));
-                currentIndex = currentImages.indexOf(clickedImg);
-            } else {
-                currentImages = [clickedImg];
-                currentIndex = 0;
-            }
-            updateLightboxImage();
-            lightbox.style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-            resetZoom();
-        }
-
-        function updateLightboxImage() {
-            var targetSrc = currentImages[currentIndex].getAttribute('data-full') || currentImages[currentIndex].src;
-            img.src = targetSrc;
-        }
-
-        function navigateGallery(direction) {
-            currentIndex += direction;
-            if (currentIndex < 0) currentIndex = currentImages.length - 1;
-            if (currentIndex >= currentImages.length) currentIndex = 0;
-            img.style.opacity = 0.5;
-            setTimeout(function () { updateLightboxImage(); img.style.opacity = 1; resetZoom(); }, 150);
-        }
-
-        document.addEventListener('keydown', function (e) {
-            if (lightbox.style.display === 'flex') {
-                if (e.key === 'ArrowLeft') navigateGallery(-1);
-                if (e.key === 'ArrowRight') navigateGallery(1);
-                if (e.key === 'Escape') closeLightbox(null, true);
-            }
-        });
-
-        function closeLightbox(e, force) {
-            if (force || (e && (e.target.id === 'lightbox' || e.target.id === 'lightbox-content'))) {
-                lightbox.style.display = 'none';
-                document.body.style.overflow = '';
-                resetZoom();
-            }
-        }
-
-        // Mouse-aware zoom
-        img.addEventListener('wheel', function (e) {
-            e.preventDefault();
-            var delta = e.deltaY * -0.005;
-            var newScale = scale + delta;
-            newScale = Math.min(Math.max(1, newScale), 5);
-            if (newScale === scale) return;
-
-            var viewCenterX = window.innerWidth / 2;
-            var viewCenterY = window.innerHeight / 2;
-            var mouseX = e.clientX;
-            var mouseY = e.clientY;
-            var mouseOffsetFromCenterX = mouseX - viewCenterX - translateX;
-            var mouseOffsetFromCenterY = mouseY - viewCenterY - translateY;
-            var ratio = newScale / scale;
-
-            translateX -= mouseOffsetFromCenterX * (ratio - 1);
-            translateY -= mouseOffsetFromCenterY * (ratio - 1);
-            scale = newScale;
-
-            if (scale > 1) {
-                isZoomed = true;
-                img.style.cursor = 'grab';
-            } else {
-                resetZoom();
-                return;
-            }
-            updateTransform();
-        }, { passive: false });
-
-        img.addEventListener('click', function (e) {
-            e.stopPropagation();
-            if (isDragAction) { isDragAction = false; return; }
-            if (scale > 1) { resetZoom(); } else { toggleZoomCenter(); }
-        });
-
-        function toggleZoomCenter() {
-            isZoomed = true;
-            scale = 2.0;
-            img.style.cursor = 'grab';
-            updateTransform();
-        }
-
-        function resetZoom() {
-            isZoomed = false;
-            scale = 1;
-            translateX = 0;
-            translateY = 0;
-            img.style.cursor = 'zoom-in';
-            img.style.transform = 'translate(0px, 0px) scale(1)';
-        }
-
-        function updateTransform() {
-            img.style.transform = 'translate(' + translateX + 'px, ' + translateY + 'px) scale(' + scale + ')';
-        }
-
-        // Drag (Mouse)
-        img.addEventListener('mousedown', function (e) {
-            if (scale <= 1) return;
-            isDragging = true;
-            isDragAction = false;
-            startX = e.clientX - translateX;
-            startY = e.clientY - translateY;
-            img.style.cursor = 'grabbing';
-            e.preventDefault();
-        });
-
-        window.addEventListener('mouseup', function () {
-            if (isDragging) { isDragging = false; img.style.cursor = 'grab'; }
-        });
-
-        window.addEventListener('mousemove', function (e) {
-            if (!isDragging || scale <= 1) return;
-            e.preventDefault();
-            isDragAction = true;
-            translateX = e.clientX - startX;
-            translateY = e.clientY - startY;
-            updateTransform();
-        });
-
-        // Touch Events for Mobile (Pinch-to-zoom, Swipe, Pan)
-        let initialDistance = null;
-        let initialScale = 1;
-        let touchStartX = 0;
-        
-        img.addEventListener('touchstart', function(e) {
-            if (e.touches.length === 2) {
-                initialDistance = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
-                initialScale = scale;
-                isDragging = false;
-            } else if (e.touches.length === 1) {
-                isDragging = true;
-                isDragAction = false;
-                touchStartX = e.touches[0].clientX;
-                if (scale > 1) {
-                    startX = e.touches[0].clientX - translateX;
-                    startY = e.touches[0].clientY - translateY;
-                }
-            }
-        }, { passive: false });
-
-        img.addEventListener('touchmove', function(e) {
-            if (e.touches.length === 2) {
-                e.preventDefault(); 
-                const currentDistance = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
-                if (initialDistance) {
-                    let newScale = initialScale * (currentDistance / initialDistance);
-                    scale = Math.min(Math.max(1, newScale), 5);
-                    if (scale === 1) {
-                        translateX = 0;
-                        translateY = 0;
-                    }
-                    updateTransform();
-                }
-            } else if (e.touches.length === 1 && isDragging) {
-                if (scale > 1) {
-                    e.preventDefault();
-                    isDragAction = true;
-                    translateX = e.touches[0].clientX - startX;
-                    translateY = e.touches[0].clientY - startY;
-                    updateTransform();
-                }
-            }
-        }, { passive: false });
-
-        img.addEventListener('touchend', function(e) {
-            if (e.touches.length < 2) {
-                initialDistance = null;
-            }
-            if (e.changedTouches.length === 1 && isDragging && scale === 1) {
-                const diffX = e.changedTouches[0].clientX - touchStartX;
-                if (Math.abs(diffX) > 50) {
-                    if (diffX > 0) navigateGallery(-1);
-                    else navigateGallery(1);
-                }
-            }
-            isDragging = false;
-        });
-
-        // ==============================================
-        //  MOCKUP GALLERIES
-        // ==============================================
-        function openMockupGallery() {
-            document.getElementById('mockup-lightbox').style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-        }
-        function closeMockupGallery() {
-            document.getElementById('mockup-lightbox').style.display = 'none';
-            document.body.style.overflow = '';
-        }
-        function closeMockupOnBackground(e) {
-            if (e.target.id === 'mockup-lightbox') closeMockupGallery();
-        }
-
-        function openHermesMockupGallery() {
-            document.getElementById('hermes-mockup-lightbox').style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-        }
-        function closeHermesMockupGallery() {
-            document.getElementById('hermes-mockup-lightbox').style.display = 'none';
-            document.body.style.overflow = '';
-        }
-        function closeHermesMockupOnBackground(e) {
-            if (e.target.id === 'hermes-mockup-lightbox') closeHermesMockupGallery();
-        }
-
-        function viewMockupSingle(el) { openLightbox(el); }
-
-        // ==============================================
-        //  PANORAMA
-        // ==============================================
-        let viewer;
-
-        function openPanoramaGallery() {
-            document.getElementById('panorama-gallery-modal').style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-        }
-        function closePanoramaGallery() {
-            document.getElementById('panorama-gallery-modal').style.display = 'none';
-            document.body.style.overflow = '';
-        }
-        function closePanoramaGalleryOnBackground(e) {
-            if (e.target.id === 'panorama-gallery-modal') closePanoramaGallery();
-        }
-
-        function openPanoramaViewer(imagePath) {
-            document.getElementById('panorama-gallery-modal').style.display = 'none';
-            document.getElementById('panorama-viewer-modal').style.display = 'block';
-            if (viewer) viewer.destroy();
-            viewer = pannellum.viewer('panorama-360-view', {
-                "type": "equirectangular",
-                "panorama": imagePath,
-                "autoLoad": true,
-                "compass": false,
-                "showControls": true
-            });
-        }
-
-        function closePanoramaViewer() {
-            document.getElementById('panorama-viewer-modal').style.display = 'none';
-            document.getElementById('panorama-gallery-modal').style.display = 'flex';
-            if (viewer) { viewer.destroy(); viewer = null; }
-        }
-    </script>
 </body>
 
 </html>
