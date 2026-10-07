@@ -109,6 +109,23 @@ window.addEventListener('scroll', function () {
 }, { passive: true });
 updateActiveNav();
 
+// All gallery overlays share one scroll lock, including nested lightboxes.
+const openGalleryModals = new Set();
+let previousBodyOverflow;
+
+function setGalleryModal(id, display) {
+    const wasOpen = openGalleryModals.size > 0;
+    if (display === 'none') {
+        openGalleryModals.delete(id);
+    } else {
+        if (!wasOpen) previousBodyOverflow = document.body.style.overflow;
+        openGalleryModals.add(id);
+    }
+    document.getElementById(id).style.display = display;
+    if (openGalleryModals.size > 0) document.body.style.overflow = 'hidden';
+    else if (wasOpen) document.body.style.overflow = previousBodyOverflow;
+}
+
 // ==============================================
 //  LIGHTBOX (Full zoom/drag preserved)
 // ==============================================
@@ -135,8 +152,7 @@ function openLightbox(clickedImg) {
         currentIndex = 0;
     }
     updateLightboxImage();
-    lightbox.style.display = 'flex';
-    document.body.style.overflow = 'hidden';
+    setGalleryModal('lightbox', 'flex');
     resetZoom();
 }
 
@@ -168,8 +184,7 @@ document.addEventListener('keydown', function (e) {
 function closeLightbox(e, force) {
     if (force || (e && (e.target.id === 'lightbox' || e.target.id === 'lightbox-content'))) {
         clearTimeout(galleryTimer);
-        lightbox.style.display = 'none';
-        document.body.style.overflow = '';
+        setGalleryModal('lightbox', 'none');
         resetZoom();
     }
 }
@@ -218,6 +233,12 @@ function toggleZoomCenter() {
 }
 
 function resetZoom() {
+    isDragging = false;
+    isDragAction = false;
+    startX = startY = 0;
+    initialDistance = null;
+    initialScale = 1;
+    touchStartX = 0;
     isZoomed = false;
     scale = 1;
     translateX = 0;
@@ -317,24 +338,20 @@ img.addEventListener('touchend', function(e) {
 //  MOCKUP GALLERIES
 // ==============================================
 function openMockupGallery() {
-    document.getElementById('mockup-lightbox').style.display = 'flex';
-    document.body.style.overflow = 'hidden';
+    setGalleryModal('mockup-lightbox', 'flex');
 }
 function closeMockupGallery() {
-    document.getElementById('mockup-lightbox').style.display = 'none';
-    document.body.style.overflow = '';
+    setGalleryModal('mockup-lightbox', 'none');
 }
 function closeMockupOnBackground(e) {
     if (e.target.id === 'mockup-lightbox') closeMockupGallery();
 }
 
 function openHermesMockupGallery() {
-    document.getElementById('hermes-mockup-lightbox').style.display = 'flex';
-    document.body.style.overflow = 'hidden';
+    setGalleryModal('hermes-mockup-lightbox', 'flex');
 }
 function closeHermesMockupGallery() {
-    document.getElementById('hermes-mockup-lightbox').style.display = 'none';
-    document.body.style.overflow = '';
+    setGalleryModal('hermes-mockup-lightbox', 'none');
 }
 function closeHermesMockupOnBackground(e) {
     if (e.target.id === 'hermes-mockup-lightbox') closeHermesMockupGallery();
@@ -375,14 +392,12 @@ function loadPanoramaLibrary() {
 }
 
 function openPanoramaGallery() {
-    document.getElementById('panorama-gallery-modal').style.display = 'flex';
-    document.body.style.overflow = 'hidden';
+    setGalleryModal('panorama-gallery-modal', 'flex');
 }
 function closePanoramaGallery() {
     panoramaRequest++;
     panoramaStatus.textContent = '';
-    document.getElementById('panorama-gallery-modal').style.display = 'none';
-    document.body.style.overflow = '';
+    setGalleryModal('panorama-gallery-modal', 'none');
 }
 function closePanoramaGalleryOnBackground(e) {
     if (e.target.id === 'panorama-gallery-modal') closePanoramaGallery();
@@ -395,7 +410,7 @@ async function openPanoramaViewer(imagePath) {
         await loadPanoramaLibrary();
         if (request !== panoramaRequest) return;
         if (viewer) viewer.destroy();
-        document.getElementById('panorama-viewer-modal').style.display = 'block';
+        setGalleryModal('panorama-viewer-modal', 'block');
         viewer = pannellum.viewer('panorama-360-view', {
             "type": "equirectangular",
             "panorama": imagePath,
@@ -403,17 +418,17 @@ async function openPanoramaViewer(imagePath) {
             "compass": false,
             "showControls": true
         });
-        document.getElementById('panorama-gallery-modal').style.display = 'none';
+        setGalleryModal('panorama-gallery-modal', 'none');
         panoramaStatus.textContent = '';
     } catch (error) {
         if (request !== panoramaRequest) return;
-        document.getElementById('panorama-viewer-modal').style.display = 'none';
+        setGalleryModal('panorama-viewer-modal', 'none');
         panoramaStatus.textContent = 'Unable to load the panorama. Please try again.';
     }
 }
 
 function closePanoramaViewer() {
-    document.getElementById('panorama-viewer-modal').style.display = 'none';
-    document.getElementById('panorama-gallery-modal').style.display = 'flex';
+    setGalleryModal('panorama-viewer-modal', 'none');
+    setGalleryModal('panorama-gallery-modal', 'flex');
     if (viewer) { viewer.destroy(); viewer = null; }
 }

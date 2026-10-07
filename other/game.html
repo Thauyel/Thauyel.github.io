@@ -1158,7 +1158,8 @@
 
         // --- RENDER ---
         function draw() {
-            if (shakeAmount > 0) { ctx.save(); ctx.translate((Math.random() - .5) * shakeAmount, (Math.random() - .5) * shakeAmount); shakeAmount *= .9; if (shakeAmount < 0.5) shakeAmount = 0; }
+            const isShaking = shakeAmount > 0;
+            if (isShaking) { ctx.save(); ctx.translate((Math.random() - .5) * shakeAmount, (Math.random() - .5) * shakeAmount); shakeAmount *= .9; if (shakeAmount < 0.5) shakeAmount = 0; }
 
             // Clear and Draw Grid
             // Clear and Draw Background
@@ -1196,7 +1197,7 @@
                 ctx.fillStyle = '#fff'; ctx.font = "bold 16px Rajdhani"; ctx.textAlign = "center"; ctx.fillText("BOSS INTEGRITY", canvas.width / 2, by - 10);
             }
 
-            if (shakeAmount > 0) ctx.restore();
+            if (isShaking) ctx.restore();
             // Vignette
             let gr = ctx.createRadialGradient(canvas.width / 2, canvas.height / 2, canvas.height / 2, canvas.width / 2, canvas.height / 2, canvas.height);
             gr.addColorStop(0, "rgba(0,0,0,0)");

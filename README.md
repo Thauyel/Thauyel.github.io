@@ -43,3 +43,24 @@ When adding an image, set its HTML `width` and `height` to the generated preview
 dimensions and provide descriptive `alt` text. Thumbnail generation is only
 needed when source images change; normal development and deployment need no
 Python packages. Older pages under `other/` retain their existing image paths.
+
+
+## Browser regression checks
+
+With the site served locally, start a separate Chromium debugging session. In
+this cloud container:
+
+```sh
+chromium --headless --no-sandbox --disable-dev-shm-usage --remote-debugging-port=9222 --user-data-dir=/tmp/portfolio-test-browser
+```
+
+Then run the checks with Node 22 or newer:
+
+```sh
+node tests/browser-regression.mjs http://127.0.0.1:8000 http://127.0.0.1:9222
+```
+
+The runner opens and closes its own browser tab. It checks nested gallery scroll
+locks, mouse/touch state resets, digit-game submission and pause behavior, and
+canvas state restoration during screen shake. It disables caching for the test
+tab so checks exercise the current files.

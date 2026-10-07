@@ -180,6 +180,8 @@
                     correctAnswer: [],
                     userInputs: [],
                     timerId: null,
+                    answerSubmitted: false,
+                    roundFinalized: false,
                     timerStartTime: 0,
                     timerRemaining: 0
                 },
@@ -275,6 +277,10 @@
                 },
 
                 playRound: async function () {
+                    if (this.state.timerId) clearTimeout(this.state.timerId);
+                    this.state.timerId = null;
+                    this.state.answerSubmitted = false;
+                    this.state.roundFinalized = false;
                     this.state.userInputs = [];
                     this.state.fullSequence = this.generateSmartSequence(this.state.targetAnswerCount);
                     this.state.correctAnswer = this.calculateLogic(this.state.fullSequence);
@@ -390,26 +396,31 @@
                 },
 
                 addInput: function (num) {
-                    if (this.dom.screens.input.classList.contains('hidden') || this.state.isPaused) return;
+                    if (this.dom.screens.input.classList.contains('hidden') || this.state.isPaused || this.state.answerSubmitted || this.state.roundFinalized) return;
 
                     this.state.userInputs.push(num);
                     this.dom.inputBox.innerText = this.state.userInputs.join(' - ');
 
                     if (this.state.userInputs.length >= this.state.correctAnswer.length) {
                         if (this.state.timerId) clearTimeout(this.state.timerId);
-                        this.state.timerId = null;
-                        setTimeout(() => this.finalize(true), 250);
+                        this.state.answerSubmitted = true;
+                        this.state.timerRemaining = 250;
+                        this.state.timerStartTime = Date.now();
+                        this.state.timerId = setTimeout(() => this.finalize(true), 250);
                     }
                 },
 
                 removeInput: function () {
-                    if (!this.state.userInputs.length || this.state.isPaused) return;
+                    if (!this.state.userInputs.length || this.state.isPaused || this.state.answerSubmitted || this.state.roundFinalized || this.dom.screens.input.classList.contains('hidden')) return;
                     this.state.userInputs.pop();
                     this.dom.inputBox.innerText = this.state.userInputs.join(' - ');
                 },
 
                 finalize: function (triggeredByUser) {
+                    if (this.state.roundFinalized || this.dom.screens.input.classList.contains('hidden')) return;
+                    this.state.roundFinalized = true;
                     if (this.state.timerId) clearTimeout(this.state.timerId);
+                    this.state.timerId = null;
 
                     const isCorrect = JSON.stringify(this.state.userInputs) === JSON.stringify(this.state.correctAnswer);
 
