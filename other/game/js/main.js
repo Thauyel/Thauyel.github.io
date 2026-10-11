@@ -44,6 +44,7 @@
     let deathTimer = 0;
     let overAt = 0;
     let demoDeadFor = 0;
+    let pointer = null; // last pointer position in screen pixels; aims the grapple
     let orbStreak = 0;
     let lastOrbAt = 0;
     let bannerTimer = null;
@@ -240,6 +241,9 @@
                         slowTimer = 0.2;
                     }
                     break;
+                case 'bonk':
+                    Audio.play('land', e.v * 0.6);
+                    break;
                 case 'land':
                     Audio.play('land', e.v);
                     break;
@@ -283,9 +287,14 @@
     const HOLD_KEYS = new Set(['Space', 'ArrowUp', 'KeyW', 'KeyZ', 'KeyX', 'KeyJ']);
 
     canvas.tabIndex = -1;
+    const trackPointer = e => {
+        pointer = { x: e.clientX, y: e.clientY, mouse: e.pointerType === 'mouse' };
+    };
+    canvas.addEventListener('pointermove', trackPointer);
     canvas.addEventListener('pointerdown', e => {
         if (e.button > 0) return;
         e.preventDefault();
+        trackPointer(e);
         if (state === 'playing') {
             hold = true;
             if (canvas.setPointerCapture) canvas.setPointerCapture(e.pointerId);
@@ -366,7 +375,7 @@
             return null;
         }
         if (!p.alive) return null;
-        if (!p.anchor && !hold && world.stats.grapples < 2 && world.findTarget()) return 'HOLD';
+        if (!p.anchor && !hold && world.stats.grapples < 2) return world.findTarget() ? 'HOLD' : 'AIM AT THE CEILING';
         if (p.anchor && world.stats.grapples <= 2 && p.x > p.anchor.cx + 30 && p.vy < 0) return 'LET GO!';
         return null;
     }
@@ -386,6 +395,7 @@
             simDt = dt * timeScale;
             const n = Math.max(1, Math.ceil(simDt / SUBSTEP));
             const h = simDt / n;
+            if (state === 'playing') world.aim = pointer ? renderer.screenToWorld(pointer.x, pointer.y) : null;
             for (let i = 0; i < n; i++) {
                 world.hold = state === 'title' ? world.botHold() : state === 'playing' && hold;
                 world.step(h);
@@ -394,7 +404,13 @@
         }
 
         renderer.update(world, state === 'paused' ? 0 : dt, simDt);
-        renderer.draw(world, { showTarget: state === 'playing' || state === 'title', hint: tutorialHint() });
+        const aiming = state === 'playing' && pointer && pointer.mouse;
+        canvas.style.cursor = aiming ? 'none' : '';
+        renderer.draw(world, {
+            showTarget: state === 'playing' || state === 'title',
+            hint: tutorialHint(),
+            cursor: aiming ? pointer : null
+        });
         updateHud();
 
         const sp = Math.hypot(world.player.vx, world.player.vy);

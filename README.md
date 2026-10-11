@@ -72,7 +72,8 @@ tab so checks exercise the current files.
 procedurally generated city. It has five architectural districts: Old Town,
 Downtown, The Docks, Brutalia and Neon Arcology. Everything is drawn on canvas
 and every sound is synthesized with WebAudio, so the game ships no image or audio
-assets. Hold (click, touch or Space) to grapple, and release to fly. A
+assets. Aim at the ceiling overhead with the mouse (or touch where to shoot),
+hold (click, touch or Space) to grapple, and release to fly. A
 "Daily City" mode gives everyone the same layout for the day.
 
 The simulation in `other/game/js/world.js` has no DOM dependencies. A built-in

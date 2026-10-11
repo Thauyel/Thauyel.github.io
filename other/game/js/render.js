@@ -1,8 +1,8 @@
-// VERTIGO — canvas renderer: sky, parallax skylines, cached buildings, anchors, player, effects.
+// VERTIGO — canvas renderer: sky, parallax skylines, cached buildings, the ceiling, aim, player, effects.
 (function (V) {
     'use strict';
 
-    const { GROUND, DISTRICT_LEN, PX_PER_M } = V.CONST;
+    const { GROUND, DISTRICT_LEN, PX_PER_M, RANGE } = V.CONST;
     const DISTRICTS = V.DISTRICTS;
     const hash = V.hash;
     const clamp = V.clamp;
@@ -123,21 +123,21 @@
             ctx.lineTo(dx + 20, GROUND);
             ctx.fill();
             if (b.deco.start) {
-                const sx = q.x + q.w - 330, sy = q.y - 120;
+                const sx = q.x + 30, sy = q.y - 120;
                 ctx.fillStyle = '#2a1626';
                 ctx.fillRect(sx + 30, sy + 60, 6, 60);
-                ctx.fillRect(sx + 214, sy + 60, 6, 60);
-                ctx.fillRect(sx, sy, 250, 62);
+                ctx.fillRect(sx + 254, sy + 60, 6, 60);
+                ctx.fillRect(sx, sy, 290, 62);
                 ctx.strokeStyle = '#ffcf6b';
                 ctx.lineWidth = 2;
-                ctx.strokeRect(sx + 5, sy + 5, 240, 52);
+                ctx.strokeRect(sx + 5, sy + 5, 280, 52);
                 ctx.save();
                 ctx.shadowColor = '#ffcf6b';
                 ctx.shadowBlur = 12;
                 ctx.fillStyle = '#ffe2a0';
-                ctx.font = '800 22px system-ui, sans-serif';
+                ctx.font = '800 19px system-ui, sans-serif';
                 ctx.textAlign = 'center';
-                ctx.fillText('HOLD TO SWING →', sx + 125, sy + 40);
+                ctx.fillText('AIM UP · HOLD TO SWING', sx + 145, sy + 39);
                 ctx.restore();
             }
         },
@@ -528,7 +528,7 @@
         this.canvas.height = Math.round(h * dpr);
         this.canvas.style.width = w + 'px';
         this.canvas.style.height = h + 'px';
-        this.base = Math.min(h / 1120, w / 760);
+        this.base = Math.min(h / 1120, w / 600);
         this.cacheScale = Math.min(2, Math.ceil(this.base * dpr * 4) / 4);
         const vg = this.ctx.createRadialGradient(w / 2, h / 2, Math.min(w, h) * 0.35, w / 2, h / 2, Math.hypot(w, h) * 0.6);
         vg.addColorStop(0, 'rgba(0,0,0,0)');
@@ -608,6 +608,10 @@
             }
             case 'district':
                 this.flash = Math.max(this.flash, 0.18);
+                break;
+            case 'bonk':
+                this.burst(e.x, e.y, 6, '#d8d0d0', 160, 0.35);
+                this.shake = Math.max(this.shake, Math.min(6, e.v / 250) * motion);
                 break;
         }
     };
@@ -743,6 +747,10 @@
         this.speed = sp;
     };
 
+    Renderer.prototype.screenToWorld = function (sx, sy) {
+        return { x: (sx - this.w / 2) / this.cam.s + this.cam.x, y: (sy - this.h / 2) / this.cam.s + this.cam.y };
+    };
+
     Renderer.prototype.local = function (p, angle, lx, ly) {
         const c = Math.cos(angle), s = Math.sin(angle);
         return { x: p.x + lx * c - ly * s, y: p.y + lx * s + ly * c };
@@ -770,7 +778,6 @@
         const y0 = cam.y - h / 2 / s - 60, y1 = cam.y + h / 2 / s + 60;
         this.view = { x0, x1, y0, y1 };
 
-        for (const a of world.anchors) if (a.type === 'crane' && a.x > x0 - 400 && a.x < x1 + 400) this.drawCrane(ctx, a);
         this.drawGround(ctx, world, pal, t, x0, x1, y1);
         if (this.bestX !== null && this.bestX > x0 && this.bestX < x1) this.drawBestMarker(ctx, pal, y0);
 
@@ -781,11 +788,10 @@
             this.drawBuildingLive(ctx, b, t);
         }
 
-        const target = world.player.alive && !world.player.anchor && opts.showTarget ? world.findTarget() : null;
+        this.drawCeiling(ctx, world, t, x0, x1, y0);
         for (const r of world.rings) if (r.x > x0 && r.x < x1 && !r.taken) this.drawRing(ctx, r, t, pal, true);
         for (const o of world.orbs) if (!o.taken && o.x > x0 && o.x < x1) this.drawOrb(ctx, o, t);
-        for (const a of world.anchors) if (a.cx > x0 - 60 && a.cx < x1 + 60) this.drawAnchor(ctx, a, t, pal, a === target);
-        if (target) this.drawTargetLine(ctx, world.player, target, pal);
+        if (opts.showTarget && world.player.alive && !world.player.anchor) this.drawAim(ctx, world, pal, t);
         if (opts.hint) this.drawHint(ctx, opts.hint, world, s, t);
 
         this.drawTrail(ctx, pal);
@@ -798,6 +804,7 @@
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
         this.drawWeather(ctx, pal, t);
         this.drawSpeedLines(ctx);
+        if (opts.cursor) this.drawCursor(ctx, opts.cursor, pal);
         ctx.fillStyle = this.vignette;
         ctx.fillRect(0, 0, w, h);
         if (this.flash > 0.01) {
@@ -1077,204 +1084,178 @@
         }
     };
 
-    Renderer.prototype.drawCrane = function (ctx, a) {
-        const armY = a.y - 80;
-        const tx = a.x - a.arm * 0.7;
-        ctx.save();
-        ctx.globalAlpha = 0.72;
-        ctx.strokeStyle = '#c98a2c';
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.moveTo(tx - 8, GROUND);
-        ctx.lineTo(tx - 8, armY);
-        ctx.moveTo(tx + 8, GROUND);
-        ctx.lineTo(tx + 8, armY);
-        for (let y = GROUND; y > armY; y -= 22) {
-            ctx.moveTo(tx - 8, y);
-            ctx.lineTo(tx + 8, y - 22);
-        }
-        ctx.moveTo(tx - a.arm * 0.35, armY);
-        ctx.lineTo(a.x + 40, armY);
-        ctx.moveTo(tx - a.arm * 0.35, armY + 10);
-        ctx.lineTo(a.x + 40, armY + 10);
-        for (let x = tx - a.arm * 0.35; x < a.x + 40; x += 20) {
-            ctx.moveTo(x, armY);
-            ctx.lineTo(x + 10, armY + 10);
-            ctx.lineTo(x + 20, armY);
-        }
-        ctx.moveTo(tx, armY);
-        ctx.lineTo(tx, armY - 40);
-        ctx.lineTo(a.x + 30, armY);
-        ctx.moveTo(tx, armY - 40);
-        ctx.lineTo(tx - a.arm * 0.35, armY);
-        ctx.stroke();
-        ctx.fillStyle = '#7a5520';
-        ctx.fillRect(tx - a.arm * 0.35 - 6, armY - 4, 34, 22);
-        ctx.fillStyle = '#d9d9d9';
-        ctx.fillRect(tx + 10, armY - 2, 20, 16);
-        ctx.restore();
+    // Overhead structure per district: base fill, relief pattern and the colour of the grabbable underside.
+    const CEILINGS = {
+        oldtown: { fill: '#3a2836', edge: '#ffcf6b', kind: 'stone' },
+        downtown: { fill: '#141a2e', edge: '#4de1ff', kind: 'steel', chord: '#2c3656' },
+        docks: { fill: '#1f1b19', edge: '#ffb347', kind: 'steel', chord: '#6b4325' },
+        brutalia: { fill: '#6e6d72', edge: '#ff5a36', kind: 'coffer' },
+        arcology: { fill: '#16062a', edge: '#00f0ff', kind: 'hex' }
     };
 
-    Renderer.prototype.drawAnchor = function (ctx, a, t, pal, targeted) {
-        const x = a.cx, y = a.cy;
-        ctx.save();
-        switch (a.type) {
-            case 'balloon': {
-                const cols = [['#ff6b6b', '#ffe066'], ['#4dabf7', '#ffffff'], ['#b197fc', '#ffd8a8'], ['#63e6be', '#ff8787'], ['#ffa94d', '#5c7cfa'], ['#f783ac', '#fff3bf']][a.hue];
-                ctx.strokeStyle = 'rgba(60,30,30,0.9)';
-                ctx.lineWidth = 1;
+    Renderer.prototype.drawCeiling = function (ctx, world, t, x0, x1, y0) {
+        for (const c of world.ceiling) {
+            if (c.x1 < x0 || c.x0 > x1) continue;
+            const st = CEILINGS[c.style] || CEILINGS.oldtown;
+            const top = Math.min(y0 - 20, c.y - 240);
+            const L = Math.max(c.x0, x0 - 20), R = Math.min(c.x1, x1 + 20);
+            ctx.save();
+            ctx.beginPath();
+            ctx.rect(c.x0, top, c.x1 - c.x0, c.y - top);
+            ctx.clip();
+            ctx.fillStyle = st.fill;
+            ctx.fillRect(L, top, R - L, c.y - top);
+            const band = c.y - 150;
+            if (st.kind === 'stone') {
+                ctx.fillStyle = 'rgba(0,0,0,0.22)';
+                for (let y = c.y - 18, row = 0; y > top; y -= 18, row++) {
+                    ctx.fillRect(L, y, R - L, 2);
+                    for (let x = Math.floor(L / 40) * 40 + (row % 2) * 20; x < R; x += 40) ctx.fillRect(x, y, 2, 18);
+                }
+                ctx.strokeStyle = 'rgba(255,220,170,0.12)';
+                ctx.lineWidth = 4;
                 ctx.beginPath();
-                ctx.moveTo(x - 6, y - 12);
-                ctx.lineTo(x - 18, y - 40);
-                ctx.moveTo(x + 6, y - 12);
-                ctx.lineTo(x + 18, y - 40);
+                for (let x = Math.floor(L / 64) * 64; x < R; x += 64) {
+                    ctx.moveTo(x + 64, c.y - 6);
+                    ctx.arc(x + 32, c.y - 6, 32, 0, Math.PI, true);
+                }
                 ctx.stroke();
-                ctx.fillStyle = '#7a4a2a';
-                ctx.fillRect(x - 7, y - 13, 14, 11);
-                const f = 0.6 + 0.4 * Math.sin(t * 13 + a.ph);
-                ctx.fillStyle = `rgba(255,170,60,${0.5 * f})`;
+            } else if (st.kind === 'steel') {
+                ctx.fillStyle = st.chord;
+                ctx.fillRect(L, band, R - L, 12);
+                ctx.fillRect(L, c.y - 14, R - L, 14);
+                ctx.strokeStyle = st.chord;
+                ctx.lineWidth = 5;
                 ctx.beginPath();
-                ctx.arc(x, y - 30, 6 + f * 3, 0, TAU);
-                ctx.fill();
-                ctx.fillStyle = cols[0];
-                ctx.beginPath();
-                ctx.moveTo(x - 14, y - 36);
-                ctx.bezierCurveTo(x - 40, y - 60, x - 30, y - 100, x, y - 100);
-                ctx.bezierCurveTo(x + 30, y - 100, x + 40, y - 60, x + 14, y - 36);
-                ctx.fill();
-                ctx.fillStyle = cols[1];
-                ctx.beginPath();
-                ctx.moveTo(x - 5, y - 36);
-                ctx.bezierCurveTo(x - 14, y - 60, x - 10, y - 100, x, y - 100);
-                ctx.bezierCurveTo(x + 10, y - 100, x + 14, y - 60, x + 5, y - 36);
-                ctx.fill();
-                ctx.fillStyle = 'rgba(0,0,0,0.15)';
-                ctx.beginPath();
-                ctx.moveTo(x + 14, y - 36);
-                ctx.bezierCurveTo(x + 40, y - 60, x + 30, y - 100, x, y - 100);
-                ctx.bezierCurveTo(x + 18, y - 90, x + 22, y - 60, x + 8, y - 36);
-                ctx.fill();
-                break;
-            }
-            case 'drone': {
-                ctx.strokeStyle = '#9aa4c4';
+                for (let x = Math.floor(L / 60) * 60; x < R; x += 60) {
+                    ctx.moveTo(x, c.y - 10);
+                    ctx.lineTo(x + 30, band + 8);
+                    ctx.lineTo(x + 60, c.y - 10);
+                }
+                ctx.stroke();
+                ctx.fillStyle = 'rgba(255,255,255,0.25)';
+                for (let x = Math.floor(L / 20) * 20; x < R; x += 20) ctx.fillRect(x, c.y - 8, 2, 2);
+            } else if (st.kind === 'coffer') {
+                for (let x = Math.floor(L / 50) * 50; x < R; x += 50) {
+                    for (const y of [c.y - 104, c.y - 54]) {
+                        ctx.fillStyle = 'rgba(0,0,0,0.22)';
+                        ctx.fillRect(x + 6, y, 38, 40);
+                        ctx.fillStyle = 'rgba(255,255,255,0.12)';
+                        ctx.fillRect(x + 6, y + 37, 38, 3);
+                    }
+                }
+            } else {
+                const k = 0.18 + 0.1 * Math.sin(t * 2);
+                ctx.strokeStyle = `rgba(0,240,255,${k})`;
                 ctx.lineWidth = 1.5;
                 ctx.beginPath();
-                ctx.moveTo(x, y);
-                ctx.lineTo(x, y - 14);
-                ctx.moveTo(x - 18, y - 20);
-                ctx.lineTo(x + 18, y - 20);
-                ctx.stroke();
-                ctx.fillStyle = '#1e2440';
-                ctx.fillRect(x - 10, y - 24, 20, 8);
-                const spin = Math.abs(Math.sin(t * 40 + a.ph));
-                ctx.fillStyle = 'rgba(200,220,255,0.55)';
-                for (const dx of [-18, 18]) {
-                    ctx.beginPath();
-                    ctx.ellipse(x + dx, y - 24, 3 + spin * 10, 2, 0, 0, TAU);
-                    ctx.fill();
+                const hr = 18, hw = hr * Math.sqrt(3);
+                for (let row = 0; row < 6; row++) {
+                    const cy = c.y - 14 - row * hr * 1.5;
+                    for (let x = Math.floor(L / hw) * hw + (row % 2) * hw / 2; x < R + hw; x += hw) {
+                        for (let i = 0; i <= 6; i++) {
+                            const a = Math.PI / 6 + i * Math.PI / 3;
+                            const px = x + Math.cos(a) * hr, py = cy + Math.sin(a) * hr;
+                            if (i === 0) ctx.moveTo(px, py);
+                            else ctx.lineTo(px, py);
+                        }
+                    }
                 }
-                ctx.fillStyle = Math.sin(t * 6 + a.ph) > 0 ? '#4de1ff' : '#ff4d6d';
-                ctx.fillRect(x - 2, y - 22, 4, 3);
-                break;
+                ctx.stroke();
             }
-            case 'crane': {
-                ctx.strokeStyle = '#3a3a3a';
-                ctx.lineWidth = 1.2;
-                ctx.beginPath();
-                ctx.moveTo(a.x, a.y - 70);
-                ctx.lineTo(x, y - 8);
-                ctx.stroke();
-                ctx.fillStyle = '#ffb347';
-                ctx.fillRect(x - 6, y - 10, 12, 6);
-                ctx.strokeStyle = '#ffb347';
-                ctx.lineWidth = 3;
-                ctx.beginPath();
-                ctx.arc(x, y + 2, 5, -Math.PI / 2, Math.PI * 0.9);
-                ctx.stroke();
-                break;
-            }
-            case 'beacon': {
-                ctx.fillStyle = '#6b6a70';
-                ctx.beginPath();
-                for (let i = 0; i < 6; i++) {
-                    const an = i / 6 * TAU + Math.PI / 6;
-                    ctx.lineTo(x + Math.cos(an) * 13, y - 18 + Math.sin(an) * 13);
-                }
-                ctx.fill();
-                ctx.fillStyle = 'rgba(0,0,0,0.25)';
-                ctx.fillRect(x - 11, y - 17, 22, 5);
-                ctx.fillStyle = `rgba(255,90,54,${0.5 + 0.5 * Math.sin(t * 4 + a.ph)})`;
-                ctx.beginPath();
-                ctx.arc(x, y - 32, 3.5, 0, TAU);
-                ctx.fill();
-                ctx.strokeStyle = '#3a3a40';
-                ctx.lineWidth = 2;
-                ctx.beginPath();
-                ctx.moveTo(x, y - 6);
-                ctx.lineTo(x, y);
-                ctx.stroke();
-                break;
-            }
-            case 'ring': {
-                const k = Math.abs(Math.cos(t * 1.6 + a.ph));
-                ctx.shadowColor = '#00f0ff';
-                ctx.shadowBlur = 12;
-                ctx.strokeStyle = '#00f0ff';
-                ctx.lineWidth = 2.5;
-                ctx.beginPath();
-                ctx.ellipse(x, y - 18, 4 + k * 14, 16, 0, 0, TAU);
-                ctx.stroke();
-                ctx.strokeStyle = '#ff2bd6';
-                ctx.beginPath();
-                ctx.ellipse(x, y - 18, 16, 4 + (1 - k) * 12, 0, 0, TAU);
-                ctx.stroke();
-                break;
-            }
+            const shadow = ctx.createLinearGradient(0, c.y - 40, 0, c.y);
+            shadow.addColorStop(0, 'rgba(0,0,0,0)');
+            shadow.addColorStop(1, 'rgba(0,0,0,0.35)');
+            ctx.fillStyle = shadow;
+            ctx.fillRect(L, c.y - 40, R - L, 40);
+            ctx.restore();
+
+            // The underside is the grabbable surface: a lit edge with studs, plus dark caps at gap ends.
+            ctx.save();
+            ctx.shadowColor = st.edge;
+            ctx.shadowBlur = 10;
+            ctx.fillStyle = st.edge;
+            ctx.fillRect(c.x0, c.y - 3, c.x1 - c.x0, 3);
+            ctx.restore();
+            ctx.fillStyle = st.edge;
+            ctx.globalAlpha = 0.7;
+            for (let x = Math.ceil(c.x0 / 48) * 48; x < c.x1; x += 48) ctx.fillRect(x - 2, c.y, 4, 4);
+            ctx.globalAlpha = 1;
+            ctx.fillStyle = 'rgba(0,0,0,0.45)';
+            ctx.fillRect(c.x0, top, 5, c.y - top);
+            ctx.fillRect(c.x1 - 5, top, 5, c.y - top);
+        }
+    };
+
+    Renderer.prototype.drawReticle = function (ctx, x, y, t, color) {
+        const r = 18 + Math.sin(t * 10) * 2;
+        ctx.save();
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 2.5;
+        ctx.translate(x, y);
+        ctx.rotate(t * 2);
+        for (let i = 0; i < 4; i++) {
+            ctx.rotate(Math.PI / 2);
+            ctx.beginPath();
+            ctx.arc(0, 0, r, -0.35, 0.35);
+            ctx.stroke();
         }
         ctx.restore();
-        const pulse = 0.6 + 0.4 * Math.sin(t * 4 + a.ph);
-        ctx.fillStyle = rgba(pal.accent, 0.25 * pulse);
-        ctx.beginPath();
-        ctx.arc(x, y, 9, 0, TAU);
-        ctx.fill();
         ctx.fillStyle = '#ffffff';
         ctx.beginPath();
         ctx.arc(x, y, 3, 0, TAU);
         ctx.fill();
-        if (targeted) {
-            const r = 18 + Math.sin(t * 10) * 2;
-            ctx.strokeStyle = rgba(pal.accent);
-            ctx.lineWidth = 2.5;
-            ctx.save();
-            ctx.translate(x, y);
-            ctx.rotate(t * 2);
-            for (let i = 0; i < 4; i++) {
-                ctx.rotate(Math.PI / 2);
-                ctx.beginPath();
-                ctx.moveTo(r, -6);
-                ctx.lineTo(r, -r * 0.35 + 6);
-                ctx.moveTo(r, 6);
-                ctx.lineTo(r, r * 0.35 - 6);
-                ctx.stroke();
-                ctx.beginPath();
-                ctx.arc(0, 0, r, -0.35, 0.35);
-                ctx.stroke();
-            }
-            ctx.restore();
+    };
+
+    // Aim line from the player: lit up to the ceiling when the shot would bite, faint and short when not.
+    Renderer.prototype.drawAim = function (ctx, world, pal, t) {
+        const p = world.player;
+        const d = world.aimDir();
+        const target = world.findTarget();
+        const ex = target ? target.cx : p.x + d.x * RANGE, ey = target ? target.cy : p.y + d.y * RANGE;
+        ctx.save();
+        ctx.strokeStyle = target ? rgba(pal.accent, 0.5) : 'rgba(255,255,255,0.18)';
+        ctx.lineWidth = 2;
+        ctx.setLineDash([5, 9]);
+        ctx.lineDashOffset = -t * 40;
+        ctx.beginPath();
+        ctx.moveTo(p.x, p.y);
+        ctx.lineTo(ex, ey);
+        ctx.stroke();
+        ctx.restore();
+        if (target) {
+            this.drawReticle(ctx, target.cx, target.cy, t, rgba(pal.accent));
+        } else {
+            ctx.strokeStyle = 'rgba(255,110,110,0.55)';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(ex - 6, ey - 6);
+            ctx.lineTo(ex + 6, ey + 6);
+            ctx.moveTo(ex + 6, ey - 6);
+            ctx.lineTo(ex - 6, ey + 6);
+            ctx.stroke();
         }
     };
 
-    Renderer.prototype.drawTargetLine = function (ctx, p, a, pal) {
-        ctx.save();
-        ctx.strokeStyle = rgba(pal.accent, 0.28);
-        ctx.lineWidth = 1.5;
-        ctx.setLineDash([4, 8]);
+    Renderer.prototype.drawCursor = function (ctx, c, pal) {
+        ctx.strokeStyle = 'rgba(0,0,0,0.5)';
+        ctx.lineWidth = 4;
         ctx.beginPath();
-        ctx.moveTo(p.x, p.y);
-        ctx.lineTo(a.cx, a.cy);
+        ctx.arc(c.x, c.y, 9, 0, TAU);
         ctx.stroke();
-        ctx.restore();
+        ctx.strokeStyle = rgba(pal.accent);
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(c.x, c.y, 9, 0, TAU);
+        ctx.moveTo(c.x - 15, c.y);
+        ctx.lineTo(c.x - 5, c.y);
+        ctx.moveTo(c.x + 5, c.y);
+        ctx.lineTo(c.x + 15, c.y);
+        ctx.moveTo(c.x, c.y - 15);
+        ctx.lineTo(c.x, c.y - 5);
+        ctx.moveTo(c.x, c.y + 5);
+        ctx.lineTo(c.x, c.y + 15);
+        ctx.stroke();
     };
 
     Renderer.prototype.drawHint = function (ctx, hint, world, s, t) {

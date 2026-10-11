@@ -44,11 +44,11 @@
 
     const clamp = (v, a, b) => (v < a ? a : v > b ? b : v);
 
-    // Each district: a building vocabulary, a free-floating anchor type, a palette and a chord loop.
+    // Each district: a building vocabulary, a palette and a chord loop. The ceiling overhead takes its style from the key.
     // Chords are [bass, ...voicing] as MIDI notes.
     const DISTRICTS = [
         {
-            key: 'oldtown', name: 'Old Town', tag: 'Gothic spires & row houses at dusk', anchor: 'balloon', weather: 'motes',
+            key: 'oldtown', name: 'Old Town', tag: 'Gothic spires & row houses at dusk', weather: 'motes',
             palette: {
                 skyTop: '#2b1d3f', skyMid: '#a8456b', skyBot: '#f6a35c', far: '#6a3552', mid: '#43223f', fog: '#f0a070',
                 ground: '#1a1020', cloud: '#f7b37f', accent: '#ffcf6b', player: '#fff4e6', sun: '#ffd38a',
@@ -58,7 +58,7 @@
             chords: [[45, 57, 60, 64, 67], [41, 57, 60, 65, 69], [48, 55, 60, 64, 67], [43, 55, 59, 62, 67]]
         },
         {
-            key: 'downtown', name: 'Downtown', tag: 'Curtain walls after dark', anchor: 'drone', weather: null,
+            key: 'downtown', name: 'Downtown', tag: 'Curtain walls after dark', weather: null,
             palette: {
                 skyTop: '#03061a', skyMid: '#0f1d45', skyBot: '#3a3f7a', far: '#18204a', mid: '#0d1430', fog: '#4a4f9a',
                 ground: '#05060f', cloud: '#2a3366', accent: '#4de1ff', player: '#ffffff', sun: '#e8ecff',
@@ -68,7 +68,7 @@
             chords: [[38, 57, 60, 62, 65], [46, 58, 62, 65, 69], [41, 57, 60, 65, 69], [48, 55, 60, 64, 67]]
         },
         {
-            key: 'docks', name: 'The Docks', tag: 'Cranes, containers & cold rain', anchor: 'crane', weather: 'rain',
+            key: 'docks', name: 'The Docks', tag: 'Gantries, containers & cold rain', weather: 'rain',
             palette: {
                 skyTop: '#0b1719', skyMid: '#22404a', skyBot: '#5d7d7a', far: '#24393d', mid: '#152629', fog: '#6f8f88',
                 ground: '#081012', cloud: '#3c5a5e', accent: '#ffb347', player: '#ffffff', sun: '#cfe3df',
@@ -79,7 +79,7 @@
             chords: [[40, 55, 59, 62, 64], [36, 55, 60, 64, 67], [38, 54, 57, 62, 66], [35, 54, 59, 62, 66]]
         },
         {
-            key: 'brutalia', name: 'Brutalia', tag: 'Raw concrete, bold cantilevers', anchor: 'beacon', weather: null,
+            key: 'brutalia', name: 'Brutalia', tag: 'Raw concrete, bold cantilevers', weather: null,
             palette: {
                 skyTop: '#6f7fa0', skyMid: '#c9b8b0', skyBot: '#f0d9c4', far: '#a4a2a8', mid: '#86858d', fog: '#e6d5c8',
                 ground: '#3a3a40', cloud: '#ffffff', accent: '#ff5a36', player: '#1d1d22', sun: '#fff4e0',
@@ -89,7 +89,7 @@
             chords: [[36, 55, 60, 63, 67], [44, 56, 60, 63, 68], [39, 55, 58, 63, 67], [46, 58, 62, 65, 70]]
         },
         {
-            key: 'arcology', name: 'Neon Arcology', tag: 'Tomorrow, floating', anchor: 'ring', weather: null,
+            key: 'arcology', name: 'Neon Arcology', tag: 'Tomorrow, floating', weather: null,
             palette: {
                 skyTop: '#0e021f', skyMid: '#4a0f5c', skyBot: '#ff3d7f', far: '#2e0b44', mid: '#1c0630', fog: '#ff6fa0',
                 ground: '#0a0214', cloud: '#7a2a7a', accent: '#00f0ff', player: '#ffffff', sun: '#ffcc33',
@@ -116,7 +116,8 @@
         this.rng = mulberry32(this.seed);
         this.time = 0;
         this.buildings = [];
-        this.anchors = [];
+        this.ceiling = [];
+        this.aim = null;
         this.orbs = [];
         this.rings = [];
         this.waters = [];
@@ -140,9 +141,7 @@
         this.addPart(start, -760, GROUND - 300, 1210, 300);
         this.buildings.push(start);
         this.bx = 450 + 70;
-        this.ax = 620;
-        this.placeAnchor(this.makeFreeAnchor(620, GROUND - 780));
-        this.prevAnchor = this.anchors[0];
+        this.addCeiling(-1400, 1100, GROUND - 820);
         this.chunkEnd = 450;
         this.ensure(this.player.x + 4000);
     }
@@ -188,7 +187,7 @@
 
     World.prototype.cull = function (minX) {
         this.buildings = this.buildings.filter(b => b.x + b.w > minX);
-        this.anchors = this.anchors.filter(a => a.x > minX || a === this.player.anchor);
+        this.ceiling = this.ceiling.filter(c => c.x1 > minX);
         this.orbs = this.orbs.filter(o => o.x > minX);
         this.rings = this.rings.filter(r => r.x > minX);
         this.waters = this.waters.filter(w => w.x1 > minX);
@@ -200,13 +199,8 @@
             this.buildings.push(b);
             this.bx = b.x + b.w + b.gap;
         }
-        // Anchors trail the building cursor so their clearance check sees every roof nearby.
-        while (this.ax < Math.min(x1, this.bx - 400)) {
-            const d = this.difficulty(this.ax);
-            const next = this.ax + 280 + 170 * d + this.rng() * 150;
-            this.placeAnchor(this.makeFreeAnchor(next));
-            this.ax = next;
-        }
+        // The ceiling trails the building cursor so its clearance check sees every roof below.
+        while (this.ceilX < Math.min(x1, this.bx - 400)) this.makeCeiling(this.ceilX);
     };
 
     World.prototype.topNear = function (x0, x1) {
@@ -228,54 +222,38 @@
         return false;
     };
 
-    World.prototype.makeFreeAnchor = function (x, forcedY) {
-        const r = this.rng;
-        const d = this.difficulty(x);
-        const dist = districtAt(x);
-        let y = forcedY !== undefined ? forcedY : GROUND - (760 + r() * 170) + (r() - 0.5) * 140 * d;
-        y = clamp(y, GROUND - 1000, GROUND - 700);
-        const a = { x, y, cx: x, cy: y, type: dist.anchor, ax: 0, ay: 0, f: 1, ph: r() * Math.PI * 2, seed: (r() * 1e9) | 0 };
-        switch (a.type) {
-            case 'balloon': a.ay = 12; a.ax = 4; a.f = 0.7 + r() * 0.3; a.hue = (r() * 6) | 0; break;
-            case 'drone': a.ay = 10; a.ax = 6; a.f = 1.4 + r() * 0.6; break;
-            case 'crane': a.ax = 5; a.f = 0.6; a.arm = 220 + r() * 160; break;
-            case 'beacon': a.ay = 8; a.f = 0.9; break;
-            case 'ring': a.ay = 18 + d * 60; a.ax = d * 40; a.f = 0.8 + r() * 0.5; break;
-        }
-        return a;
+    World.prototype.addCeiling = function (x0, x1, y) {
+        this.ceiling.push({ x0, x1, y, style: districtAt(x0).key });
+        this.ceilX = x1;
     };
 
-    World.prototype.placeAnchor = function (a) {
-        // The pendulum's lowest point must clear every roof it can sweep over.
-        const top = this.topNear(a.x - 280, a.x + 280);
-        a.y = Math.max(30, Math.min(a.y, top - 300 - a.ay));
-        a.cy = a.y;
-        this.anchors.push(a);
-        const prev = this.prevAnchor;
+    // One ceiling segment, preceded by an ungrabbable gap that widens with difficulty.
+    World.prototype.makeCeiling = function (x) {
         const r = this.rng;
-        if (r() < 0.6) {
-            const rad = 300 + r() * 60;
-            for (let i = 0; i < 5; i++) {
-                const t = (55 + i * 17.5) * Math.PI / 180;
-                this.addOrb(a.x + Math.cos(t) * rad, a.y + Math.sin(t) * rad);
+        const d = this.difficulty(x);
+        const gap = r() < 0.4 + 0.35 * d ? 120 + r() * (180 + 320 * d) : 0;
+        const x0 = x + gap, x1 = x0 + 380 + r() * 560;
+        let y = GROUND - (800 + r() * 110) + (r() - 0.5) * 120 * d;
+        // A pendulum hung from anywhere on the segment must clear the roofs it can sweep over.
+        y = Math.max(20, Math.min(y, this.topNear(x0 - 280, x1 + 280) - 300));
+        this.addCeiling(x0, x1, y);
+
+        for (let ox = x0 + 180; ox < x1 - 80; ox += 460) {
+            if (r() < 0.55) {
+                const rad = 300 + r() * 60;
+                for (let i = 0; i < 5; i++) {
+                    const t = (55 + i * 17.5) * Math.PI / 180;
+                    this.addOrb(ox + Math.cos(t) * rad, y + Math.sin(t) * rad);
+                }
+            }
+            if (ox > this.nextRingX) {
+                const rx = ox + 230, ry = y + 300 + r() * 60;
+                if (!this.insidePart(rx, ry, 90) && ry < GROUND - 200) {
+                    this.rings.push({ x: rx, y: ry, cy: ry, r: 62, taken: false, ph: r() * 6 });
+                }
+                this.nextRingX = ox + 2600 + r() * 2600;
             }
         }
-        if (prev && r() < 0.28) {
-            const peak = Math.min(prev.y, a.y) + 120 + r() * 80;
-            for (let i = 1; i <= 4; i++) {
-                const t = i / 5;
-                this.addOrb(prev.x + (a.x - prev.x) * t, peak + 4 * 60 * (t - 0.5) * (t - 0.5));
-            }
-        }
-        if (prev && a.x > this.nextRingX) {
-            const rx = (prev.x + a.x) / 2;
-            const ry = Math.max(prev.y, a.y) + 230 + r() * 60;
-            if (!this.insidePart(rx, ry, 90) && ry < GROUND - 200) {
-                this.rings.push({ x: rx, y: ry, cy: ry, r: 62, taken: false, ph: r() * 6 });
-            }
-            this.nextRingX = a.x + 2600 + r() * 2600;
-        }
-        this.prevAnchor = a;
     };
 
     World.prototype.addOrb = function (x, y) {
@@ -434,24 +412,41 @@
 
     // ---------- Simulation ----------
 
-    World.prototype.findTarget = function () {
-        const p = this.player;
-        let best = null, bestScore = Infinity;
-        for (const a of this.anchors) {
-            const dx = a.cx - p.x;
-            if (dx < -60) continue;
-            if (dx > RANGE + 60) break;
-            const dy = a.cy - p.y;
-            if (dy > -30) continue;
-            const d = Math.hypot(dx, dy);
-            if (d > RANGE) continue;
-            const s = d - Math.max(0, dx) * 0.55;
-            if (s < bestScore) {
-                bestScore = s;
-                best = a;
-            }
+    // Where a grapple fired from (ox, oy) along (dx, dy) would bite into the ceiling, if within range.
+    World.prototype.raycast = function (ox, oy, dx, dy) {
+        const len = Math.hypot(dx, dy);
+        if (!len) return null;
+        dx /= len;
+        dy /= len;
+        if (dy > -0.05) return null;
+        let best = null, bestT = RANGE;
+        for (const c of this.ceiling) {
+            if (c.x1 < ox - RANGE) continue;
+            if (c.x0 > ox + RANGE) break;
+            const t = (c.y - oy) / dy;
+            if (t <= 0 || t > bestT) continue;
+            const x = ox + dx * t;
+            if (x < c.x0 || x > c.x1) continue;
+            bestT = t;
+            best = { cx: x, cy: c.y };
         }
         return best;
+    };
+
+    // Unit aim direction: toward this.aim (a world point), or up-and-forward when nothing is aiming.
+    World.prototype.aimDir = function () {
+        const p = this.player;
+        if (this.aim) {
+            const dx = this.aim.x - p.x, dy = this.aim.y - p.y, d = Math.hypot(dx, dy);
+            if (d > 1) return { x: dx / d, y: dy / d };
+        }
+        return { x: 0.5, y: -0.866 };
+    };
+
+    World.prototype.findTarget = function () {
+        const p = this.player;
+        const d = this.aimDir();
+        return this.raycast(p.x, p.y, d.x, d.y);
     };
 
     World.prototype.attach = function (a) {
@@ -497,22 +492,14 @@
         this.emit('crash', { cause, x: p.x, y: p.y, speed });
     };
 
-    World.prototype.updateAnchors = function () {
-        const t = this.time;
-        const px = this.player.x;
-        for (const a of this.anchors) {
-            if (a.x < px - 1200) continue;
-            if (a.x > px + 2400) break;
-            a.cx = a.x + a.ax * Math.sin(t * a.f + a.ph);
-            a.cy = a.y + a.ay * Math.sin(t * a.f * 1.31 + a.ph * 1.7);
-        }
-        for (const ring of this.rings) ring.cy = ring.y + Math.sin(t * 1.2 + ring.ph) * 10;
+    World.prototype.updateRings = function () {
+        for (const ring of this.rings) ring.cy = ring.y + Math.sin(this.time * 1.2 + ring.ph) * 10;
     };
 
     World.prototype.step = function (dt) {
         this.time += dt;
         const p = this.player;
-        this.updateAnchors();
+        this.updateRings();
 
         if (!p.alive) {
             if (p.inWater) {
@@ -613,6 +600,23 @@
             }
         }
 
+        // The ceiling is solid: bump off its underside, or off the walls of a gap you rose into.
+        for (const c of this.ceiling) {
+            if (c.x0 > p.x + p.r) break;
+            if (c.x1 < p.x - p.r || p.y - p.r >= c.y) continue;
+            const dx = p.x - clamp(p.x, c.x0, c.x1), dy = p.y - Math.min(p.y, c.y);
+            if (dx * dx + dy * dy >= p.r * p.r) continue;
+            const v = Math.hypot(p.vx, p.vy);
+            if (p.py - p.r >= c.y - 3) {
+                p.y = c.y + p.r;
+                if (p.vy < 0) p.vy = -p.vy * 0.15;
+            } else {
+                p.x = p.px < (c.x0 + c.x1) / 2 ? c.x0 - p.r : c.x1 + p.r;
+                p.vx = -p.vx * 0.3;
+            }
+            if (v > 250) this.emit('bonk', { x: p.x, y: p.y - p.r, v });
+        }
+
         if (p.grounded) {
             if (this.chain > 0 && p.airTime > 0.15) this.emit('chainEnd', { chain: this.chain });
             this.chain = 0;
@@ -693,7 +697,7 @@
         this.ensure(p.x + 4000);
     };
 
-    // Autopilot used for the title-screen demo and for headless balance testing.
+    // Autopilot used for the title-screen demo and for headless balance testing: it aims as well as holds.
     World.prototype.botHold = function () {
         const p = this.player;
         if (!p.alive) return false;
@@ -701,9 +705,15 @@
             const a = p.anchor;
             return !(p.x - a.cx > p.ropeLen * 0.5 && p.vy < 0 && p.vx > 0);
         }
-        const t = this.findTarget();
-        if (p.grounded) return !!(t && t.cx - p.x > 120);
-        return !!(t && t.cx - p.x > 50 && p.vy > -200);
+        for (const deg of [56, 48, 64, 40, 72, 32, 80]) {
+            const a = deg * Math.PI / 180, dx = Math.cos(a), dy = -Math.sin(a);
+            const t = this.raycast(p.x, p.y, dx, dy);
+            if (!t) continue;
+            this.aim = { x: p.x + dx * 100, y: p.y + dy * 100 };
+            if (p.grounded) return t.cx - p.x > 120;
+            return t.cx - p.x > 50 && p.vy > -200;
+        }
+        return false;
     };
 
     V.World = World;
