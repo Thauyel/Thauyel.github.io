@@ -58,10 +58,22 @@
             transition: transform 0.1s, box-shadow 0.1s, background-color 0.2s;
         }
 
-        .numpad-btn:active {
+        .numpad-btn:active,
+        .numpad-btn.is-pressed {
             transform: translateY(4px);
             box-shadow: 0 0 0 transparent;
             background-color: #27272a;
+        }
+
+        /* Keyboard shortcuts are only worth showing where a keyboard is likely. */
+        .kbd-hint {
+            display: none;
+        }
+
+        @media (hover: hover) and (pointer: fine) {
+            .kbd-hint {
+                display: block;
+            }
         }
 
         /* --- INPUT ALANI --- */

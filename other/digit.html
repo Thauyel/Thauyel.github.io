@@ -3,10 +3,11 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Digit Span: Dark Love Edition</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-<link rel="stylesheet" href="digit.css">
+    <link rel="stylesheet" href="digit.css">
+    <!-- Generated from this page's classes; see README.md before adding new Tailwind classes. -->
+    <link rel="stylesheet" href="digit-tailwind.css">
 
 
 </head>
@@ -15,7 +16,7 @@
 
     <!-- GLOBAL PAUSE BUTTON -->
     <div id="controls-area" class="top-controls hidden">
-        <button onclick="App.togglePause()" class="btn-pause">
+        <button onclick="App.togglePause()" class="btn-pause" aria-keyshortcuts="Escape P">
             DURAKLAT
         </button>
     </div>
@@ -27,7 +28,7 @@
 
         <!-- LOVE BOX -->
         <div class="love-box">
-            Seni çok seviyorum <3 </div>
+            Seni çok seviyorum &lt;3 </div>
 
                 <div class="grid grid-cols-3 gap-3">
                     <button onclick="App.startGame('easy')"
@@ -67,19 +68,19 @@
             </div>
 
             <div class="numpad-grid">
-                <button class="numpad-btn" onclick="App.addInput(1)">1</button>
-                <button class="numpad-btn" onclick="App.addInput(2)">2</button>
-                <button class="numpad-btn" onclick="App.addInput(3)">3</button>
-                <button class="numpad-btn" onclick="App.addInput(4)">4</button>
-                <button class="numpad-btn" onclick="App.addInput(5)">5</button>
-                <button class="numpad-btn" onclick="App.addInput(6)">6</button>
-                <button class="numpad-btn" onclick="App.addInput(7)">7</button>
-                <button class="numpad-btn" onclick="App.addInput(8)">8</button>
-                <button class="numpad-btn" onclick="App.addInput(9)">9</button>
+                <button class="numpad-btn" data-key="1" onclick="App.addInput(1)">1</button>
+                <button class="numpad-btn" data-key="2" onclick="App.addInput(2)">2</button>
+                <button class="numpad-btn" data-key="3" onclick="App.addInput(3)">3</button>
+                <button class="numpad-btn" data-key="4" onclick="App.addInput(4)">4</button>
+                <button class="numpad-btn" data-key="5" onclick="App.addInput(5)">5</button>
+                <button class="numpad-btn" data-key="6" onclick="App.addInput(6)">6</button>
+                <button class="numpad-btn" data-key="7" onclick="App.addInput(7)">7</button>
+                <button class="numpad-btn" data-key="8" onclick="App.addInput(8)">8</button>
+                <button class="numpad-btn" data-key="9" onclick="App.addInput(9)">9</button>
                 <div class="numpad-btn opacity-0 pointer-events-none"></div>
-                <button class="numpad-btn" onclick="App.addInput(0)">0</button>
+                <button class="numpad-btn" data-key="0" onclick="App.addInput(0)">0</button>
                 <button class="numpad-btn text-rose-500 border-rose-900/30 bg-rose-900/10 hover:bg-rose-900/20"
-                    onclick="App.removeInput()">
+                    data-key="Backspace" aria-label="Sil" onclick="App.removeInput()">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
                         stroke-linecap="round" stroke-linejoin="round">
                         <path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"></path>
@@ -88,6 +89,9 @@
                     </svg>
                 </button>
             </div>
+            <p class="kbd-hint text-zinc-600 text-[10px] uppercase tracking-[0.2em] font-bold mt-6">
+                Klavye: 0–9 gir · ⌫ sil · Esc duraklat
+            </p>
         </div>
 
         <!-- 4. ARA SONUÇ (FEEDBACK) EKRANI -->
@@ -125,7 +129,7 @@
                 <h2 class="text-2xl font-black text-white mb-8 tracking-wide">DURAKLATILDI</h2>
 
                 <div class="space-y-3">
-                    <button onclick="App.togglePause()"
+                    <button id="btn-resume" onclick="App.togglePause()"
                         class="w-full py-4 bg-white text-black hover:bg-zinc-200 rounded-xl font-bold shadow-lg">
                         DEVAM ET
                     </button>
@@ -154,7 +158,7 @@
                 </div>
             </div>
 
-            <button onclick="location.reload()"
+            <button id="btn-home" onclick="location.reload()"
                 class="w-full py-4 bg-white text-black hover:bg-zinc-200 rounded-xl font-bold text-lg shadow-lg transition">
                 ANA MENÜYE DÖN
             </button>
@@ -183,7 +187,10 @@
                     answerSubmitted: false,
                     roundFinalized: false,
                     timerStartTime: 0,
-                    timerRemaining: 0
+                    timerRemaining: 0,
+                    pauseCount: 0,
+                    pausedAt: null,
+                    pausedTotal: 0
                 },
 
                 dom: {
@@ -211,7 +218,9 @@
                         finalScore: document.getElementById('res-score')
                     },
                     btns: {
-                        next: document.getElementById('btn-next')
+                        next: document.getElementById('btn-next'),
+                        resume: document.getElementById('btn-resume'),
+                        home: document.getElementById('btn-home')
                     }
                 },
 
@@ -238,8 +247,11 @@
                     this.state.isPaused = !this.state.isPaused;
 
                     if (this.state.isPaused) {
+                        this.state.pauseCount++;
+                        this.state.pausedAt = performance.now();
                         this.dom.screens.pause.classList.remove('hidden');
                         this.dom.screens.pause.classList.add('flex-center');
+                        this.dom.btns.resume.focus({ preventScroll: true });
 
                         if (this.state.timerId) {
                             clearTimeout(this.state.timerId);
@@ -252,6 +264,8 @@
                         }
 
                     } else {
+                        this.state.pausedTotal += performance.now() - this.state.pausedAt;
+                        this.state.pausedAt = null;
                         this.dom.screens.pause.classList.add('hidden');
                         if (!this.dom.screens.input.classList.contains('hidden')) {
                             this.resumeTimer();
@@ -263,6 +277,34 @@
                     while (this.state.isPaused) {
                         await this.sleep(100);
                     }
+                },
+
+                // Milliseconds since page load, excluding time spent paused.
+                activeTime: function () {
+                    const now = performance.now();
+                    const pausedNow = this.state.pausedAt === null ? 0 : now - this.state.pausedAt;
+                    return now - this.state.pausedTotal - pausedNow;
+                },
+
+                // Resolves true once `ms` of unpaused time has passed and the game is not paused,
+                // or false if a new game replaced this process. With restartOnPause, a pause
+                // starts the wait over after resuming, so a digit hidden by the pause overlay
+                // is shown for its full time again.
+                waitActive: async function (ms, processId, restartOnPause = false) {
+                    let start = this.activeTime();
+                    let pauses = this.state.pauseCount;
+                    while (processId === this.state.activeProcessId) {
+                        if (restartOnPause && pauses !== this.state.pauseCount) {
+                            await this.waitWhilePaused();
+                            start = this.activeTime();
+                            pauses = this.state.pauseCount;
+                            continue;
+                        }
+                        const remaining = ms - (this.activeTime() - start);
+                        if (remaining <= 0 && !this.state.isPaused) return true;
+                        await this.sleep(this.state.isPaused ? 50 : Math.min(remaining, 50));
+                    }
+                    return false;
                 },
 
                 startGame: function (difficulty) {
@@ -337,24 +379,17 @@
                     const box = this.dom.numberBox;
 
                     box.innerText = "";
-                    await this.sleep(1000);
-                    await this.waitWhilePaused();
+                    if (!await this.waitActive(1000, processId)) return;
 
                     for (let i = 0; i < seq.length; i++) {
-                        if (processId !== this.state.activeProcessId) return;
-                        await this.waitWhilePaused();
-
                         box.innerText = seq[i];
-                        await this.sleep(1000);
-
-                        if (processId !== this.state.activeProcessId) return;
-                        await this.waitWhilePaused();
+                        if (!await this.waitActive(1000, processId, true)) return;
 
                         box.innerText = "";
-                        await this.sleep(200);
+                        if (!await this.waitActive(200, processId)) return;
                     }
 
-                    if (processId !== this.state.activeProcessId) return;
+                    // waitActive only resolves while unpaused, so the answer timer never starts behind the pause screen.
                     this.startInputPhase();
                 },
 
@@ -383,6 +418,7 @@
                 },
 
                 resumeTimer: function () {
+                    if (this.state.timerId) clearTimeout(this.state.timerId);
                     const timeAllowed = this.state.timerRemaining;
                     this.state.timerStartTime = Date.now();
 
@@ -447,6 +483,8 @@
                         btn.innerText = "SIRADAKİ SORU";
                         btn.onclick = () => App.nextStep();
                     }
+                    // Enter or Space continues for keyboard players.
+                    btn.focus({ preventScroll: true });
 
                     if (isCorrect) {
                         l.fbIcon.innerText = "✨";
@@ -475,8 +513,34 @@
                 showFinalResults: function () {
                     this.showScreen('result');
                     this.dom.labels.finalScore.innerText = this.state.score;
+                    this.dom.btns.home.focus({ preventScroll: true });
+                },
+
+                // Physical keyboard: digits answer, Backspace/Delete erases, Escape or P pauses.
+                handleKey: function (e) {
+                    if (e.ctrlKey || e.metaKey || e.altKey) return;
+                    const inRound = !this.dom.controls.classList.contains('hidden');
+                    let key = null;
+                    if (/^[0-9]$/.test(e.key)) {
+                        key = e.key;
+                        if (!e.repeat) this.addInput(Number(key));
+                    } else if (e.key === 'Backspace' || e.key === 'Delete') {
+                        key = 'Backspace';
+                        this.removeInput();
+                    } else if ((e.key === 'Escape' || e.key.toLowerCase() === 'p') && inRound) {
+                        if (!e.repeat) this.togglePause();
+                    } else {
+                        return;
+                    }
+                    e.preventDefault();
+                    if (key !== null && !this.state.isPaused && !this.dom.screens.input.classList.contains('hidden')) {
+                        const button = this.dom.screens.input.querySelector(`[data-key="${key}"]`);
+                        button.classList.add('is-pressed');
+                        setTimeout(() => button.classList.remove('is-pressed'), 120);
+                    }
                 }
             };
+            document.addEventListener('keydown', e => App.handleKey(e));
         </script>
 </body>
 
