@@ -30,8 +30,9 @@ when navigating between images. Panorama viewing also uses the original files.
 
 To add a gallery image, reference its original in `data-full` and its matching
 WebP preview in `src`, then regenerate thumbnails. The generator preserves
-aspect ratios and applies EXIF orientation. Gallery previews have a maximum
-edge of 640 pixels; the profile preview has a maximum edge of 256 pixels.
+aspect ratios, applies EXIF orientation and converts wide-gamut sources (such as
+iPhone Display P3 photos) to sRGB. Gallery previews have a maximum edge of 640
+pixels; the profile preview has a maximum edge of 256 pixels.
 
 ```sh
 python3 -m venv /tmp/portfolio-images
@@ -42,13 +43,26 @@ python3 -m venv /tmp/portfolio-images
 When adding an image, set its HTML `width` and `height` to the generated preview's
 dimensions and provide descriptive `alt` text. Thumbnail generation is only
 needed when source images change; normal development and deployment need no
-Python packages. Older pages under `other/` retain their existing image paths.
+Python packages. `other/old.html` now redirects to the homepage.
+
+### Pages under `other/`
+
+- `game.html` — Neon Survivor, the easter egg behind the profile photo. Plain ES
+  module (`game.js`) and stylesheet (`game.css`); no build step.
+- `digit.html` — Digit Span. Its utility classes come from `digit-tailwind.css`, a
+  static Tailwind build checked into the repository. After adding or changing
+  Tailwind classes in `digit.html`, regenerate it (needs Node, not needed to serve
+  the site):
+
+  ```sh
+  npx tailwindcss@3.4.17 --content ./other/digit.html -o ./other/digit-tailwind.css --minify
+  ```
 
 
 ## Browser regression checks
 
-With the site served locally, start a separate Chromium debugging session. In
-this cloud container:
+With the site served locally, start a separate Chromium debugging session (in
+Claude Code cloud containers the binary is `/opt/pw-browsers/chromium`):
 
 ```sh
 chromium --headless --no-sandbox --disable-dev-shm-usage --remote-debugging-port=9222 --user-data-dir=/tmp/portfolio-test-browser
@@ -61,6 +75,9 @@ node tests/browser-regression.mjs http://127.0.0.1:8000 http://127.0.0.1:9222
 ```
 
 The runner opens and closes its own browser tab. It checks nested gallery scroll
-locks, mouse/touch state resets, digit-game submission and pause behavior, and
-canvas state restoration during screen shake. It disables caching for the test
-tab so checks exercise the current files.
+locks and mouse/touch state resets on the homepage; digit-game scoring, keyboard
+input and pause timing; and, for Neon Survivor, the single animation loop,
+death versus level-up ordering, restart resets, weapon targeting, shop and
+level-up flows, redraw on resize, balanced canvas state and a long simulated run
+through boss waves. It disables caching for the test tab so checks exercise the
+current files.

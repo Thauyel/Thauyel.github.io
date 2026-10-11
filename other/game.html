@@ -1,1215 +1,194 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
-    <title>Neon Survivor: Audio Final</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Neon Survivor</title>
+    <meta name="description" content="A neon twin-stick arena survival game. Survive the swarm, build your arsenal, destroy the Overseer.">
+    <meta name="theme-color" content="#05060a">
+    <link rel="icon" type="image/png" sizes="32x32" href="../favicon/favicon-32x32.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Rajdhani:wght@500;600;700&display=swap">
     <link rel="stylesheet" href="game.css">
-
-
+    <script type="module" src="game.js"></script>
 </head>
 
-<body>
+<body data-state="MENU">
+    <canvas id="game" aria-label="Neon Survivor arena"></canvas>
 
-    <div id="start-screen" class="overlay" style="display:flex;">
-        <div class="title-main">NEON SURVIVOR</div>
-        <div class="title-sub">AUDIO EDITION</div>
-        <button class="btn-start" onclick="game.start()">INITIATE</button>
-        <div class="controls-hint">
-            <div><span class="key">W</span><span class="key">A</span><span class="key">S</span><span
-                    class="key">D</span> MOVE</div>
-            <div><span class="key">MOUSE</span> AIM</div>
-            <div><span class="key">B</span> SHOP</div>
-            <div><span class="key">P</span> PAUSE</div>
-        </div>
-    </div>
-
-    <div id="flash-screen"></div>
-
-    <div id="ui-layer" style="display:none;">
+    <!-- ===== HUD ===== -->
+    <div id="hud" class="hud" hidden>
         <div class="hud-top">
-            <div class="glass-panel">
-                <span class="label">INTEGRITY & ENERGY</span>
-                <div class="status-group">
-                    <div style="width: 200px;">
-                        <span class="label">INTEGRITY</span>
-                        <div class="bar-container">
-                            <div class="bar-fill hp-fill" id="hp-bar-fill"></div>
-                        </div>
-                    </div>
-                    <div style="width: 150px;">
-                        <span class="label">ENERGY</span>
-                        <div class="bar-container">
-                            <div class="bar-fill dash-fill" id="dash-bar-fill"></div>
-                        </div>
-                    </div>
+            <div class="hud-left">
+                <div class="panel vitals">
+                    <span class="label">Integrity</span>
+                    <div id="hp-segments" class="hp-segments" role="img" aria-label="Integrity"></div>
+                    <span class="label">Dash</span>
+                    <div class="bar dash-bar"><i id="dash-fill"></i></div>
                 </div>
+                <div id="powerups" class="powerups"></div>
             </div>
-            <div class="center-stats">
-                <div id="timer">00:00</div>
-                <div id="wave-info">CALIBRATING...</div>
+            <div class="hud-center">
+                <div id="timer" class="timer">00:00</div>
+                <div id="wave-label" class="wave-label">WAVE 1</div>
+                <div class="kills"><span id="kills">0</span> neutralized</div>
             </div>
-            <div class="right-group">
-                <div class="glass-panel currency-box">
-                    <span class="label" style="color:var(--c-gold)">CREDITS</span>
-                    <div id="credits">0</div>
+            <div class="hud-right">
+                <div class="panel credits">
+                    <span class="label">Credits</span>
+                    <span id="credits" class="credits-value">0</span>
                 </div>
-                <div class="hud-btn" onclick="game.togglePause()"><i style="font-style:normal">II</i></div>
+                <button id="btn-hud-shop" class="hud-btn" type="button" aria-label="Black market (B)" title="Black market (B)">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16l-1.5 11h-13zM8 7V5a4 4 0 0 1 8 0v2" /></svg>
+                </button>
+                <button id="btn-hud-pause" class="hud-btn" type="button" aria-label="Pause (Esc)" title="Pause (Esc)">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14" /></svg>
+                </button>
             </div>
         </div>
 
-        <div id="powerup-ui">
-            <div id="powerup-name">FREEZE</div>
-            <div id="powerup-bar-bg">
-                <div id="powerup-bar-fill"></div>
-            </div>
+        <div id="boss-bar" class="boss-bar" hidden>
+            <span id="boss-name" class="boss-name">OVERSEER</span>
+            <div class="bar"><i id="boss-fill"></i></div>
         </div>
-
-        <div id="notification">ALERT</div>
 
         <div class="hud-bottom">
-            <div class="level-badge" id="lvl-badge">LVL 1</div>
-            <div class="xp-track">
-                <div class="xp-fill" id="xp-bar"></div>
+            <div id="weapon-slots" class="weapon-slots"></div>
+            <div class="xp">
+                <span id="level-badge" class="level-badge">LV 1</span>
+                <div class="bar xp-bar"><i id="xp-fill"></i></div>
             </div>
         </div>
+
+        <button id="btn-touch-dash" class="touch-dash" type="button" aria-label="Dash">DASH</button>
     </div>
 
-    <div id="shop-overlay" class="overlay">
-        <div class="shop-header">
-            <h1 style="font-size:60px; color:#ffd700; text-shadow:0 0 40px orange; margin:0; letter-spacing: 5px;">BLACK
-                MARKET</h1>
-            <div style="font-size:40px; font-weight:bold; color:#ffd700">$<span id="shop-credits">0</span></div>
-        </div>
-        <div class="card-container" id="shop-cards"></div>
-        <div class="shop-controls">
-            <button class="btn-action" style="background:#222; color:#ccc; border:1px solid #555;"
-                onclick="game.rerollShop()">Reroll Stock ($<span id="reroll-cost">50</span>)</button>
-            <button class="btn-action btn-close" onclick="game.closeShop()">Resume Mission</button>
-        </div>
+    <div id="banner" class="banner" aria-live="polite">
+        <div id="banner-title" class="banner-title"></div>
+        <div id="banner-sub" class="banner-sub"></div>
     </div>
 
-    <div id="levelup-overlay" class="overlay">
-        <h1
-            style="font-size:80px; color:white; text-shadow:0 0 40px #00ff88; margin-bottom:40px; letter-spacing: 10px;">
-            UPGRADE</h1>
-        <div class="card-container" id="levelup-cards"></div>
-    </div>
-
-    <div id="pause-menu" class="overlay">
-        <div class="pause-panel">
-            <h1>SYSTEM PAUSED</h1>
-            <div class="pause-settings">
-                <div class="setting-row">
-                    <span>MUSIC VOLUME</span>
-                    <input type="range" min="0" max="1" step="0.1" value="0.5" oninput="Sound.setMusicVol(this.value)">
+    <!-- ===== MENU ===== -->
+    <section id="screen-menu" class="overlay overlay-menu" role="dialog" aria-modal="true" aria-labelledby="menu-title">
+        <div class="overlay-inner">
+            <h1 id="menu-title" class="title" data-text="NEON SURVIVOR">NEON SURVIVOR</h1>
+            <p class="subtitle">Arena protocol · survive the swarm</p>
+            <button id="btn-start" class="btn btn-primary btn-large" type="button" data-autofocus>Initiate</button>
+            <p id="menu-best" class="menu-best"></p>
+            <div class="controls-grid">
+                <div class="controls-card">
+                    <h2>Keyboard &amp; mouse</h2>
+                    <ul>
+                        <li><span class="key">W</span><span class="key">A</span><span class="key">S</span><span class="key">D</span> move</li>
+                        <li><span class="key">Mouse</span> aim · hold to fire</li>
+                        <li><span class="key">Space</span> / <span class="key">Right click</span> dash</li>
+                        <li><span class="key">F</span> auto-fire · <span class="key">B</span> shop · <span class="key">Esc</span> pause</li>
+                    </ul>
                 </div>
-                <div class="setting-row">
-                    <span>SFX VOLUME</span>
-                    <input type="range" min="0" max="1" step="0.1" value="0.5" oninput="Sound.setSfxVol(this.value)">
+                <div class="controls-card">
+                    <h2>Gamepad</h2>
+                    <ul>
+                        <li><span class="key">L</span> move · <span class="key">R</span> aim &amp; fire</li>
+                        <li><span class="key">A</span> / <span class="key">LB</span> dash · <span class="key">RT</span> fire</li>
+                        <li><span class="key">Y</span> shop · <span class="key">Start</span> pause</li>
+                    </ul>
                 </div>
-                <button class="btn-pause-opt" onclick="Sound.randomizeBGM()"
-                    style="margin-top:10px; font-size:16px; padding:10px;">🔀 REMIX BGM</button>
+                <div class="controls-card">
+                    <h2>Touch</h2>
+                    <ul>
+                        <li>Left thumb: move</li>
+                        <li>Right thumb: aim &amp; fire</li>
+                        <li>Auto-fire when you let go</li>
+                    </ul>
+                </div>
             </div>
-            <div class="pause-buttons">
-                <button class="btn-pause-opt" onclick="game.togglePause()">RESUME MISSION</button>
-                <button class="btn-pause-opt" onclick="game.restart()">RESTART SIMULATION</button>
-                <button class="btn-pause-opt" onclick="game.openShop()">ACCESS BLACK MARKET</button>
-                <button class="btn-pause-opt danger" onclick="window.location.href='../index.html'">ABORT
-                    MISSION</button>
+            <a class="back-link" href="../index.html">← Back to portfolio</a>
+        </div>
+    </section>
+
+    <!-- ===== PAUSE ===== -->
+    <section id="screen-pause" class="overlay" role="dialog" aria-modal="true" aria-labelledby="pause-title" hidden>
+        <div class="overlay-inner panel-wide">
+            <h2 id="pause-title" class="overlay-title">System paused</h2>
+            <div class="pause-grid">
+                <div class="pause-actions">
+                    <button id="btn-resume" class="btn btn-primary" type="button" data-autofocus>Resume</button>
+                    <button id="btn-pause-shop" class="btn" type="button">Black market</button>
+                    <button id="btn-restart" class="btn" type="button">Restart run</button>
+                    <button id="btn-quit" class="btn btn-danger" type="button">Abort to portfolio</button>
+                </div>
+                <div class="settings">
+                    <h3>Settings</h3>
+                    <label class="setting"><span>Music</span><input id="set-music" type="range" min="0" max="1" step="0.05"></label>
+                    <label class="setting"><span>Effects</span><input id="set-sfx" type="range" min="0" max="1" step="0.05"></label>
+                    <label class="setting toggle"><input id="set-shake" type="checkbox"><span>Screen shake</span></label>
+                    <label class="setting toggle"><input id="set-numbers" type="checkbox"><span>Damage numbers</span></label>
+                    <label class="setting toggle"><input id="set-autofire" type="checkbox"><span>Auto-fire (F)</span></label>
+                    <button id="btn-remix" class="btn btn-small" type="button">Remix soundtrack</button>
+                </div>
+            </div>
+            <h3 class="loadout-title">Loadout</h3>
+            <div id="loadout" class="loadout"></div>
+        </div>
+    </section>
+
+    <!-- ===== LEVEL UP ===== -->
+    <section id="screen-levelup" class="overlay" role="dialog" aria-modal="true" aria-labelledby="levelup-title" hidden>
+        <div class="overlay-inner panel-wide">
+            <h2 id="levelup-title" class="overlay-title glow-green">Upgrade available</h2>
+            <p id="levelup-sub" class="overlay-sub"></p>
+            <div id="levelup-cards" class="cards"></div>
+            <div class="row-actions">
+                <button id="btn-reroll" class="btn btn-small" type="button">Reroll (R)</button>
+                <button id="btn-skip" class="btn btn-small" type="button">Skip · +40 credits</button>
             </div>
         </div>
-    </div>
+    </section>
 
-    <div id="gameover-screen" class="overlay">
-        <div class="report-card">
-            <h1 style="color:#ff0044; font-size:80px; margin:0; letter-spacing: 5px; text-shadow: 0 0 30px red;">M.I.A.
-            </h1>
-            <p style="color:#666; margin-bottom:50px; letter-spacing:3px;">SIGNAL LOST</p>
-            <div class="stat-row"><span>Total Score</span><span id="end-score" class="stat-val"
-                    style="color:#ffd700">0</span></div>
-            <div class="stat-row"><span>Time Survived</span><span id="end-time" class="stat-val"
-                    style="color:#00ffff">00:00</span></div>
-            <div class="stat-row"><span>Final Level</span><span id="end-level" class="stat-val">1</span></div>
-            <button class="btn-action" style="background:#ff0044; color:white; margin-top:50px; width:100%;"
-                onclick="game.restart()">REBOOT SYSTEM</button>
+    <!-- ===== SHOP ===== -->
+    <section id="screen-shop" class="overlay" role="dialog" aria-modal="true" aria-labelledby="shop-title" hidden>
+        <div class="overlay-inner panel-wide">
+            <div class="shop-head">
+                <h2 id="shop-title" class="overlay-title glow-gold">Black market</h2>
+                <div class="shop-wallet">$ <span id="shop-credits">0</span></div>
+            </div>
+            <p id="shop-msg" class="shop-msg" aria-live="polite"></p>
+            <h3 class="shop-section">Arsenal</h3>
+            <div id="shop-arsenal" class="shop-grid"></div>
+            <h3 class="shop-section">Augments</h3>
+            <div id="shop-augments" class="shop-grid"></div>
+            <h3 class="shop-section">Supplies</h3>
+            <div id="shop-supplies" class="shop-grid"></div>
+            <div class="row-actions">
+                <button id="btn-shop-reroll" class="btn btn-small" type="button">Reroll stock · $<span id="shop-reroll-cost">60</span></button>
+                <button id="btn-shop-close" class="btn btn-primary" type="button" data-autofocus>Resume (B)</button>
+            </div>
         </div>
-    </div>
-
-    <canvas id="gameCanvas"></canvas>
-
-    <script>
-        const canvas = document.getElementById('gameCanvas');
-        const ctx = canvas.getContext('2d');
-
-        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-        window.addEventListener('resize', resize); resize();
-
-        // --- AUDIO ENGINE ---
-        const Sound = {
-            ctx: null,
-            interval: null,
-            musicVol: 0.5, sfxVol: 0.5,
-            rootFreq: 110,
-            bassPattern: [],
-
-            init: function () {
-                if (!this.ctx) { this.ctx = new (window.AudioContext || window.webkitAudioContext)(); }
-                if (this.ctx.state === 'suspended') { this.ctx.resume(); }
-                if (this.interval) clearInterval(this.interval);
-                this.randomizeBGM(); // Auto-generate on start
-            },
-
-            setMusicVol: function (v) { this.musicVol = parseFloat(v); },
-            setSfxVol: function (v) { this.sfxVol = parseFloat(v); },
-
-            randomizeBGM: function () {
-                // New Root (A1 to A2 range mostly)
-                const base = 65;
-                const semitones = Math.floor(Math.random() * 12);
-                this.rootFreq = base * Math.pow(2, semitones / 12);
-
-                const scale = [0, 3, 5, 7, 10, 12]; // Minor Pentatonic + Octave
-                this.bassPattern = [];
-
-                // Generate unique bassline
-                for (let i = 0; i < 8; i++) {
-                    let degree = scale[Math.floor(Math.random() * scale.length)];
-                    if (Math.random() < 0.2) degree += 12; // Octave jump chance
-                    const freq = this.rootFreq * Math.pow(2, degree / 12);
-                    this.bassPattern.push(freq);
-                }
-
-                this.startMusic();
-            },
-
-            play: function (type) {
-                if (!this.ctx) return;
-                const t = this.ctx.currentTime;
-                const osc = this.ctx.createOscillator();
-                const gain = this.ctx.createGain();
-                osc.connect(gain); gain.connect(this.ctx.destination);
-
-                // SFX VOLUME
-                const vol = 0.1 * this.sfxVol;
-
-                if (type === 'shoot') {
-                    osc.type = 'square'; osc.frequency.setValueAtTime(400, t);
-                    osc.frequency.exponentialRampToValueAtTime(100, t + 0.1);
-                    gain.gain.setValueAtTime(vol, t); gain.gain.linearRampToValueAtTime(0, t + 0.1);
-                    osc.start(t); osc.stop(t + 0.1);
-                } else if (type === 'hit') {
-                    osc.type = 'sawtooth'; osc.frequency.setValueAtTime(100, t);
-                    gain.gain.setValueAtTime(vol, t); gain.gain.linearRampToValueAtTime(0, t + 0.1);
-                    osc.start(t); osc.stop(t + 0.1);
-                } else if (type === 'explosion') {
-                    osc.type = 'sawtooth'; osc.frequency.setValueAtTime(100, t);
-                    osc.frequency.exponentialRampToValueAtTime(10, t + 0.3);
-                    gain.gain.setValueAtTime(vol * 2, t); gain.gain.linearRampToValueAtTime(0, t + 0.3);
-                    osc.start(t); osc.stop(t + 0.3);
-                } else if (type === 'pickup') {
-                    osc.type = 'sine'; osc.frequency.setValueAtTime(1200, t);
-                    osc.frequency.linearRampToValueAtTime(1800, t + 0.1);
-                    gain.gain.setValueAtTime(vol, t); gain.gain.linearRampToValueAtTime(0, t + 0.1);
-                    osc.start(t); osc.stop(t + 0.1);
-                } else if (type === 'levelup') {
-                    this.playTone(440, t, 0.1, vol); this.playTone(554, t + 0.1, 0.1, vol); this.playTone(659, t + 0.2, 0.3, vol);
-                } else if (type === 'click') {
-                    osc.type = 'sine'; osc.frequency.setValueAtTime(800, t);
-                    gain.gain.setValueAtTime(vol, t); gain.gain.linearRampToValueAtTime(0, t + 0.05);
-                    osc.start(t); osc.stop(t + 0.05);
-                }
-            },
-            playTone: function (freq, time, dur, vol) {
-                const o = this.ctx.createOscillator(); const g = this.ctx.createGain();
-                o.connect(g); g.connect(this.ctx.destination);
-                o.type = 'square'; o.frequency.setValueAtTime(freq, time);
-                g.gain.setValueAtTime(vol, time); g.gain.linearRampToValueAtTime(0, time + dur);
-                o.start(time); o.stop(time + dur);
-            },
-            startMusic: function () {
-                if (this.interval) clearInterval(this.interval);
-                let beat = 0;
-
-                this.interval = setInterval(() => {
-                    if (gameState !== "PLAYING") return; // Only play in game
-                    const t = this.ctx.currentTime;
-                    const mVol = this.musicVol;
-
-                    if (mVol <= 0.01) return;
-
-                    // Kick (Beat 1 & 3)
-                    if (beat % 4 === 0) {
-                        const k = this.ctx.createOscillator(); const kg = this.ctx.createGain();
-                        k.connect(kg); kg.connect(this.ctx.destination);
-                        k.frequency.setValueAtTime(100, t); k.frequency.exponentialRampToValueAtTime(1, t + 0.1);
-                        kg.gain.setValueAtTime(0.2 * mVol, t); kg.gain.linearRampToValueAtTime(0, t + 0.1);
-                        k.start(t); k.stop(t + 0.1);
-                    }
-
-                    // Bass (8th notes) - Use generated patttern
-                    const b = this.ctx.createOscillator(); const bg = this.ctx.createGain();
-                    b.connect(bg); bg.connect(this.ctx.destination);
-                    b.type = 'sawtooth';
-                    b.frequency.setValueAtTime(this.bassPattern[beat % 8], t);
-                    bg.gain.setValueAtTime(0.08 * mVol, t); bg.gain.linearRampToValueAtTime(0, t + 0.15); // Staccato
-                    b.start(t); b.stop(t + 0.15);
-
-                    // High Arp (16th notes) - In Key
-                    if (beat % 2 === 0) {
-                        const a = this.ctx.createOscillator(); const ag = this.ctx.createGain();
-                        a.connect(ag); ag.connect(this.ctx.destination);
-                        a.type = 'sine';
-
-                        // Pick random note from scale, 2 or 3 octaves up
-                        const scale = [0, 3, 5, 7, 10, 12, 15];
-                        const deg = scale[Math.floor(Math.random() * scale.length)];
-                        const note = this.rootFreq * 4 * Math.pow(2, deg / 12);
-
-                        a.frequency.setValueAtTime(note, t);
-                        ag.gain.setValueAtTime(0.04 * mVol, t); ag.gain.linearRampToValueAtTime(0, t + 0.1);
-                        a.start(t); a.stop(t + 0.1);
-                    }
-
-                    beat++;
-                }, 250); // 240 BPM approx
-            }
-        };
-
-
-        // --- INPUTS ---
-        const keys = { w: false, a: false, s: false, d: false, space: false };
-        const mouse = { x: canvas.width / 2, y: canvas.height / 2, down: false };
-
-        window.addEventListener('keydown', e => {
-            if (['w', 'a', 's', 'd', 'W', 'A', 'S', 'D'].includes(e.key)) keys[e.key.toLowerCase()] = true;
-            if (e.code === 'Space') keys.space = true;
-            if (e.code === 'Escape' || e.key.toLowerCase() === 'p') game.togglePause();
-            if (e.key.toLowerCase() === 'b') game.openShop();
-        });
-        window.addEventListener('keyup', e => {
-            if (['w', 'a', 's', 'd', 'W', 'A', 'S', 'D'].includes(e.key)) keys[e.key.toLowerCase()] = false;
-            if (e.code === 'Space') keys.space = false;
-        });
-        window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
-        window.addEventListener('mousedown', () => { mouse.down = true; Sound.play('click'); });
-        window.addEventListener('mouseup', () => mouse.down = false);
-        window.addEventListener('contextmenu', e => e.preventDefault());
-
-        // --- GLOBALS ---
-        // --- GLOBALS ---
-        let gameState = "START";
-        let score = 0;
-        let credits = 0;
-        let gameTime = 0; // In Seconds (Float)
-        let frames = 0;
-        let waveIndex = 0;
-        let lastTime = 0;
-        let accumulator = 0;
-        const step = 1 / 60; // Fixed timestep
-
-        // WAVE CONFIGURATION
-        const waves = [
-            { t: 0, msg: "WAVE 1: INITIALIZE", spawn: { basic: 100 } },
-            { t: 30, msg: "WAVE 2: SWARM", spawn: { basic: 50, fast: 80 } },
-            { t: 60, msg: "WAVE 3: HEAVY ARMOR", spawn: { basic: 80, tank: 200 } },
-            { t: 90, msg: "WAVE 4: CHAOS", spawn: { fast: 50, tank: 150 } },
-            { t: 120, msg: "WARNING: BOSS DETECTED", spawn: { boss: 1, basic: 100 } },
-            { t: 180, msg: "OVERDRIVE", spawn: { basic: 20, fast: 40, tank: 60 } },
-            { t: 240, msg: "SURVIVAL MODE (WTF)", spawn: { fast: 30, tank: 60, boss: 2000 } }
-        ];
-
-        // Helpers
-        const getDistSq = (x1, y1, x2, y2) => (x1 - x2) ** 2 + (y1 - y2) ** 2;
-        function getNearest(r) {
-            let n = null, md = r * r;
-            enemies.forEach(e => { let d = getDistSq(e.x, e.y, player.x, player.y); if (d < md) { md = d; n = e; } });
-            return n;
-        }
-
-        // --- VISUALS ---
-        function drawBackground() {
-            // Deep Space Gradient
-            let grd = ctx.createLinearGradient(0, 0, 0, canvas.height);
-            grd.addColorStop(0, "#080810");
-            grd.addColorStop(1, "#151020");
-            ctx.fillStyle = grd;
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            // Static Grid
-            ctx.lineWidth = 1;
-            ctx.strokeStyle = 'rgba(0, 243, 255, 0.08)';
-            const sz = 60; // Larger cells
-
-            ctx.beginPath();
-            // Vertical
-            for (let x = 0; x <= canvas.width; x += sz) {
-                ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height);
-            }
-            // Horizontal
-            for (let y = 0; y <= canvas.height; y += sz) {
-                ctx.moveTo(0, y); ctx.lineTo(canvas.width, y);
-            }
-            ctx.stroke();
-
-            // Grid Intersections (Nice detail)
-            ctx.fillStyle = 'rgba(0, 243, 255, 0.3)';
-            for (let x = 0; x <= canvas.width; x += sz) {
-                for (let y = 0; y <= canvas.height; y += sz) {
-                    ctx.fillRect(x - 1, y - 1, 3, 3);
-                }
-            }
-        }
-
-        // Player
-        const player = {
-            x: 0, y: 0, radius: 15, color: '#00f3ff', speed: 3, hp: 3, maxHp: 3, invulnerable: 0,
-            dashCooldown: 0, dashMax: 180, isDashing: false,
-            damage: 15, fireRate: 40, cooldown: 0, bulletSpeed: 8, bulletCount: 1, pierce: 0, ricochet: 0, bulletSize: 4,
-            critChance: 0.05, critMultiplier: 2.0, magnetRange: 100, luck: 1.0, regenRate: 0, regenAccumulator: 0,
-            level: 1, xp: 0, xpNeeded: 15, arsenal: []
-        };
-
-        const POWERUPS = {
-            'medkit': { n: "Medkit", c: "#ff0044", i: "❤️", t: "instant" },
-            'nuke': { n: "Tac-Nuke", c: "#ffaa00", i: "☢️", t: "instant" },
-            'magnet': { n: "Black Hole", c: "#aa00ff", i: "🧲", t: "instant" },
-            'clock': { n: "Zero Kelvin", c: "#00ffff", i: "❄️", t: "dur", d: 180 },
-            'overclock': { n: "Overclock", c: "#ffff00", i: "⚡", t: "dur", d: 180 },
-            'shield': { n: "Aegis", c: "#00ff88", i: "🛡️", t: "dur", d: 300 },
-            'frenzy': { n: "Berserk", c: "#ff00ff", i: "👿", t: "dur", d: 240 }
-        };
-
-        // Arrays
-        let enemies = [], projectiles = [], items = [], particles = [], floatTexts = [];
-
-        // --- CLASSES ---
-        class AutoWeapon {
-            constructor(type) { this.type = type; this.level = 0; this.cooldown = 0; this.stats = this.getBaseStats(type); }
-            getBaseStats(type) {
-                if (type === 'orbital') return { name: "Ion Orbital", desc: "Rotates around player.", cooldown: 0, dmg: 5, param: 0.05 };
-                if (type === 'missile') return { name: "Homing Pod", desc: "Fires tracking missiles.", cooldown: 120, dmg: 30 };
-                if (type === 'tesla') return { name: "Tesla Coil", desc: "Zaps nearby enemies.", cooldown: 90, dmg: 12, range: 150 };
-                if (type === 'inferno') return { name: "Inferno", desc: "Spews fire at enemies.", cooldown: 5, dmg: 2, range: 200 };
-                if (type === 'saw') return { name: "Sawblade", desc: "Bouncing piercing blade.", cooldown: 180, dmg: 20, speed: 6 };
-                if (type === 'swarm') return { name: "Swarm Drones", desc: "Tiny drones seek enemies.", cooldown: 200, dmg: 10, count: 3 };
-            }
-            upgrade() {
-                this.level++;
-                if (this.type === 'orbital') { this.stats.dmg += 3; this.stats.param += 0.02; }
-                if (this.type === 'missile') { this.stats.dmg += 10; this.stats.cooldown = Math.max(30, this.stats.cooldown - 15); }
-                if (this.type === 'tesla') { this.stats.dmg += 5; this.stats.range += 20; this.stats.cooldown -= 10; }
-                if (this.type === 'inferno') { this.stats.dmg += 1; this.stats.range += 30; }
-                if (this.type === 'saw') { this.stats.dmg += 5; this.stats.cooldown -= 20; }
-                if (this.type === 'swarm') { this.stats.count += 1; this.stats.dmg += 2; }
-            }
-            getUpgradeDesc() {
-                if (this.level === 0) return "Unlock Weapon";
-                if (this.type === 'orbital') return "Dmg +3, Speed +";
-                if (this.type === 'missile') return "Dmg +10, CD -0.25s";
-                if (this.type === 'tesla') return "Dmg +5, Range +20";
-                if (this.type === 'inferno') return "Dmg +1, Range +30";
-                if (this.type === 'saw') return "Dmg +5, CD -0.3s";
-                if (this.type === 'swarm') return "Drone Count +1";
-            }
-            update() {
-                if (this.level === 0) return;
-                if (this.cooldown > 0) this.cooldown--;
-
-                if (this.type === 'orbital') this.stats.angle = (this.stats.angle || 0) + this.stats.param;
-                else if (this.type === 'missile' && this.cooldown <= 0) {
-                    let t = getNearest(canvas.width);
-                    if (t) { projectiles.push(new Projectile(player.x, player.y, 0, 'missile', t, this.stats)); this.cooldown = this.stats.cooldown; Sound.play('shoot'); }
-                }
-                else if (this.type === 'tesla' && this.cooldown <= 0) {
-                    let hit = false; let rSq = this.stats.range * this.stats.range;
-                    enemies.forEach(e => {
-                        if (getDistSq(e.x, e.y, player.x, player.y) < rSq) {
-                            e.takeDamage(this.stats.dmg, false, player.x, player.y); createBolt(player.x, player.y, e.x, e.y); hit = true;
-                        }
-                    });
-                    if (hit) { this.cooldown = this.stats.cooldown; Sound.play('shoot'); }
-                }
-                else if (this.type === 'inferno' && this.cooldown <= 0) {
-                    let t = getNearest(this.stats.range);
-                    if (t) { let a = Math.atan2(t.y - player.y, t.x - player.x) + (Math.random() - 0.5) * 0.5; projectiles.push(new Projectile(player.x, player.y, a, 'fire', null, this.stats)); this.cooldown = this.stats.cooldown; }
-                }
-                else if (this.type === 'saw' && this.cooldown <= 0) {
-                    let t = getNearest(canvas.width); let a = t ? Math.atan2(t.y - player.y, t.x - player.x) : Math.random() * 6.28;
-                    projectiles.push(new Projectile(player.x, player.y, a, 'saw', null, this.stats)); this.cooldown = this.stats.cooldown; Sound.play('shoot');
-                }
-                else if (this.type === 'swarm' && this.cooldown <= 0) {
-                    for (let i = 0; i < this.stats.count; i++) projectiles.push(new Projectile(player.x, player.y, Math.random() * 6.28, 'drone', null, this.stats));
-                    this.cooldown = this.stats.cooldown; Sound.play('shoot');
-                }
-            }
-            draw() {
-                if (this.level === 0 || this.type !== 'orbital') return;
-                let cx = player.x + Math.cos(this.stats.angle) * 70, cy = player.y + Math.sin(this.stats.angle) * 70;
-                ctx.beginPath(); ctx.arc(cx, cy, 8, 0, Math.PI * 2); ctx.fillStyle = '#00ff88'; ctx.shadowBlur = 15; ctx.shadowColor = '#00ff88'; ctx.fill(); ctx.shadowBlur = 0;
-            }
-        }
-
-        class Projectile {
-            constructor(x, y, a, type, target, stats) {
-                this.x = x; this.y = y; this.type = type; this.target = target; this.hitIds = [];
-                this.vx = Math.cos(a); this.vy = Math.sin(a); this.isCrit = false;
-                this.angle = a;
-
-                if (type === 'bullet') {
-                    this.r = player.bulletSize; this.c = '#fff700'; this.speed = player.bulletSpeed; this.dmg = player.damage;
-                    this.pierce = player.pierce; this.ricochet = player.ricochet; this.life = 100;
-                    if (Math.random() < player.critChance) { this.isCrit = true; this.dmg *= player.critMultiplier; this.c = '#ffaa00'; this.r *= 1.5; }
-                }
-                else if (type === 'missile') { this.r = 6; this.c = '#ff0044'; this.speed = 5; this.dmg = stats.dmg; this.life = 180; this.angle = a; }
-                else if (type === 'fire') { this.r = 3; this.c = 'orange'; this.speed = 6; this.dmg = stats.dmg; this.life = 30; this.pierce = 10; }
-                else if (type === 'saw') { this.r = 10; this.c = '#ccc'; this.speed = stats.speed; this.dmg = stats.dmg; this.life = 150; this.pierce = 999; this.ricochet = 5; this.angle = 0; }
-                else if (type === 'drone') { this.r = 4; this.c = '#00ffff'; this.speed = 3; this.dmg = stats.dmg; this.life = 300; }
-
-                this.vx *= this.speed || 1; this.vy *= this.speed || 1;
-            }
-            update() {
-                if (this.type === 'missile' && this.target && this.target.hp > 0) {
-                    let ta = Math.atan2(this.target.y - this.y, this.target.x - this.x), d = ta - this.angle;
-                    if (d > Math.PI) d -= Math.PI * 2; if (d < -Math.PI) d += Math.PI * 2; this.angle += d * 0.1;
-                    this.vx = Math.cos(this.angle) * this.speed; this.vy = Math.sin(this.angle) * this.speed;
-                    particles.push(new Particle(this.x, this.y, 'trail', 'rgba(255,0,0,0.5)'));
-                }
-                if (this.type === 'drone') {
-                    let t = getNearest(200);
-                    if (t) { let ta = Math.atan2(t.y - this.y, t.x - this.x); this.vx += Math.cos(ta) * 0.2; this.vy += Math.sin(ta) * 0.2; }
-                    else { let pa = Math.atan2(player.y - this.y, player.x - this.x); this.vx += Math.cos(pa) * 0.05; this.vy += Math.sin(pa) * 0.05; }
-                    let len = Math.hypot(this.vx, this.vy); if (len > 4) { this.vx = (this.vx / len) * 4; this.vy = (this.vy / len) * 4; }
-                }
-                this.x += this.vx; this.y += this.vy; this.life--;
-                if ((this.type === 'bullet' || this.type === 'saw') && this.ricochet > 0) {
-                    if (this.x < 0 || this.x > canvas.width) { this.vx *= -1; this.ricochet--; }
-                    if (this.y < 0 || this.y > canvas.height) { this.vy *= -1; this.ricochet--; }
-                }
-                if (this.type === 'saw') this.angle += 0.5;
-            }
-            draw() {
-                ctx.beginPath();
-                if (this.type === 'saw') { ctx.save(); ctx.translate(this.x, this.y); ctx.rotate(this.angle); ctx.rect(-this.r, -this.r, this.r * 2, this.r * 2); ctx.restore(); }
-                else ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
-                ctx.fillStyle = this.c; if (this.type !== 'saw') { ctx.shadowBlur = 10; ctx.shadowColor = this.c; } ctx.fill(); ctx.shadowBlur = 0;
-            }
-        }
-
-        class Enemy {
-            constructor(x, y, type) {
-                this.id = Math.random(); this.x = x; this.y = y; this.type = type;
-                this.r = 14; this.c = '#ff0055'; this.hp = 20; this.spd = 1.5; this.val = 10; this.xpTier = 1;
-                this.angle = 0; this.spinSpeed = (Math.random() - 0.5) * 0.1;
-                // HARDNESS SCALING: Reduced from 90 to 200 (Slower scaling)
-                let s = 1 + (gameTime / 200);
-                if (type === 'basic') { this.hp = 15 * s; } // Base HP reduced 20->15
-                if (type === 'fast') { this.hp = 12 * s; this.spd = 2.8 * s; this.r = 10; this.c = '#ffff00'; this.val = 30; this.xpTier = 2; }
-                if (type === 'tank') { this.hp = 100 * s; this.spd = 0.9 * s; this.r = 25; this.c = '#0055ff'; this.val = 100; this.xpTier = 2; }
-                if (type === 'boss') {
-                    this.hp = 2000 * s; this.spd = 1.1 * s; this.r = 50; this.c = '#aa00ff'; this.val = 500; this.xpTier = 3;
-                    this.spinSpeed = 0.02;
-                }
-                this.max = this.hp;
-            }
-            update() {
-                if (game.activePowerup === 'clock') return;
-                this.angle += this.spinSpeed;
-                let a = Math.atan2(player.y - this.y, player.x - this.x);
-                // Soft collision padding
-                let pushX = 0, pushY = 0;
-                enemies.forEach(e => {
-                    if (e === this) return;
-                    let dx = this.x - e.x;
-                    let dy = this.y - e.y;
-                    let d2 = dx * dx + dy * dy;
-                    let minD = this.r + e.r;
-                    if (d2 < minD * minD && d2 > 0) {
-                        let d = Math.sqrt(d2);
-                        let f = (minD - d) / d;
-                        pushX += dx * f * 0.5;
-                        pushY += dy * f * 0.5;
-                    }
-                });
-
-                this.x += (Math.cos(a) * this.spd) + pushX;
-                this.y += (Math.sin(a) * this.spd) + pushY;
-            }
-            takeDamage(d, isCrit, srcX, srcY) {
-                this.hp -= d; floatTexts.push(new FloatingText(this.x, this.y - 20, Math.floor(d), isCrit ? '#ffaa00' : 'white', isCrit ? 24 : 16));
-                let angle = Math.atan2(this.y - srcY, this.x - srcX);
-                for (let i = 0; i < 3; i++) particles.push(new Particle(this.x, this.y, 'spark', this.c, angle + (Math.random() - 0.5)));
-                if (this.hp <= 0) killEnemy(this);
-                Sound.play('hit');
-            }
-            draw() {
-                ctx.save();
-                ctx.translate(this.x, this.y);
-                ctx.rotate(this.angle);
-
-                ctx.beginPath();
-                if (this.type === 'tank') {
-                    ctx.rect(-this.r, -this.r, this.r * 2, this.r * 2);
-                    ctx.fillStyle = this.c; ctx.fill();
-                    ctx.strokeStyle = 'rgba(255,255,255,0.5)'; ctx.lineWidth = 2; ctx.stroke();
-                } else if (this.type === 'boss') {
-                    ctx.arc(0, 0, this.r, 0, Math.PI * 2);
-                    ctx.fillStyle = this.c; ctx.fill();
-                    ctx.strokeStyle = '#fff'; ctx.lineWidth = 4; ctx.stroke();
-                    // Inner pattern
-                    ctx.beginPath(); ctx.moveTo(this.r, 0); ctx.lineTo(-this.r / 2, this.r / 1.5); ctx.lineTo(-this.r / 2, -this.r / 1.5); ctx.closePath();
-                    ctx.strokeStyle = 'rgba(0,0,0,0.5)'; ctx.stroke();
-                } else {
-                    // Basic & Fast
-                    if (this.type === 'fast') {
-                        ctx.moveTo(this.r, 0); ctx.lineTo(-this.r, this.r); ctx.lineTo(-this.r, -this.r); ctx.closePath();
-                    } else {
-                        ctx.arc(0, 0, this.r, 0, Math.PI * 2);
-                    }
-                    ctx.fillStyle = this.c; ctx.fill();
-                }
-
-                if (game.activePowerup === 'clock') { ctx.strokeStyle = '#00ffff'; ctx.lineWidth = 2; ctx.stroke(); }
-                ctx.restore();
-
-                // HP Bar for non-bosses (boss has big bar)
-                if (this.type !== 'boss' && this.hp < this.max) {
-                    ctx.fillStyle = 'red'; ctx.fillRect(this.x - this.r, this.y - this.r - 8, this.r * 2, 4);
-                    ctx.fillStyle = '#0f0'; ctx.fillRect(this.x - this.r, this.y - this.r - 8, (this.r * 2) * (this.hp / this.max), 4);
-                }
-            }
-        }
-
-        class Particle {
-            constructor(x, y, type, color, angle = 0) {
-                this.x = x; this.y = y; this.type = type; this.color = color;
-                this.life = 1.0; this.decay = Math.random() * 0.05 + 0.02;
-                if (type === 'explosion') {
-                    let a = Math.random() * 6.28; let s = Math.random() * 5 + 2;
-                    this.vx = Math.cos(a) * s; this.vy = Math.sin(a) * s; this.size = Math.random() * 4 + 2;
-                } else if (type === 'spark') {
-                    let s = Math.random() * 4 + 2;
-                    this.vx = Math.cos(angle) * s; this.vy = Math.sin(angle) * s;
-                    this.size = Math.random() * 2 + 1; this.decay = 0.1;
-                } else if (type === 'trail') {
-                    this.vx = 0; this.vy = 0; this.size = 3; this.decay = 0.1;
-                }
-            }
-            update() { this.x += this.vx; this.y += this.vy; this.life -= this.decay; }
-            draw() {
-                ctx.globalAlpha = this.life; ctx.fillStyle = this.color;
-                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
-                ctx.globalAlpha = 1;
-            }
-        }
-
-        class Item {
-            constructor(x, y, type) {
-                this.x = x; this.y = y; this.type = type;
-                this.isPowerup = typeof type === 'string';
-                this.r = this.isPowerup ? 15 : (type === 1 ? 4 : (type === 2 ? 6 : 9));
-                this.c = this.isPowerup ? POWERUPS[type].c : (type === 1 ? '#00ff88' : (type === 2 ? '#00aaff' : '#aa00ff'));
-                this.bob = Math.random() * 100; this.magnetized = false;
-            }
-            draw() {
-                let dy = this.y + Math.sin((frames + this.bob) * 0.05) * 5;
-                ctx.beginPath();
-                if (this.isPowerup) {
-                    ctx.fillStyle = 'rgba(0,0,0,0.6)'; ctx.strokeStyle = this.c; ctx.lineWidth = 2;
-                    ctx.fillRect(this.x - 12, dy - 12, 24, 24); ctx.strokeRect(this.x - 12, dy - 12, 24, 24);
-                    ctx.fillStyle = 'white'; ctx.font = '16px Arial'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-                    ctx.fillText(POWERUPS[this.type].i, this.x, dy);
-                    ctx.shadowBlur = 15; ctx.shadowColor = this.c; ctx.strokeRect(this.x - 12, dy - 12, 24, 24); ctx.shadowBlur = 0;
-                } else {
-                    ctx.arc(this.x, dy, this.r, 0, Math.PI * 2); ctx.fillStyle = this.c; ctx.shadowBlur = 8; ctx.shadowColor = this.c; ctx.fill(); ctx.shadowBlur = 0;
-                }
-            }
-        }
-
-        class FloatingText {
-            constructor(x, y, t, c, s = 16) { this.x = x; this.y = y; this.text = t; this.color = c; this.life = 40; this.vy = -1; this.size = s; }
-            update() { this.y += this.vy; this.life--; }
-            draw() { ctx.globalAlpha = Math.max(0, this.life / 40); ctx.font = `bold ${this.size}px Rajdhani`; ctx.fillStyle = this.color; ctx.fillText(this.text, this.x, this.y); ctx.globalAlpha = 1; }
-        }
-
-        function createBolt(x1, y1, x2, y2) { particles.push({ x: x1, y: y1, tx: x2, ty: y2, life: 8, type: 'bolt' }); }
-
-        function killEnemy(e, loot = true) {
-            let i = enemies.indexOf(e); if (i === -1) return; enemies.splice(i, 1);
-            for (let j = 0; j < 10; j++) particles.push(new Particle(e.x, e.y, 'explosion', e.c));
-            Sound.play('explosion');
-            if (loot) {
-                credits += e.val; score += e.val;
-                document.getElementById('credits').innerText = credits; document.getElementById('end-score').innerText = score;
-                floatTexts.push(new FloatingText(e.x, e.y, "+$" + e.val, '#ffd700'));
-                items.push(new Item(e.x, e.y, e.xpTier));
-                if (Math.random() < 0.02) {
-                    const k = Object.keys(POWERUPS); items.push(new Item(e.x + 15, e.y, k[Math.floor(Math.random() * k.length)]));
-                }
-            }
-        }
-
-        // --- GAME MANAGER ---
-        const game = {
-            activePowerup: null, powerupTimer: 0, powerupMax: 0, rerollCost: 50, shopStock: [],
-
-            start: () => {
-                document.getElementById('start-screen').style.display = 'none';
-                document.getElementById('ui-layer').style.display = 'flex';
-                Sound.init();
-                gameState = "PLAYING";
-
-                // Initialize clean
-                score = 0; credits = 0; gameTime = 0; shakeAmount = 0; waveIndex = 0;
-                enemies.length = 0; projectiles.length = 0; items.length = 0; particles.length = 0; floatTexts.length = 0;
-                player.x = canvas.width / 2; player.y = canvas.height / 2;
-                player.arsenal = [];
-                ['orbital', 'missile', 'tesla', 'inferno', 'saw', 'swarm'].forEach(t => player.arsenal.push(new AutoWeapon(t)));
-
-                updateHP();
-                lastTime = performance.now();
-                requestAnimationFrame(loop);
-            },
-
-            restart: () => {
-                document.getElementById('gameover-screen').style.display = 'none';
-                document.getElementById('pause-menu').style.display = 'none'; // Ensure pause menu is hidden
-
-                gameState = "PLAYING";
-                // Reset stats
-                score = 0; credits = 0; gameTime = 0; shakeAmount = 0; waveIndex = 0;
-                game.activePowerup = null;
-                enemies.length = 0; projectiles.length = 0; items.length = 0; particles.length = 0; floatTexts.length = 0;
-
-                // Reset Player
-                player.x = canvas.width / 2; player.y = canvas.height / 2;
-                player.hp = 3; player.maxHp = 3; player.invulnerable = 0;
-                player.dashCooldown = 0; player.isDashing = false; player.bossSpawned = false;
-                player.damage = 15; player.fireRate = 40; player.cooldown = 0; player.bulletSpeed = 8; player.bulletCount = 1; player.pierce = 0; player.ricochet = 0; player.bulletSize = 4;
-                player.critChance = 0.05; player.critMultiplier = 2.0; player.magnetRange = 100; player.luck = 1.0; player.regenRate = 0; player.regenAccumulator = 0;
-                player.level = 1; player.xp = 0; player.xpNeeded = 15; player.arsenal = [];
-
-                game.rerollCost = 50;
-                document.getElementById('reroll-cost').innerText = game.rerollCost;
-
-                // Reset UI
-                updateHP();
-                document.getElementById('credits').innerText = 0;
-                document.getElementById('timer').innerText = "00:00";
-                document.getElementById('dash-bar-fill').style.width = "100%";
-                document.getElementById('lvl-badge').innerText = "LVL 1";
-                document.getElementById('xp-bar').style.width = "0%";
-
-                // Init starting weapons
-                ['orbital', 'missile', 'tesla', 'inferno', 'saw', 'swarm'].forEach(t => player.arsenal.push(new AutoWeapon(t)));
-
-                // Restart Loop
-                lastTime = performance.now();
-                requestAnimationFrame(loop);
-            },
-
-            openShop: () => {
-                // Allow opening from PLAYING or PAUSED
-                if (gameState !== "PLAYING" && gameState !== "PAUSED") return;
-
-                gameState = "SHOP";
-                document.getElementById('shop-overlay').style.display = 'flex';
-                document.getElementById('pause-menu').style.display = 'none'; // Hide pause if coming from there
-
-                game.updateShopUI();
-                if (game.shopStock.length === 0) game.genShop(); else game.renShop();
-                Sound.play('click');
-            },
-
-            closeShop: () => {
-                gameState = "PLAYING";
-                document.getElementById('shop-overlay').style.display = 'none';
-                lastTime = performance.now();
-                requestAnimationFrame(loop);
-                Sound.play('click');
-            },
-
-            togglePause: () => {
-                if (gameState === "SHOP" || gameState === "GAMEOVER" || gameState === "LEVEL_UP" || gameState === "START") return;
-
-                if (gameState === "PLAYING") {
-                    gameState = "PAUSED";
-                    document.getElementById('pause-menu').style.display = 'flex';
-                } else {
-                    gameState = "PLAYING";
-                    document.getElementById('pause-menu').style.display = 'none';
-                    lastTime = performance.now();
-                    requestAnimationFrame(loop);
-                }
-                Sound.play('click');
-            },
-
-            rerollShop: () => {
-                if (credits >= game.rerollCost) {
-                    credits -= game.rerollCost;
-                    game.rerollCost += 50;
-                    game.genShop();
-                    game.updateShopUI();
-                    Sound.play('click');
-                } else showNotif("NO FUNDS", "red");
-            },
-
-            updateShopUI: () => {
-                document.getElementById('credits').innerText = credits;
-                document.getElementById('shop-credits').innerText = credits;
-                document.getElementById('reroll-cost').innerText = game.rerollCost;
-            },
-
-            genShop: () => {
-                game.shopStock = { weapons: [], stats: [], items: [] };
-
-                // 1. Weapons (3 slots)
-                const wPool = ['orbital', 'missile', 'tesla', 'inferno', 'saw', 'swarm'];
-                while (game.shopStock.weapons.length < 3) {
-                    let t = wPool[Math.floor(Math.random() * wPool.length)];
-                    if (!game.shopStock.weapons.includes(t)) game.shopStock.weapons.push(t);
-                }
-
-                // 2. Augments (3 slots)
-                const sPool = ['dmg', 'spd', 'hp', 'regen', 'crit', 'luck'];
-                while (game.shopStock.stats.length < 3) {
-                    let t = sPool[Math.floor(Math.random() * sPool.length)];
-                    if (!game.shopStock.stats.includes(t)) game.shopStock.stats.push(t);
-                }
-
-                // 3. Supplies (2 slots)
-                const iPool = ['heal', 'nuke', 'shield', 'xp'];
-                while (game.shopStock.items.length < 2) {
-                    let t = iPool[Math.floor(Math.random() * iPool.length)];
-                    if (!game.shopStock.items.includes(t)) game.shopStock.items.push(t);
-                }
-
-                game.renShop();
-            },
-
-            renShop: () => {
-                const c = document.getElementById('shop-cards'); c.innerHTML = '';
-                c.style.flexDirection = 'column';
-                c.style.alignItems = 'center';
-
-                const createSection = (title, items, renderFn) => {
-                    let sec = document.createElement('div');
-                    sec.style.width = '100%'; sec.style.marginBottom = '30px';
-                    sec.innerHTML = `<h2 style="color:#666; font-size:14px; letter-spacing:4px; border-bottom:1px solid #333; padding-bottom:10px; margin-bottom:20px;">${title}</h2>`;
-                    let row = document.createElement('div');
-                    row.style.display = 'flex'; row.style.gap = '20px'; row.style.justifyContent = 'center';
-                    items.forEach(i => row.appendChild(renderFn(i)));
-                    sec.appendChild(row);
-                    c.appendChild(sec);
-                };
-
-                // Weapons
-                createSection("ARSENAL", game.shopStock.weapons, (type) => {
-                    let ex = player.arsenal.find(a => a.type === type), temp = ex || new AutoWeapon(type), l = ex ? ex.level : 0, cost = 100 + l * 150;
-                    let d = document.createElement('div'); d.className = 'card shopitem';
-                    d.innerHTML = `
-                        <div>
-                            <div style="font-size:12px;color:${l > 0 ? '#00ff88' : '#ffd700'};font-weight:bold;margin-bottom:5px">${l > 0 ? 'LVL ' + l : 'NEW'}</div>
-                            <h3 style="color:white;margin:5px 0">${temp.stats.name}</h3>
-                            <p style="color:#888;font-size:12px;">${temp.stats.desc}</p>
-                            <div style="background:#222;padding:5px;border-radius:4px;font-size:11px;color:#aaa;margin-top:10px">${temp.getUpgradeDesc()}</div>
-                        </div>
-                        <div style="margin-top:15px; background:#ffd700; color:black; font-weight:900; padding:8px; border-radius:4px; text-align:center;">$${cost}</div>
-                    `;
-                    d.onclick = () => game.buy('weapon', type, cost);
-                    return d;
-                });
-
-                // Stats
-                createSection("AUGMENTS", game.shopStock.stats, (type) => {
-                    const map = {
-                        'dmg': { n: "Nanite Rounds", d: "Damage +10%", c: 250 },
-                        'spd': { n: "Servo Motors", d: "Speed +8%", c: 200 },
-                        'hp': { n: "Plating", d: "Max HP +1", c: 300 },
-                        'regen': { n: "Repair Bot", d: "Regen +0.1/s", c: 350 },
-                        'crit': { n: "Targeting", d: "Crit +5%", c: 250 },
-                        'luck': { n: "Scavenger", d: "Luck +10%", c: 200 }
-                    };
-                    let info = map[type];
-                    let d = document.createElement('div'); d.className = 'card shopitem';
-                    d.innerHTML = `
-                        <div><h3 style="color:#00f3ff;margin:0 0 5px 0">${info.n}</h3><p style="color:#aaa;font-size:13px">${info.d}</p></div>
-                        <div style="margin-top:auto; border:1px solid #00f3ff; color:#00f3ff; font-weight:bold; padding:5px; border-radius:4px; text-align:center;">$${info.c}</div>
-                    `;
-                    d.onclick = () => game.buy('stat', type, info.c);
-                    return d;
-                });
-
-                // Supplies
-                createSection("SUPPLIES", game.shopStock.items, (type) => {
-                    const map = {
-                        'heal': { n: "Repair Kit", d: "Heal 2 HP", c: 100 },
-                        'nuke': { n: "Orbital Strike", d: "Kill All", c: 400 },
-                        'shield': { n: "Overshield", d: "Invulnerable 10s", c: 250 },
-                        'xp': { n: "Data Pack", d: "+100 XP", c: 150 }
-                    };
-                    let info = map[type];
-                    let d = document.createElement('div'); d.className = 'card shopitem';
-                    d.innerHTML = `
-                        <div><h3 style="color:#ff00ea;margin:0 0 5px 0">${info.n}</h3><p style="color:#aaa;font-size:13px">${info.d}</p></div>
-                        <div style="margin-top:auto; border:1px solid #ff00ea; color:#ff00ea; font-weight:bold; padding:5px; border-radius:4px; text-align:center;">$${info.c}</div>
-                    `;
-                    d.onclick = () => game.buy('item', type, info.c);
-                    return d;
-                });
-
-                game.updateShopUI();
-            },
-
-            buy: (cat, type, cost) => {
-                if (credits < cost) { showNotif("INSUFFICIENT FUNDS", "red"); return; }
-
-                credits -= cost;
-                game.updateShopUI();
-                Sound.play('levelup');
-
-                if (cat === 'weapon') {
-                    let ex = player.arsenal.find(a => a.type === type);
-                    if (ex) ex.upgrade(); else { let n = new AutoWeapon(type); n.level = 1; player.arsenal.push(n); }
-                }
-                else if (cat === 'stat') {
-                    if (type === 'dmg') player.damage *= 1.1;
-                    if (type === 'spd') player.speed *= 1.08;
-                    if (type === 'hp') { player.maxHp++; player.hp++; updateHP(); }
-                    if (type === 'regen') player.regenRate += 0.1;
-                    if (type === 'crit') player.critChance += 0.05;
-                    if (type === 'luck') player.luck += 0.1;
-                }
-                else if (cat === 'item') {
-                    if (type === 'heal') { player.hp = Math.min(player.hp + 2, player.maxHp); updateHP(); }
-                    if (type === 'nuke') { for (let i = enemies.length - 1; i >= 0; i--) killEnemy(enemies[i], true); shakeAmount = 50; }
-                    if (type === 'shield') { game.activatePower('shield'); } // 10s shield from powerups
-                    if (type === 'xp') { player.xp += 100; if (player.xp >= player.xpNeeded) levelUp(); document.getElementById('xp-bar').style.width = (player.xp / player.xpNeeded * 100) + "%"; }
-                }
-
-                // Refresh shop to update levels and costs
-                game.renShop();
-            },
-
-            activatePower: (key) => {
-                const p = POWERUPS[key];
-                if (!p) return;
-
-                showNotif(p.n, p.c);
-                Sound.play('pickup');
-
-                if (p.t === 'instant') {
-                    if (key === 'medkit') { player.hp = Math.min(player.hp + 1, player.maxHp); updateHP(); }
-                    if (key === 'nuke') { document.getElementById('flash-screen').style.opacity = 1; setTimeout(() => document.getElementById('flash-screen').style.opacity = 0, 150); for (let i = enemies.length - 1; i >= 0; i--)killEnemy(enemies[i], false); shakeAmount = 50; Sound.play('explosion'); }
-                    if (key === 'magnet') { items.forEach(i => i.magnetized = true); }
-                } else {
-                    game.activePowerup = key; game.powerupMax = p.d; game.powerupTimer = p.d;
-                    const ui = document.getElementById('powerup-ui'); ui.style.opacity = 1;
-                    document.getElementById('powerup-name').innerText = p.n; document.getElementById('powerup-name').style.color = p.c;
-                    document.getElementById('powerup-bar-fill').style.backgroundColor = p.c;
-                }
-            }
-
-        };
-
-        function showNotif(t, c) {
-            const n = document.getElementById('notification'); n.innerText = t; n.style.color = c; n.style.textShadow = `0 0 20px ${c}`;
-            n.style.opacity = 1; setTimeout(() => n.style.opacity = 0, 1500);
-        }
-
-        function levelUp() {
-            gameState = "LEVEL_UP"; document.getElementById('levelup-overlay').style.display = 'flex';
-            const c = document.getElementById('levelup-cards'); c.innerHTML = '';
-            const opts = [
-                { id: 'dmg', n: 'Hollow Points', d: 'Damage +25%', i: '💥', r: 'common' }, { id: 'spd', n: 'Ion Thrusters', d: 'Move Speed +15%', i: '⚡', r: 'common' }, { id: 'fire', n: 'Rapid Trigger', d: 'Fire Rate +15%', i: '🔫', r: 'common' }, { id: 'hp', n: 'Nano-Mend', d: 'Max HP +1 & Heal', i: '❤️', r: 'common' },
-                { id: 'multi', n: 'Split Barrel', d: '+1 Projectile', i: '🔱', r: 'rare' }, { id: 'pierce', n: 'Monorail', d: 'Pierce +1 Enemy', i: '🏹', r: 'rare' }, { id: 'magnet', n: 'Graviton', d: 'Range +30%', i: '🧲', r: 'rare' },
-                { id: 'crit', n: 'Targeting', d: 'Crit Chance +5%', i: '🎯', r: 'legendary' }, { id: 'luck', n: 'Greed', d: 'Luck +20%', i: '🍀', r: 'legendary' }
-            ];
-            let ch = []; while (ch.length < 3) { let r = Math.random(); let p = opts.filter(o => (o.r === 'common' && r < 0.6) || (o.r === 'rare' && r >= 0.6 && r < 0.9) || (o.r === 'legendary' && r >= 0.9)); if (p.length === 0) p = opts.filter(o => o.r === 'common'); let o = p[Math.floor(Math.random() * p.length)]; if (!ch.includes(o)) ch.push(o); }
-            ch.forEach(o => {
-                let d = document.createElement('div'); d.className = `card-lv ${o.r}`;
-                d.innerHTML = `<div class="rarity-tag">${o.r}</div><div class="icon-box">${o.i}</div><h3>${o.n}</h3><p>${o.d}</p><button class="btn-select">INSTALL</button>`;
-                d.onclick = () => {
-                    if (o.id === 'dmg') player.damage *= 1.25; if (o.id === 'spd') player.speed *= 1.15; if (o.id === 'fire') player.fireRate *= 0.85; if (o.id === 'hp') { player.maxHp = Math.floor(player.maxHp * 1.2); player.hp = player.maxHp; updateHP(); player.regenRate += 0.05; }
-                    if (o.id === 'multi') player.bulletCount++; if (o.id === 'pierce') player.pierce++; if (o.id === 'magnet') player.magnetRange += 30; if (o.id === 'crit') player.critChance += 0.05; if (o.id === 'luck') player.luck += 0.2;
-                    gameState = "PLAYING"; document.getElementById('levelup-overlay').style.display = 'none';
-                    lastTime = performance.now();
-                    Sound.play('levelup');
-                    requestAnimationFrame(loop);
-                }; c.appendChild(d);
-            });
-        }
-
-        function updateHP() {
-            const bar = document.getElementById('hp-bar-fill');
-            const pct = Math.max(0, Math.min(100, (player.hp / player.maxHp) * 100));
-            bar.style.width = pct + "%";
-            bar.style.backgroundColor = pct < 30 ? "#ff0000" : (pct < 60 ? "#ffaa00" : "#00ff88");
-        }
-
-        // --- GAME LOOP ---
-        function loop(timestamp) {
-            if (gameState !== "PLAYING") return;
-
-            const dt = (timestamp - lastTime) / 1000;
-            lastTime = timestamp;
-
-            // Cap dt to prevent huge jumps (e.g. if tab suspended)
-            if (dt > 0.1) {
-                requestAnimationFrame(loop);
-                return;
-            }
-
-            accumulator += dt;
-            while (accumulator >= step) {
-                updateFixed();
-                accumulator -= step;
-            }
-
-            draw();
-            requestAnimationFrame(loop);
-        }
-
-        // Fixed Update (60hz logic)
-        function updateFixed() {
-            gameTime += step;
-
-            // Timer UI
-            let m = Math.floor(gameTime / 60).toString().padStart(2, '0');
-            let s = Math.floor(gameTime % 60).toString().padStart(2, '0');
-            document.getElementById('timer').innerText = m + ":" + s;
-
-            // Regen
-            if (player.regenRate > 0 && player.hp < player.maxHp) {
-                player.regenAccumulator += player.regenRate * step; // rate per second
-                if (player.regenAccumulator >= 1) {
-                    player.hp++; player.regenAccumulator = 0; updateHP();
-                    floatTexts.push(new FloatingText(player.x, player.y - 30, "+HP", "#00ff88"));
-                }
-            }
-
-            // Powerup Timer
-            if (game.activePowerup) {
-                game.powerupTimer -= 1; // logical frames
-                document.getElementById('powerup-bar-fill').style.width = (game.powerupTimer / game.powerupMax * 100) + "%";
-                if (game.powerupTimer <= 0) { game.activePowerup = null; document.getElementById('powerup-ui').style.opacity = 0; }
-            }
-
-            // --- WAVE LOGIC ---
-            if (waveIndex < waves.length - 1 && gameTime >= waves[waveIndex + 1].t) {
-                waveIndex++;
-                let w = waves[waveIndex];
-                document.getElementById('wave-info').innerText = w.msg;
-                if (w.msg.includes("WARNING")) {
-                    showNotif("BOSS INCOMING", "purple");
-                    Sound.play('explosion');
-                    if (!player.bossSpawned) {
-                        enemies.push(new Enemy(canvas.width / 2, -100, 'boss'));
-                        player.bossSpawned = true;
-                    }
-                } else {
-                    showNotif(w.msg, "#00f3ff");
-                }
-            }
-
-            // --- SPAWNING ---
-            // Spawn chance scales slightly with time
-            let currentWave = waves[waveIndex];
-            // Base chance per frame (at 60fps) approx 2% + difficulty
-            if (Math.random() < 0.02 + (gameTime * 0.0001)) {
-                const keys = Object.keys(currentWave.spawn);
-                const totalWeight = keys.reduce((acc, k) => acc + currentWave.spawn[k], 0);
-                let r = Math.random() * totalWeight;
-                let type = keys[0];
-                for (let k of keys) {
-                    if (r < currentWave.spawn[k]) { type = k; break; }
-                    r -= currentWave.spawn[k];
-                }
-
-                if (type === 'boss') {
-                    if (!player.bossSpawned) {
-                        enemies.push(new Enemy(canvas.width / 2, -100, 'boss'));
-                        player.bossSpawned = true;
-                    }
-                } else {
-                    let side = Math.floor(Math.random() * 4);
-                    let ex, ey, b = 50;
-                    if (side === 0) { ex = Math.random() * canvas.width; ey = -b; }
-                    else if (side === 1) { ex = Math.random() * canvas.width; ey = canvas.height + b; }
-                    else if (side === 2) { ex = -b; ey = Math.random() * canvas.height; }
-                    else { ex = canvas.width + b; ey = Math.random() * canvas.height; }
-                    enemies.push(new Enemy(ex, ey, type));
-                }
-            }
-
-            // --- PLAYER CONTROLS ---
-            if (player.dashCooldown > 0) player.dashCooldown--;
-            document.getElementById('dash-bar-fill').style.width = (1 - (player.dashCooldown / player.dashMax)) * 100 + "%";
-
-            // Trigger Dash
-            if (keys.space && player.dashCooldown <= 0) {
-                player.isDashing = true;
-                player.dashCooldown = player.dashMax;
-                player.invulnerable = 20; // Dash gives 20 frames of invuln
-
-                // Create Dash effect
-                for (let i = 0; i < 5; i++) {
-                    particles.push(new Particle(player.x, player.y, 'trail', player.color));
-                }
-                Sound.play('shoot'); // Reuse shoot sound or add new one if possible, but shoot works for now
-            }
-
-            let moveSpeed = player.speed;
-            if (player.invulnerable > 10 && player.isDashing) moveSpeed *= 3;
-            else player.isDashing = false;
-
-            if (keys.w && player.y > 15) player.y -= moveSpeed;
-            if (keys.s && player.y < canvas.height - 15) player.y += moveSpeed;
-            if (keys.a && player.x > 15) player.x -= moveSpeed;
-            if (keys.d && player.x < canvas.width - 15) player.x += moveSpeed;
-
-            // Shooting
-            let fr = game.activePowerup === 'frenzy' ? 5 : player.fireRate;
-            if (mouse.down && player.cooldown <= 0) {
-                let spread = 0.15, ba = Math.atan2(mouse.y - player.y, mouse.x - player.x), start = ba - ((player.bulletCount - 1) * spread / 2);
-                for (let i = 0; i < player.bulletCount; i++) projectiles.push(new Projectile(player.x, player.y, start + i * spread, 'bullet'));
-                player.cooldown = fr;
-                Sound.play('shoot');
-            }
-            if (player.cooldown > 0) player.cooldown--;
-            if (player.invulnerable > 0) player.invulnerable--;
-
-            // Update Entities
-            player.arsenal.forEach(w => w.update());
-
-            // Projectiles
-            for (let i = projectiles.length - 1; i >= 0; i--) {
-                let p = projectiles[i]; p.update();
-                if (p.life <= 0 || p.x < -50 || p.x > canvas.width + 50 || p.y < -50 || p.y > canvas.height + 50 || p.dead) {
-                    if (p.type !== 'bullet' || p.ricochet <= 0 || p.dead) projectiles.splice(i, 1);
-                }
-            }
-
-            // Enemies & Collision
-            for (let i = enemies.length - 1; i >= 0; i--) {
-                let e = enemies[i]; e.update();
-
-                // Hit Player
-                if (getDistSq(e.x, e.y, player.x, player.y) < (e.r + 15) ** 2 && player.invulnerable <= 0 && game.activePowerup !== 'shield') {
-                    player.hp--; updateHP(); player.invulnerable = 60; shakeAmount = 20;
-                    Sound.play('hit');
-                    if (player.hp <= 0) {
-                        gameState = "GAMEOVER";
-                        document.getElementById('gameover-screen').style.display = 'flex';
-                        document.getElementById('end-score').innerText = score;
-                        document.getElementById('end-time').innerText = document.getElementById('timer').innerText;
-                        document.getElementById('end-level').innerText = player.level;
-                    }
-                }
-
-                // Hit by Projectile
-                for (let j = projectiles.length - 1; j >= 0; j--) {
-                    let p = projectiles[j];
-                    if (!p.hitIds.includes(e.id) && getDistSq(e.x, e.y, p.x, p.y) < (e.r + p.r) ** 2) {
-                        e.takeDamage(p.dmg, p.isCrit, player.x, player.y);
-                        p.hitIds.push(e.id);
-                        if (p.type === 'bullet' || p.type === 'missile' || p.type === 'drone') {
-                            if (p.pierce > 0) { p.pierce--; } else { p.dead = true; }
-                        }
-                    }
-                }
-            }
-
-            // Items
-            for (let i = items.length - 1; i >= 0; i--) {
-                let it = items[i];
-                let mag = (game.activePowerup === 'magnet' || it.magnetized) ? 999999 : player.magnetRange;
-                if (getDistSq(it.x, it.y, player.x, player.y) < mag ** 2) {
-                    it.magnetized = true;
-                    let s = game.activePowerup === 'magnet' ? 20 : 8;
-                    it.x += (player.x - it.x) * 0.1 * (s / 5);
-                    it.y += (player.y - it.y) * 0.1 * (s / 5);
-                }
-                if (getDistSq(it.x, it.y, player.x, player.y) < 900) { // 30px radius sq
-                    if (typeof it.type === 'string') {
-                        // Check if method exists, otherwise use fallback or ignore to prevent crash
-                        if (game.activatePower) game.activatePower(it.type);
-                    }
-                    else {
-                        let v = it.type === 1 ? 5 : (it.type === 2 ? 15 : 50); player.xp += v;
-                        if (player.xp >= player.xpNeeded) {
-                            player.xp = 0; player.level++; player.xpNeeded = Math.floor(player.xpNeeded * 1.3);
-                            document.getElementById('lvl-badge').innerText = "LVL " + player.level;
-                            levelUp();
-                        }
-                        document.getElementById('xp-bar').style.width = (player.xp / player.xpNeeded * 100) + "%";
-                        Sound.play('pickup');
-                    }
-                    items.splice(i, 1);
-                }
-            }
-
-            // Particles
-            floatTexts.forEach((f, i) => { f.update(); if (f.life <= 0) floatTexts.splice(i, 1); });
-            particles.forEach((p, i) => {
-                p.life -= 0.02; if (p.life <= 0) particles.splice(i, 1);
-            });
-        }
-
-        // --- RENDER ---
-        function draw() {
-            const isShaking = shakeAmount > 0;
-            if (isShaking) { ctx.save(); ctx.translate((Math.random() - .5) * shakeAmount, (Math.random() - .5) * shakeAmount); shakeAmount *= .9; if (shakeAmount < 0.5) shakeAmount = 0; }
-
-            // Clear and Draw Grid
-            // Clear and Draw Background
-            drawBackground();
-
-            if (player.isDashing || player.invulnerable > 10) {
-                ctx.globalAlpha = 0.5;
-                ctx.beginPath(); ctx.arc(player.x - (keys.a ? -10 : keys.d ? 10 : 0), player.y - (keys.w ? -10 : keys.s ? 10 : 0), player.radius, 0, Math.PI * 2);
-                ctx.fillStyle = player.color; ctx.fill();
-                ctx.globalAlpha = 1;
-            }
-
-            player.arsenal.forEach(w => w.draw());
-
-            items.forEach(i => i.draw());
-            projectiles.forEach(p => p.draw());
-            enemies.forEach(e => e.draw());
-            particles.forEach(p => {
-                if (p.type === 'bolt') { ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(p.tx, p.ty); ctx.strokeStyle = `rgba(0,255,255,${p.life / 10})`; ctx.lineWidth = 2; ctx.stroke(); }
-                else p.draw();
-            });
-            floatTexts.forEach(f => f.draw());
-
-            // Player Draw
-            if (player.invulnerable % 10 < 5) { ctx.beginPath(); ctx.arc(player.x, player.y, 15, 0, Math.PI * 2); ctx.fillStyle = game.activePowerup === 'shield' ? 'white' : player.color; ctx.shadowBlur = 15; ctx.shadowColor = player.color; ctx.fill(); ctx.shadowBlur = 0; }
-            if (game.activePowerup === 'shield') { ctx.beginPath(); ctx.arc(player.x, player.y, 25, 0, Math.PI * 2); ctx.strokeStyle = 'white'; ctx.lineWidth = 2; ctx.stroke(); }
-
-            // BOSS BAR
-            let boss = enemies.find(e => e.type === 'boss');
-            if (boss) {
-                const bw = 600, bh = 20, bx = (canvas.width - bw) / 2, by = 50;
-                ctx.fillStyle = 'rgba(0,0,0,0.5)'; ctx.fillRect(bx, by, bw, bh);
-                ctx.strokeStyle = '#aa00ff'; ctx.lineWidth = 2; ctx.strokeRect(bx, by, bw, bh);
-                ctx.fillStyle = '#aa00ff'; ctx.fillRect(bx + 2, by + 2, (bw - 4) * (boss.hp / boss.max), bh - 4);
-                ctx.fillStyle = '#fff'; ctx.font = "bold 16px Rajdhani"; ctx.textAlign = "center"; ctx.fillText("BOSS INTEGRITY", canvas.width / 2, by - 10);
-            }
-
-            if (isShaking) ctx.restore();
-            // Vignette
-            let gr = ctx.createRadialGradient(canvas.width / 2, canvas.height / 2, canvas.height / 2, canvas.width / 2, canvas.height / 2, canvas.height);
-            gr.addColorStop(0, "rgba(0,0,0,0)");
-            gr.addColorStop(1, "rgba(0,0,0,0.6)");
-            ctx.fillStyle = gr;
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-        }
-
-        lastTime = performance.now();
-        requestAnimationFrame(loop);
-
-    </script>
+    </section>
+
+    <!-- ===== GAME OVER ===== -->
+    <section id="screen-gameover" class="overlay" role="dialog" aria-modal="true" aria-labelledby="go-title" hidden>
+        <div class="overlay-inner report">
+            <h2 id="go-title" class="overlay-title glow-red">Signal lost</h2>
+            <p id="go-record" class="record" hidden>New record</p>
+            <dl class="stats">
+                <div><dt>Score</dt><dd id="go-score">0</dd></div>
+                <div><dt>Survived</dt><dd id="go-time">00:00</dd></div>
+                <div><dt>Level</dt><dd id="go-level">1</dd></div>
+                <div><dt>Neutralized</dt><dd id="go-kills">0</dd></div>
+                <div><dt>Best score</dt><dd id="go-best">0</dd></div>
+            </dl>
+            <button id="btn-retry" class="btn btn-primary btn-large" type="button" data-autofocus>Reboot (R)</button>
+            <button id="btn-go-quit" class="btn" type="button">Back to portfolio</button>
+        </div>
+    </section>
+
+    <noscript>
+        <p class="noscript">Neon Survivor needs JavaScript. <a href="../index.html">Back to the portfolio</a>.</p>
+    </noscript>
 </body>
 
 </html>
