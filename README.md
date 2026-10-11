@@ -12,7 +12,7 @@ Thanks for stopping by!
 
 👉 **[Click Here to Enter the Portfolio](https://thauyel.vercel.app)**
 
-A quick tip: There is an easter egg on the website. Just click my face!
+A quick tip: There are easter eggs on the website. Click my face, or the word "Architect" under my name!
 
 
 ## Local development
