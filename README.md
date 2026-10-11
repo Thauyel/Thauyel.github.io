@@ -62,8 +62,9 @@ node tests/browser-regression.mjs http://127.0.0.1:8000 http://127.0.0.1:9222
 
 The runner opens and closes its own browser tab. It checks nested gallery scroll
 locks, mouse/touch state resets, digit-game submission and pause behavior, and
-canvas state restoration during screen shake. It disables caching for the test
-tab so checks exercise the current files.
+canvas state restoration during screen shake, and plays through a Neon Horde
+run (see below). It disables caching for the test tab so checks exercise the
+current files.
 
 
 ## Vertigo (other/game/)
@@ -82,3 +83,31 @@ autopilot plays it headlessly to check that generated cities stay traversable:
 ```sh
 node tests/vertigo-sim.mjs
 ```
+
+
+## Neon Horde (other/bh/)
+
+`other/bh/` holds **Neon Horde**, a bullet-heaven roguelite in the style of
+Vampire Survivors. You only steer and every weapon fires on its own. Survive
+fifteen minutes on one of three stages (Neon Grid, Crystal Wastes, Void Core)
+while the swarm grows every minute, bosses arrive every three minutes and The
+Purger hunts you after 15:00. There are nine ships, twelve weapons, each with an
+evolution unlocked by a paired passive module and a boss or elite cache, fourteen
+modules and fourteen run-wide relics. Level-ups offer limited Reroll, Skip and
+Banish charges. Runs are self-contained: only settings and per-stage high scores
+are kept in `localStorage`. It plays with keyboard, touch (floating joystick) or
+a gamepad. Everything is drawn on canvas and every sound is synthesized with
+WebAudio, so there are no image or audio assets and no build step.
+
+The simulation (`other/bh/js/game.js`, `weapons.js`, `enemies.js`) has no DOM
+dependencies. A built-in autopilot plays full runs headlessly to check that the
+simulation stays finite, bounded and deterministic, that every weapon and
+evolution deals damage, and that each stage's timeline reaches the clear:
+
+```sh
+node tests/bh-sim.mjs          # every stage with three ships
+node tests/bh-sim.mjs --full   # every ship on every stage
+```
+
+The browser regression checks above also drive a Neon Horde run through the
+relic, level-up, reroll, evolution, pause, results and retry flows.

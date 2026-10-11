@@ -131,8 +131,63 @@ try {
         }
         return true;
     })()`), true, 'Canvas state and transform must be restored on every shake frame');
-    assert.deepEqual(exceptions, [], 'No JavaScript exceptions expected');
     console.log('Passed canvas shake state and transform restoration checks.');
+
+    await evaluate(`localStorage.removeItem('neonhorde.scores.v1')`);
+    await navigate('/other/bh/', 'window.NEON_HORDE !== undefined');
+    assert.equal(await evaluate(`(async () => {
+        const app = window.NEON_HORDE, ui = app.ui;
+        const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
+        const top = () => ui.top() && ui.top().id;
+        app.ui.closeAll();
+        app.startRun('vanguard', 'grid', false);
+        await wait(100);
+        // A starting relic is offered and the clock is held until it is answered.
+        if (top() !== 'scr-relic' || app.game.time !== 0) return 'relic';
+        document.querySelector('#relic-cards .choice').click();
+        if (app.game.player.relics.length !== 1 || top()) return 'relic pick';
+        await wait(400);
+        if (!(app.game.time > 0.1)) return 'clock';
+        const g = app.game;
+        g.addXp(g.player.xpNext);
+        await wait(100);
+        if (top() !== 'scr-level' || document.querySelectorAll('#level-cards .choice').length < 3) return 'level';
+        const before = g.charges.reroll;
+        document.getElementById('btn-reroll').click();
+        if (g.charges.reroll !== before - 1) return 'reroll';
+        document.querySelector('#level-cards .choice').click();
+        if (top() || g.choice) return 'level pick';
+        // A maxed weapon with its paired module evolves from a cache.
+        const w = g.player.weapons[0];
+        w.level = w.def.maxLevel;
+        if (!g.findPassive(w.def.evo.with)) g.addPassive(w.def.evo.with);
+        g.queue.push({kind: 'chest', boss: true});
+        g.openNextChoice();
+        await wait(100);
+        if (top() !== 'scr-chest' || w.def.id !== 'hyperpulse') return 'evolve';
+        document.getElementById('btn-chest-ok').click();
+        document.getElementById('btn-chest-ok').click();
+        if (top() || g.choice) return 'chest close';
+        app.togglePause();
+        const paused = g.time;
+        await wait(300);
+        if (!app.paused || g.time !== paused || top() !== 'scr-pause') return 'pause';
+        app.togglePause();
+        await wait(200);
+        if (app.paused || !(g.time > paused)) return 'resume';
+        g.player.iframes = 0;
+        g.hurtPlayer(1e6, 'test');
+        await wait(2300);
+        if (top() !== 'scr-over') return 'results';
+        const scores = JSON.parse(localStorage.getItem('neonhorde.scores.v1'));
+        if (!scores || scores.grid.length !== 1 || scores.grid[0].ship !== 'vanguard') return 'score';
+        document.getElementById('btn-retry').click();
+        await wait(100);
+        return app.game !== g && top() === 'scr-relic' ? true : 'retry';
+    })()`), true, 'Neon Horde run flow: relic, level-up, reroll, evolution, pause, results and retry');
+    await evaluate(`localStorage.removeItem('neonhorde.scores.v1')`);
+    assert.deepEqual(exceptions, [], 'No JavaScript exceptions expected');
+    console.log('Passed Neon Horde choice, evolution, pause, results and retry checks.');
 } finally {
     await call('Page.close');
     socket.close();
