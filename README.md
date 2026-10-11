@@ -64,3 +64,20 @@ The runner opens and closes its own browser tab. It checks nested gallery scroll
 locks, mouse/touch state resets, digit-game submission and pause behavior, and
 canvas state restoration during screen shake. It disables caching for the test
 tab so checks exercise the current files.
+
+
+## Vertigo (other/game/)
+
+`other/game/` holds **Vertigo**, an endless grappling-hook game through a
+procedurally generated city. It has five architectural districts: Old Town,
+Downtown, The Docks, Brutalia and Neon Arcology. Everything is drawn on canvas
+and every sound is synthesized with WebAudio, so the game ships no image or audio
+assets. Hold (click, touch or Space) to grapple, and release to fly. A
+"Daily City" mode gives everyone the same layout for the day.
+
+The simulation in `other/game/js/world.js` has no DOM dependencies. A built-in
+autopilot plays it headlessly to check that generated cities stay traversable:
+
+```sh
+node tests/vertigo-sim.mjs
+```

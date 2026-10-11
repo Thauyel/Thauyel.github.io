@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+    <title>Vertigo</title>
+    <meta name="description" content="Vertigo: swing through an endless, procedurally built city, from gothic spires to brutalist cantilevers and a neon arcology.">
+    <meta name="theme-color" content="#140a24">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23140a24'/%3E%3Cpath d='M32 8 L18 44' stroke='%23fff' stroke-width='3'/%3E%3Ccircle cx='18' cy='46' r='6' fill='%23ff3b5c'/%3E%3Crect x='38' y='30' width='14' height='34' fill='%23ffcf6b'/%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <canvas id="stage" aria-label="Vertigo: a city to swing through"></canvas>
+
+    <div id="hud" class="hidden">
+        <div class="hud-left">
+            <div class="stat"><span id="hud-dist">0</span><small>m</small></div>
+            <div class="stat-sub"><span id="hud-score">0</span> pts</div>
+        </div>
+        <div id="hud-mult" class="mult" aria-live="off">×1</div>
+        <div class="hud-right">
+            <button id="btn-mute" class="icon-btn" type="button" aria-label="Toggle sound" title="Sound (M)"></button>
+            <button id="btn-pause" class="icon-btn" type="button" aria-label="Pause" title="Pause (P)">
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1" fill="currentColor"/><rect x="14" y="5" width="4" height="14" rx="1" fill="currentColor"/></svg>
+            </button>
+        </div>
+    </div>
+
+    <div id="banner" class="banner" aria-live="polite">
+        <div class="banner-kicker" id="banner-kicker"></div>
+        <div class="banner-title" id="banner-title"></div>
+        <div class="banner-tag" id="banner-tag"></div>
+    </div>
+
+    <section id="screen-title" class="screen">
+        <div class="panel">
+            <h1 class="logo">VERT<span>I</span>GO</h1>
+            <p class="tagline">An endless swing through a city that keeps building itself.</p>
+            <div class="buttons">
+                <button id="btn-play" class="btn primary" type="button">Swing</button>
+                <button id="btn-daily" class="btn" type="button">Daily City <small id="daily-date"></small></button>
+            </div>
+            <ul class="how">
+                <li><kbd>Hold</kbd><span>click, touch or <kbd>Space</kbd> to fire the grapple</span></li>
+                <li><kbd>Let go</kbd><span>to fly. Release on the upswing for height</span></li>
+                <li><kbd>Avoid</kbd><span>walls, overhangs, the street and the harbour</span></li>
+                <li><kbd>Chain</kbd><span>swings without touching a roof to raise your multiplier</span></li>
+            </ul>
+            <div class="best" id="title-best"></div>
+            <div class="districts">Old Town · Downtown · The Docks · Brutalia · Neon Arcology</div>
+        </div>
+        <a class="back" href="../../index.html">← Portfolio</a>
+        <button id="btn-mute-title" class="icon-btn corner" type="button" aria-label="Toggle sound" title="Sound (M)"></button>
+    </section>
+
+    <section id="screen-pause" class="screen hidden">
+        <div class="panel small">
+            <h2>Paused</h2>
+            <div class="buttons column">
+                <button id="btn-resume" class="btn primary" type="button">Resume</button>
+                <button id="btn-restart" class="btn" type="button">Restart</button>
+                <button id="btn-quit" class="btn ghost" type="button">Menu</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="screen-over" class="screen hidden">
+        <div class="panel">
+            <div class="kicker" id="over-kicker"></div>
+            <h2 id="over-quip"></h2>
+            <div class="record hidden" id="over-record">New record</div>
+            <div class="big-score"><span id="over-score">0</span><small>points</small></div>
+            <dl class="stats">
+                <div><dt>Distance</dt><dd id="st-dist"></dd></div>
+                <div><dt>Top speed</dt><dd id="st-speed"></dd></div>
+                <div><dt>Orbs</dt><dd id="st-orbs"></dd></div>
+                <div><dt>Best chain</dt><dd id="st-mult"></dd></div>
+                <div><dt>Close calls</dt><dd id="st-near"></dd></div>
+                <div><dt>Longest flight</dt><dd id="st-air"></dd></div>
+            </dl>
+            <div class="best" id="over-best"></div>
+            <div class="buttons">
+                <button id="btn-retry" class="btn primary" type="button">Swing again</button>
+                <button id="btn-menu" class="btn" type="button">Menu</button>
+            </div>
+            <div class="hint">Space to retry · Esc for menu</div>
+        </div>
+    </section>
+
+    <noscript><div class="screen"><div class="panel">Vertigo needs JavaScript to build its city.</div></div></noscript>
+
+    <script src="js/world.js"></script>
+    <script src="js/render.js"></script>
+    <script src="js/audio.js"></script>
+    <script src="js/main.js"></script>
+</body>
+
+</html>
