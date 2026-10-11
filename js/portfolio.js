@@ -5,6 +5,11 @@
     const toggle = document.getElementById('theme-toggle');
     const icon = toggle.querySelector('i');
     const html = document.documentElement;
+    const themeColor = document.querySelector('meta[name="theme-color"]');
+    // Keep the browser UI colour in step with the page background.
+    function syncThemeColor() {
+        if (themeColor) themeColor.content = getComputedStyle(html).getPropertyValue('--bg').trim();
+    }
 
     // Load saved preference (default = dark, no attribute)
     let saved;
@@ -12,6 +17,7 @@
     if (saved === 'light') {
         html.setAttribute('data-theme', 'light');
         icon.className = 'fas fa-moon';
+        syncThemeColor();
     }
 
     toggle.addEventListener('click', function () {
@@ -25,6 +31,7 @@
             try { localStorage.setItem('theme', 'light'); } catch (_) { /* Keep the toggle working. */ }
             icon.className = 'fas fa-moon';
         }
+        syncThemeColor();
     });
 })();
 
@@ -373,8 +380,12 @@ function loadPanoramaLibrary() {
         const stylesheet = document.createElement('link');
         stylesheet.rel = 'stylesheet';
         stylesheet.href = 'https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css';
+        stylesheet.integrity = 'sha384-02yn80EH0cF+s23taAmuhEZ04p3CTbQvV0QZMr2reUxajpfvcLNKlzsPkZwx14mf';
         const script = document.createElement('script');
         script.src = 'https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js';
+        script.integrity = 'sha384-S5+w/JlcNAOymqXGNrvzn2F++XsaHTJdex6KE5VbKryfFgqJiRUJOgOkUqaiOZTf';
+        // Subresource Integrity requires CORS requests; a changed CDN file fails to load.
+        stylesheet.crossOrigin = script.crossOrigin = 'anonymous';
         panoramaLibraryPromise = Promise.all([stylesheet, script].map(function (asset) {
             return new Promise(function (resolve, reject) {
                 asset.onload = resolve;
